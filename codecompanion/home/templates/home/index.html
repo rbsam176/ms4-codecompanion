@@ -2,9 +2,37 @@
 {% load static %}
 
 {% block page_header %}
-    <h1 class="display-4 text-success">It works!</h1>
 {% endblock %}
 
 {% block content %}
-    <div class="hero-bg"></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-7">
+                <div id="hero" class="container d-flex">
+                    <div class="row align-self-center">
+                        <div class="hero-text">Partner<br>with one of our<br>experienced<br><span class="hero-highlight">developers</span></div>
+                        <button class="btn account-nav w-50 ms-3">Get Started</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-5">
+                <div class="row mt-4 me-4">
+                    <div class="col-2">
+                        <img class="img-quote" src="https://media-exp1.licdn.com/dms/image/C4D03AQGVHbPilnAa1g/profile-displayphoto-shrink_800_800/0/1543143281971?e=1628726400&v=beta&t=nkmyU-gD6RPudSiMML-YwZY2BHlAFDsSvgZ_-Vbnu2A" width="75">
+                    </div>
+                    <div class="col-10">
+                        "Code Companion enabled me to develop much faster and what I learned was way more thorough than if I had been on my own."
+                    </div>
+                </div>
+                <div class="row mt-4 me-4 bg-light p-2 rounded">
+                    <div class="col-10">
+                        "Code Companion enabled me to develop much faster and what I learned was way more thorough than if I had been on my own."
+                    </div>
+                    <div class="col-2">
+                        <img class="img-quote" src="https://media-exp1.licdn.com/dms/image/C4D03AQGVHbPilnAa1g/profile-displayphoto-shrink_800_800/0/1543143281971?e=1628726400&v=beta&t=nkmyU-gD6RPudSiMML-YwZY2BHlAFDsSvgZ_-Vbnu2A" width="75">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

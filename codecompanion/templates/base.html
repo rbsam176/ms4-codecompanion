@@ -14,6 +14,8 @@
 
     {% block corecss %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Josefin+Sans:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% endblock %}
 
@@ -32,15 +34,14 @@
   </head>
   <body>
   
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav id="nav" class="navbar navbar-expand-lg navbar-light">
       <div class="container-fluid">
         <button class="navbar-toggler me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand me-auto pe-4" href="#">Code Companion</a>
-        <a class="nav-link ms-auto d-inline-block d-lg-none account-nav" href="#">Sign Up</a>
+        <a id="logo" class="navbar-brand me-auto px-3 my-2" href="#"><span class="title-code">code</span><span class="title-companion"> companion</span></a>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
+          <div class="navbar-nav ms-2">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,8 +60,9 @@
             <a class="nav-link" href="#">Our Companions</a>
             <a class="nav-link" href="#">Book Session</a>
             <a class="nav-link" href="#">FAQ</a>
-            <a class="d-lg-none account-nav text-center mt-2" href="#">Companion Portal</a>
-            <a class="d-lg-none account-nav text-center mt-2" href="#">Login</a>
+            <a class="d-lg-none account-nav mobile-nav-item text-center mt-2" href="#">Companion Portal</a>
+            <a class="d-lg-none account-nav mobile-nav-item text-center mt-2" href="#">Signup</a>
+            <a class="d-lg-none account-nav mobile-nav-item text-center mt-2" href="#">Login</a>
           </div>
         </div>
         <div class="ms-auto d-none d-lg-inline-block">

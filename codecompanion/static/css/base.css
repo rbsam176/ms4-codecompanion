@@ -1,7 +1,6 @@
-.hero-bg {
-    background: url('/media/undraw_Notebook_re_id0r.png') no-repeat center center fixed;
-    background-size: cover;
-    height: 70vh;
+.hero-img {
+    object-fit: contain;
+    width: 100%;
 }
 
 .muted-nav {
@@ -21,7 +20,59 @@
     color: black;
 }
 
+.mobile-nav-item {
+    max-width: 300px;
+}
+
 .account-nav:hover {
     background-color: black;
     color: white;
+}
+
+#nav {
+    background-color: #F9C620;
+    min-height: 75px;
+}
+
+#logo {
+    background-color: black;
+}
+
+.title-code {
+    font-family: 'Do Hyeon', sans-serif;
+    color: #F9C620;
+    letter-spacing: 2px;
+}
+
+.title-companion {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 1.1em;
+    color: #F9C620;
+    font-style: italic;
+}
+
+#hero {
+    height: calc(100vh - 75px);
+}
+
+.hero-text {
+    font-size: 4em;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: -4px;
+    word-spacing: -10px;
+    text-transform: uppercase;
+    line-height: 0.8em;
+}
+
+.hero-highlight {
+    color: #F9C620;
+    background-color: black;
+    padding-top: 15px;
+    padding-right: 10px;
+    line-height: 1.25em;
+}
+
+.img-quote {
+    border-radius: 50%;
 }
