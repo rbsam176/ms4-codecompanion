@@ -3,3 +3,25 @@
     background-size: cover;
     height: 70vh;
 }
+
+.muted-nav {
+    text-decoration: none;
+    color: gray;
+}
+
+.muted-nav:hover {
+    color: black;
+}
+
+.account-nav {
+    text-decoration: none;
+    padding: 8px;
+    border: 2px solid black;
+    background-color: white;
+    color: black;
+}
+
+.account-nav:hover {
+    background-color: black;
+    color: white;
+}
