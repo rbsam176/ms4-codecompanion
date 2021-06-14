@@ -15,6 +15,7 @@
     {% block corecss %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://kit.fontawesome.com/eb13987625.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Josefin+Sans:ital,wght@0,700;1,600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% endblock %}
@@ -50,25 +51,24 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                 <li><a class="dropdown-item" href="#">Pair Programming</a></li>
                 <li><a class="dropdown-item" href="#">Code Review</a></li>
-                <li><a class="dropdown-item" href="#">CV/LinkedIn Review</a></li>
                 <li><a class="dropdown-item" href="#">Troubleshooting</a></li>
                 <li><a class="dropdown-item" href="#">Whiteboarding</a></li>
                 <li><a class="dropdown-item" href="#">Interview Prep</a></li>
                 <li><a class="dropdown-item" href="#">Deployment Assist</a></li>
+                <hr>
+                <li><a class="dropdown-item" href="#"><strong>Compare Services</strong></a></li>
               </ul>
             </li>
             <a class="nav-link" href="#">Our Companions</a>
             <a class="nav-link" href="#">Book Session</a>
             <a class="nav-link" href="#">FAQ</a>
-            <a class="d-lg-none account-nav mobile-nav-item text-center mt-2" href="#">Companion Portal</a>
-            <a class="d-lg-none account-nav mobile-nav-item text-center mt-2" href="#">Signup</a>
+            <a class="d-lg-none btn-signup btn-hero mobile-nav-item text-center mt-2" href="#">Signup</a>
             <a class="d-lg-none account-nav mobile-nav-item text-center mt-2" href="#">Login</a>
           </div>
         </div>
         <div class="ms-auto d-none d-lg-inline-block">
-          <a class="mx-2 muted-nav" href="#">Companion Portal</a>
-          <a class="mx-2 account-nav" href="#">Sign Up</a>
-          <a class="mx-2 account-nav" href="#">Login</a>
+          <a class="mx-2 btn-hero btn-signup" href="#">Sign Up</a>
+          <a class="mx-2 account-nav btn-login" href="#">Login</a>
         </div>
       </div>
     </nav>
@@ -84,7 +84,41 @@
 
     {% block content %}
     {% endblock %}
-
+      <footer class="container-fluid">
+        <div class="row bg-dark mt-4 px-4">
+            <div class="col-12 col-md mt-4 text-center text-md-start">
+              <h5><span class="title-code text-white">code</span><span class="title-companion"> companion</span></h5>
+            </div>
+            <div class="col mt-4 text-center text-md-start">
+              <h4 class="text-light">Services</h4>
+              <a href="#" class="text-muted mb-1 sub-link">Pair Programming</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Code Review</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Troubleshooting</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Whiteboarding</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Interview Prep</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Deployment Assist</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Compare Services</a>
+            </div>
+            <div class="col mt-4 text-center text-md-start">
+              <h4 class="text-light">FAQ</h4>
+              <a href="#" class="text-muted mb-1 sub-link">Payment</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Refunds</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Privacy</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Accounts</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">Service</a><br>
+            </div>
+            <div class="col-12 col-md mt-4 text-center text-md-start">
+              <h4 class="text-light">Contact</h4>
+              <a href="#" class="text-muted mb-1 sub-link">contact@codecompanion.co.uk</a><br>
+              <a href="#" class="text-muted mb-1 sub-link">🇬🇧 +44 20 7946 0290</a><br>
+            </div>
+        </div>
+        <div class="row bg-dark pt-4 text-center">
+          <a href="#"><i class="fas fa-chevron-up text-muted"></i></a>
+          <a href="#" class="text-muted pb-2 sub-link">Back to top</a>
+          <p class="text-muted mb-4">© 2021</p>
+        </div>
+      </div>
     {% block postloadjs %}
     {% endblock %}
   </body>
