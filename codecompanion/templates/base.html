@@ -31,7 +31,7 @@
     {% block extra_js %}
     {% endblock %}
 
-    <title>Code Companion {% block extra_title %}{% endblock %}</title>
+    <title>Code Companion{% block extra_title %}{% endblock %}</title>
   </head>
   <body>
   
@@ -56,22 +56,44 @@
                 <li><a class="dropdown-item" href="#">Interview Prep</a></li>
                 <li><a class="dropdown-item" href="#">Deployment Assist</a></li>
                 <hr>
-                <li><a class="dropdown-item" href="#"><strong>Compare Services</strong></a></li>
+                <li><a class="dropdown-item" href="{% url 'compare_services' %}"><strong>Compare Services</strong></a></li>
               </ul>
             </li>
             <a class="nav-link" href="#">Our Companions</a>
             <a class="nav-link" href="#">Book Session</a>
             <a class="nav-link" href="#">FAQ</a>
+            <div class="col-12 col-md-8 d-block d-lg-none">
+              <div class="input-group my-3">
+                <input type="text" class="form-control form-control-lg" placeholder="Enter search query" aria-label="Enter search query" aria-describedby="button-addon2">
+                <button class="btn btn-hero" type="button" id="button-addon2">Search</button>
+              </div>
+            </div>
             <a class="d-lg-none btn-signup btn-hero mobile-nav-item text-center mt-2" href="#">Signup</a>
-            <a class="d-lg-none account-nav mobile-nav-item text-center mt-2" href="#">Login</a>
+            <a class="d-lg-none account-nav mobile-nav-item text-center my-2" href="#">Login</a>
           </div>
         </div>
         <div class="ms-auto d-none d-lg-inline-block">
+          <a class="btn btn-secondary mx-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+            <i class="fas fa-search"></i>
+          </a>
           <a class="mx-2 btn-hero btn-signup" href="#">Sign Up</a>
           <a class="mx-2 account-nav btn-login" href="#">Login</a>
         </div>
       </div>
     </nav>
+    <div class="d-none d-lg-block">
+      <div class="search-panel container-fluid collapse" id="collapseExample">
+        <div class="row">
+          <div class="col-lg-7 col-xl-8"></div>
+          <div class="col-lg-5 col-xl-4">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control form-control-lg" placeholder="Enter search query" aria-label="Enter search query" aria-describedby="button-addon2">
+              <button class="btn btn-hero" type="button" id="button-addon2">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
 
@@ -95,7 +117,7 @@
             {% for service in services %}
               <a href="{{ service.endpoint }}" class="text-muted mb-1 sub-link">{{ service }}</a><br>
             {% endfor %}
-            <a href="#" class="text-muted mb-1 sub-link">Compare Services</a>
+            <a href="{% url 'compare_services' %}" class="text-muted mb-1 sub-link">Compare Services</a>
           </div>
           <div class="col mt-4 text-center text-md-start">
             <h4 class="text-light">FAQ</h4>

@@ -168,15 +168,15 @@
                 <div class="row my-4">
                     <div class="list-group px-2">
                         {% for service in services %}
-                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 {{ service }}
                                 <i class="fas fa-caret-right"></i>
-                            </button>
+                            </a>
                         {% endfor %}
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <a href="{% url 'compare_services' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <strong>Compare Services</strong>
                             <i class="fas fa-caret-right"></i>
-                        </button>
+                        </a>
                       </div>
                 </div>
             </div>

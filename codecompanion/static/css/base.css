@@ -6,6 +6,13 @@ header {
     margin-top: 100px;
 }
 
+.search-panel {
+    /* margin-top: 85px; */
+    position: fixed;
+    top: 90px;
+    z-index: 15;
+}
+
 a {
     text-decoration: none;
 }
