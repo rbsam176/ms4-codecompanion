@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <header class="container">
+        <div class="row">
+            <div class="col-12 text-center my-4">
+                <h2>Search results</h2>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    {{ search_term }}
+    {% for service in services %}
+        {{ service }}
+    {% endfor %}
+{% endblock %}

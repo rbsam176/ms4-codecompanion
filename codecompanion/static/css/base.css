@@ -7,10 +7,13 @@ header {
 }
 
 .search-panel {
-    /* margin-top: 85px; */
     position: fixed;
     top: 90px;
     z-index: 15;
+}
+
+.search-input {
+    font-size: 0.9em;
 }
 
 a {
