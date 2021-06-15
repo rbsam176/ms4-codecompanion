@@ -167,30 +167,12 @@
                 <h4>Services</h4>
                 <div class="row my-4">
                     <div class="list-group px-2">
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Pair Programming
-                            <i class="fas fa-caret-right"></i>
-                        </button>
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Code Review
-                            <i class="fas fa-caret-right"></i>
-                        </button>
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Troubleshooting
-                            <i class="fas fa-caret-right"></i>
-                        </button>
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Whiteboarding
-                            <i class="fas fa-caret-right"></i>
-                        </button>
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Interview Prep
-                            <i class="fas fa-caret-right"></i>
-                        </button>
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                            Deployment Assist
-                            <i class="fas fa-caret-right"></i>
-                        </button>
+                        {% for service in services %}
+                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                {{ service }}
+                                <i class="fas fa-caret-right"></i>
+                            </button>
+                        {% endfor %}
                         <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <strong>Compare Services</strong>
                             <i class="fas fa-caret-right"></i>
@@ -206,7 +188,7 @@
                 <h2>Advance yourself. Sign up for an account.</h2>
                 <form class="mt-4">
                     <div class="input-group mb-3 signup-combo mx-auto">
-                        <input type="text" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" autofocus required>
+                        <input type="text" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" required>
                         <button class="btn btn-hero" type="button" id="button-addon2">Sign up now</button>
                     </div>
                 </form>

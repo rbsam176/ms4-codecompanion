@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <header class="container">
+        <div class="row">
+            <div class="col-12 text-center my-4">
+                <h2>Compare Services</h2>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid services-bg">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+            {% for service in services %}
+                <div class="col">
+                    <div class="card h-100 text-center p-4">
+                        <div class="card-body">
+                            <h3 class="mb-4"><i class="{{ service.icon }}"></i></h3>
+                            <h4 class="card-title hero-underline">{{ service }}</h4>
+                            <p class="card-text service-description">{{ service.description }}</p>
+                            <h2>£{{ service.price }}</h2>
+                            <h6>{{ service.price_type.get_friendly_name }}</h6>
+                            {% if service.bullet_point_1 %}
+                                <ul>
+                                    <li class="service-points mt-4">{{ service.bullet_point_1 }}</li>
+                                    {% if service.bullet_point_2 %}
+                                        <li class="service-points">{{ service.bullet_point_2 }}</li>
+                                    {% endif %}
+                                    {% if service.bullet_point_3 %}
+                                        <li class="service-points">{{ service.bullet_point_3 }}</li>
+                                    {% endif %}
+                                    {% if service.bullet_point_4 %}
+                                        <li class="service-points">{{ service.bullet_point_4 }}</li>
+                                    {% endif %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer service-detail">
+                            <button class="btn-hero account-nav">Book a session</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row pt-4">
+            <div class="col-12 text-center">
+                <h2>Advance yourself. Sign up for an account.</h2>
+                <form class="mt-4">
+                    <div class="input-group mb-3 signup-combo mx-auto">
+                        <input type="text" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" required>
+                        <button class="btn btn-hero" type="button" id="button-addon2">Sign up now</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

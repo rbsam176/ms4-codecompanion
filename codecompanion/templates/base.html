@@ -84,41 +84,40 @@
 
     {% block content %}
     {% endblock %}
-      <footer class="container-fluid">
-        <div class="row bg-dark mt-4 px-4">
-            <div class="col-12 col-md mt-4 text-center text-md-start">
-              <h5><span class="title-code text-white">code</span><span class="title-companion"> companion</span></h5>
-            </div>
-            <div class="col mt-4 text-center text-md-start">
-              <h4 class="text-light">Services</h4>
-              <a href="#" class="text-muted mb-1 sub-link">Pair Programming</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Code Review</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Troubleshooting</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Whiteboarding</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Interview Prep</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Deployment Assist</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Compare Services</a>
-            </div>
-            <div class="col mt-4 text-center text-md-start">
-              <h4 class="text-light">FAQ</h4>
-              <a href="#" class="text-muted mb-1 sub-link">Payment</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Refunds</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Privacy</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Accounts</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">Service</a><br>
-            </div>
-            <div class="col-12 col-md mt-4 text-center text-md-start">
-              <h4 class="text-light">Contact</h4>
-              <a href="#" class="text-muted mb-1 sub-link">contact@codecompanion.co.uk</a><br>
-              <a href="#" class="text-muted mb-1 sub-link">🇬🇧 +44 20 7946 0290</a><br>
-            </div>
-        </div>
-        <div class="row bg-dark pt-4 text-center">
-          <a href="#"><i class="fas fa-chevron-up text-muted"></i></a>
-          <a href="#" class="text-muted pb-2 sub-link">Back to top</a>
-          <p class="text-muted mb-4">© 2021</p>
-        </div>
+
+    <footer class="container-fluid">
+      <div class="row bg-dark mt-4 px-4">
+          <div class="col-12 col-md mt-4 text-center text-md-start">
+            <h5><span class="title-code text-white">code</span><span class="title-companion"> companion</span></h5>
+          </div>
+          <div class="col mt-4 text-center text-md-start">
+            <h4 class="text-light">Services</h4>
+            {% for service in services %}
+              <a href="{{ service.endpoint }}" class="text-muted mb-1 sub-link">{{ service }}</a><br>
+            {% endfor %}
+            <a href="#" class="text-muted mb-1 sub-link">Compare Services</a>
+          </div>
+          <div class="col mt-4 text-center text-md-start">
+            <h4 class="text-light">FAQ</h4>
+            <a href="#" class="text-muted mb-1 sub-link">Payment</a><br>
+            <a href="#" class="text-muted mb-1 sub-link">Refunds</a><br>
+            <a href="#" class="text-muted mb-1 sub-link">Privacy</a><br>
+            <a href="#" class="text-muted mb-1 sub-link">Accounts</a><br>
+            <a href="#" class="text-muted mb-1 sub-link">Service</a><br>
+          </div>
+          <div class="col-12 col-md mt-4 text-center text-md-start">
+            <h4 class="text-light">Contact</h4>
+            <a href="#" class="text-muted mb-1 sub-link">contact@codecompanion.co.uk</a><br>
+            <a href="#" class="text-muted mb-1 sub-link">🇬🇧 +44 20 7946 0290</a><br>
+          </div>
       </div>
+      <div class="row bg-dark pt-4 text-center">
+        <a href="#"><i class="fas fa-chevron-up text-muted"></i></a>
+        <a href="#" class="text-muted pb-2 sub-link">Back to top</a>
+        <p class="text-muted mb-4">© 2021</p>
+      </div>
+    </footer>
+    
     {% block postloadjs %}
     {% endblock %}
   </body>
