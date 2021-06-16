@@ -4,4 +4,6 @@ from . import views
 urlpatterns = [
     path('', views.view_bag, name="view_bag"),
     path('add/<service_name>/', views.add_to_bag, name="add_to_bag"),
+    path('adjust/<service_name>/', views.adjust_bag, name="adjust_bag"),
+    path('remove/<service_name>/', views.remove_from_bag, name="remove_from_bag"),
 ]
