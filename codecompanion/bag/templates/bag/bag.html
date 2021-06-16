@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <header class="container">
+        <div class="row">
+            <div class="col-12 text-center my-4">
+                <h2>Bag</h2>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                {% if bag_items %}
+                    <div class="table-responsive rounded">
+                        <table class="table table-sm table-borderless">
+                            <thead class="text-black">
+                                <tr>
+                                    <th scope="col">Service name</th>
+                                    <th scope="col">Qty</th>
+                                    <th scope="col">Price</th>
+                                </tr>
+                            </thead>
+
+                            {% for item in bag_items %}
+                                <tr>
+                                    <td class="p-3 w-25">
+                                        <p class="my-0">{{ item.service_name }}</p>
+                                    </td>
+                                    <td class="p-3 w-25">
+                                        <p class="my-0"><strong>{{ item.quantity }}</strong></p>
+                                    </td>
+                                    <td class="p-3 w-25">
+                                        <p class="my-0"><strong>{{ item.service_price }}</strong> {{ item.service_price_type.get_friendly_name }}</p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                        <p>Total: {{ total }}</p>
+                    </div>
+                {% else %}
+                    <p class="lead mb-5">Your bag is empty.</p>
+                    <span class="icon">
+                        <i class="fas fa-chevron-left"></i>
+                    </span>
+                    <span class="text-uppercase">Keep Shopping</span>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

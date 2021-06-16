@@ -24,7 +24,7 @@
     {% endblock %}
 
     {% block corejs %}
-    <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     {% endblock %}
 
@@ -40,7 +40,7 @@
         <button class="navbar-toggler me-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a id="logo" class="navbar-brand me-auto px-3 my-2" href="#"><span class="title-code">code</span><span class="title-companion"> companion</span></a>
+        <a href="{% url 'home' %}" id="logo" class="navbar-brand me-auto px-3 my-2" href="#"><span class="title-code">code</span><span class="title-companion"> companion</span></a>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ms-2">
             <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
@@ -78,6 +78,7 @@
           </a>
           <a class="mx-2 btn-hero btn-signup" href="#">Sign Up</a>
           <a class="mx-2 account-nav btn-login" href="#">Login</a>
+          <a class="mx-2" href="{% url 'view_bag' %}"><i class="fas fa-shopping-bag fa-lg"></i> {{ product_count }}</a>
         </div>
       </div>
     </nav>

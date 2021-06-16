@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'home',
     'services',
+    'bag',
+    'profiles',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -91,6 +93,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'home.context_processors.add_variable_to_context',
+                'bag.context_processors.bag_contents',
             ],
         },
     },

@@ -13,7 +13,7 @@ class PriceType(models.Model):
 class Service(models.Model):
     """ A model to represent every service offered """
     icon = models.CharField(max_length=254)
-    name = models.CharField(max_length=254)
+    name = models.CharField(max_length=254, primary_key=True)
     endpoint = models.CharField(max_length=254, default='#')
     description = models.CharField(max_length=254)
     price = models.DecimalField(max_digits=6, decimal_places=2)

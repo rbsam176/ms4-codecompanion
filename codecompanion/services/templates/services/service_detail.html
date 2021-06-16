@@ -42,8 +42,40 @@
                 </div>
             </div>
             <div class="col-6">
-                a
+                <form class="form" action="{% url 'add_to_bag' service.name %}" method="POST">
+                    {% csrf_token %}
+                    <div class="col-12">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button class="decrement-qty btn btn-black rounded-0" disabled>
+                                                <span class="icon">
+                                                    <i class="fas fa-minus"></i>
+                                                </span>
+                                    </button>
+                                </div>
+                                <input class="form-control qty_input" type="number"
+                                            name="quantity" value="1" min="1" max="3">
+                                <div class="input-group-append">
+                                    <button class="increment-qty btn btn-black rounded-0">
+                                                <span class="icon">
+                                                    <i class="fas fa-plus"></i>
+                                                </span>
+                                    </button>
+                                </div>
+                                <input type="submit" value="Add to bag">
+                                <input type="hidden" name="redirect_url" value="{{ request.path }}">
+                                <!-- <input type="number" name="quantity" value="1" min="1" max="3"> -->
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block postloadjs %}
+{{ block.super }}
+{% include 'services/includes/quantity_input_script.html' %}
 {% endblock %}
