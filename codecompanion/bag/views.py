@@ -1,4 +1,7 @@
 from django.shortcuts import render, redirect, reverse, HttpResponse
+from django.contrib import messages
+
+from services.models import Service
 
 # Create your views here.
 def view_bag(request):
@@ -12,10 +15,14 @@ def add_to_bag(request, service_name):
     redirect_url = request.POST.get('redirect_url')
     bag = request.session.get('bag', {})
 
+    service = Service.objects.get(pk=service_name)
+
     if service_name in list(bag.keys()):
         bag[service_name] += quantity
+        messages.success(request, f'Added "{service.name}" to your bag')
     else:
         bag[service_name] = quantity
+        messages.success(request, f'Added "{service.name}" to your bag')
     
     request.session['bag'] = bag
     print(request.session['bag'])
@@ -27,7 +34,7 @@ def adjust_bag(request, service_name):
     quantity = int(request.POST.get('quantity'))
     bag = request.session.get('bag', {})
     bag[service_name] = quantity
-    
+    messages.info(request, f'Updated "{service_name}" quantity to {bag[service_name]}')
     request.session['bag'] = bag
     return redirect(reverse('view_bag'))
 
@@ -37,9 +44,10 @@ def remove_from_bag(request, service_name):
     try:
         bag = request.session.get('bag', {})
         bag.pop(service_name)
-        
         request.session['bag'] = bag
+        messages.warning(request, f'Removed "{service_name}" from your bag')
         return HttpResponse(status=200)
 
     except Exception as e:
+        messages.error(request, f'An error occured when attempting to remove "{service_name}" from your bag. Error code {e}')
         return HttpResponse(status=500)

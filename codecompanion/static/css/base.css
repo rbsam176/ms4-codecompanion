@@ -6,6 +6,33 @@ header {
     margin-top: 100px;
 }
 
+.message-container {
+    position: fixed;
+    top: 95px;
+    right: 15px;
+    z-index: 99999999999;
+}
+
+.toast-header, .toast-body {
+    background-color: white;
+}
+
+.header-success {
+    border-top: 4px solid #25A743;
+}
+
+.header-warning {
+    border-top: 4px solid #FFC008;
+}
+
+.header-error {
+    border-top: 4px solid #DC3545;
+}
+
+.header-info {
+    border-top: 4px solid #14A2B8;
+}
+
 .search-panel {
     position: fixed;
     top: 90px;
