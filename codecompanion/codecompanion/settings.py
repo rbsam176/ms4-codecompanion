@@ -48,6 +48,10 @@ INSTALLED_APPS = [
     'bag',
     'checkout',
     'profiles',
+
+    # Other
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
@@ -81,6 +85,9 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'codecompanion.urls'
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -98,6 +105,10 @@ TEMPLATES = [
                 'home.context_processors.add_variable_to_context',
                 'bag.context_processors.bag_contents',
             ],
+            'builtins': [
+                'crispy_forms.templatetags.crispy_forms_tags',
+                'crispy_forms.templatetags.crispy_forms_field',
+            ]
         },
     },
 ]

@@ -66,14 +66,19 @@
                             {% endfor %}
                         </table>
                         <p>Total: {{ total }}</p>
+                        <a href="{% url 'checkout' %}">
+                            <span class="font-weight-bold">Complete Order</span>
+                            <span class="icon">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        </a>
                     </div>
                 {% else %}
                     <p class="lead mb-5">Your bag is empty.</p>
                     <span class="icon">
                         <i class="fas fa-chevron-left"></i>
                     </span>
-                    <span class="text-uppercase">Keep Shopping</span>
-                    </a>
+                    <a href="#"><span class="text-uppercase">Keep Shopping</span></a>
                 {% endif %}
             </div>
         </div>

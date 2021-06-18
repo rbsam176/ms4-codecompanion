@@ -4,8 +4,7 @@ from .models import Order
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ('order_number', 'date',
-                  'email_address', 'order_total',)
+        fields = ('email_address',)
 
     def __init__(self, *args, **kwargs):
         """ Add placeholders and classes, remove auto-generated
@@ -13,7 +12,6 @@ class OrderForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         placeholders = {
             'email_address': 'Email Address',
-            'phone_number': 'Phone Number',
         }
 
         self.fields['email_address'].widget.attrs['autofocus'] = True
