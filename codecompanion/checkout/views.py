@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404, redirect, render, reverse
+from django.shortcuts import get_object_or_404, redirect, render, reverse, HttpResponse
+from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
 
@@ -8,6 +9,23 @@ from services.models import Service
 from bag.context_processors import bag_contents
 
 import stripe
+import json
+
+@require_POST
+def cache_checkout_data(request):
+    try:
+        pid = request.POST.get('client_secret').split('_secret')[0]
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        stripe.PaymentIntent.modify(pid, metadata={
+            'username': request.user,
+            'bag': json.dumps(request.session.get('bag', {})),
+        })
+        return HttpResponse(status=200)
+    except Exception as e:
+        messages.error(request, 'Sorry, your payment is not able to be processed \
+            at this time. Try again, or contact us using our email at the bottom \
+                of the page.')
+        return HttpResponse(content=e, status=400)
 
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
@@ -43,7 +61,7 @@ def checkout(request):
                     order.delete()
                     return redirect(reverse('view_bag'))
 
-            request.session['save_info'] = 'save-info' in request.POST
+            # request.session['save_info'] = 'save-info' in request.POST 
             return redirect(reverse('checkout_success', args=[order.order_number]))
         else:
             messages.error(request, "There was an error in the form. Please verify all information is correct")
@@ -80,7 +98,7 @@ def checkout_success(request, order_number):
     """
     Handle successful checkouts
     """
-    save_info = request.session.get('save_info')
+    # save_info = request.session.get('save_info')
     order = get_object_or_404(Order, order_number=order_number)
     messages.success(request, f'Order successfull! Your order number is {order_number}. \
         An email will be sent to {order.email_address} with confirmation')
