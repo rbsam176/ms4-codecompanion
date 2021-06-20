@@ -8,10 +8,10 @@ class OrderLineItemAdminInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     inlines = (OrderLineItemAdminInline,)
     readonly_fields = ('order_number', 'date', 
-                       'order_total',)
+                       'order_total', 'original_bag', 'stripe_pid')
 
     fields = ('order_number', 'date', 'email_address',
-              'order_total' )
+              'order_total', 'original_bag', 'stripe_pid')
 
     list_display = ('order_number', 'date', 'email_address',
               'order_total' )
