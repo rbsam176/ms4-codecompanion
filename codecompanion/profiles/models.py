@@ -5,13 +5,9 @@ from django.dispatch import receiver
 
 class AccountType(models.Model):
     type = models.CharField(max_length=254)
-    friendly_type = models.CharField(max_length=254, null=True, blank=True)
 
     def __str__(self):
-        return self.name
-
-    def get_friendly_type(self):
-        return self.friendly_name
+        return self.type
 
 
 class UserProfile(models.Model):

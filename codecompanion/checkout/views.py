@@ -7,6 +7,7 @@ from .forms import OrderForm
 from .models import Order, OrderLineItem
 from services.models import Service
 from bag.context_processors import bag_contents
+from profiles.models import UserProfile
 
 import stripe
 import json
@@ -104,6 +105,12 @@ def checkout_success(request, order_number):
     """
     # save_info = request.session.get('save_info')
     order = get_object_or_404(Order, order_number=order_number)
+
+    if request.user.is_authenticated:
+        profile = UserProfile.objects.get(user=request.user)
+        order.user_profile = profile
+        order.save()
+
     messages.success(request, f'Order successfull! Your order number is {order_number}. \
         An email will be sent to {order.email_address} with confirmation')
 

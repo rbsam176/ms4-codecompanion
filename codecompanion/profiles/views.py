@@ -4,9 +4,13 @@ from django.contrib import messages
 from .forms import UserProfileForm
 from .models import UserProfile
 
+from checkout.models import Order
+
 def profile(request):
 	""" Display user profile """
 	profile = get_object_or_404(UserProfile, user=request.user)
+
+	print(profile)
 
 	if request.method == 'POST':
 		form = UserProfileForm(request.POST, instance=profile)
@@ -17,10 +21,30 @@ def profile(request):
 	form = UserProfileForm(instance=profile)
 	orders = profile.orders.all()
 
+	print(orders)
+	for x in orders:
+		print(x)
+
 	template = 'profiles/profile.html'
 	context = {
+		'profile': profile,
 		'form': form,
 		'orders': orders,
+	}
+
+	return render(request, template, context)
+
+def order_history(request, order_number):
+	order = get_object_or_404(Order, order_number=order_number)
+
+	messages.info(request, (
+		f'This is a past order confirmation for order number {order_number}. \
+			A confirmaiton email should have been sent on the order date'
+	))
+
+	template = 'checkout/checkout_success.html'
+	context = {
+		'order': order,
 	}
 
 	return render(request, template, context)
