@@ -1,5 +1,26 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
 
-# Create your views here.
-def redirect_services(request):
-	return redirect('/services/compare-services')
+from .forms import UserProfileForm
+from .models import UserProfile
+
+def profile(request):
+	""" Display user profile """
+	profile = get_object_or_404(UserProfile, user=request.user)
+
+	if request.method == 'POST':
+		form = UserProfileForm(request.POST, instance=profile)
+		if form.is_valid():
+			form.save()
+			messages.success(request, 'Profile updated successfully')
+
+	form = UserProfileForm(instance=profile)
+	orders = profile.orders.all()
+
+	template = 'profiles/profile.html'
+	context = {
+		'form': form,
+		'orders': orders,
+	}
+
+	return render(request, template, context)
