@@ -45,3 +45,27 @@ def add_service(request):
 	}
 
 	return render(request, template, context)
+
+
+def edit_service(request, endpoint):
+	""" Edit a service in the store """
+	service = get_object_or_404(Service, endpoint=endpoint)
+	if request.method == 'POST':
+		form = ServiceForm(request.POST, instance=service)
+		if form.is_valid():
+			form.save()
+			messages.success(request, 'Successfully updated service')
+			return redirect(reverse('service_detail', args=[endpoint]))
+		else:
+			messages.error(request, 'Failed to update service')
+	else:
+		form = ServiceForm(instance=service)
+		messages.info(request, f'You are editing {service.name}')
+
+	template = 'services/edit_service.html'
+	context = {
+		'form': form,
+		'service': service,
+	}
+
+	return render(request, template, context)

@@ -8,6 +8,11 @@
         <div class="row">
             <div class="col-12 text-center my-4">
                 <h2>Book a <span class="hero-underline">{{ service }}</span>{% if 'Session' not in service.name %} session{% endif %}</h2>
+                {% if request.user.is_authenticated %}
+                  {% if request.user.is_superuser %}
+                    <a href="{% url 'edit_service' service.endpoint %}"><strong>Edit Service</strong></a>
+                  {% endif %}
+                {% endif %}
             </div>
         </div>
     </header>
