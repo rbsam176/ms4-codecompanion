@@ -31,9 +31,9 @@ def add_service(request):
 	if request.method == 'POST':
 		form = ServiceForm(request.POST)
 		if form.is_valid():
-			form.save()
+			service = form.save()
 			messages.success(request, 'Successfully added service')
-			return redirect(reverse('add_service'))
+			return redirect(reverse('service_detail', args=[service.endpoint]))
 		else:
 			messages.error(request, 'Failed to add service')
 	else:
@@ -69,3 +69,11 @@ def edit_service(request, endpoint):
 	}
 
 	return render(request, template, context)
+
+
+def delete_service(request, endpoint):
+	""" Delete a service in the store """
+	service = get_object_or_404(Service, endpoint=endpoint)
+	service.delete()
+	messages.success(request, 'Service deleted')
+	return redirect(reverse('compare_services'))

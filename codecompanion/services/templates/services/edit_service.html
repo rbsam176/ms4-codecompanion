@@ -7,6 +7,11 @@
             <div class="col-12 text-center my-4">
                 <h2>Service Management</h2>
                 <h4>Edit Service</h4>
+                {% if request.user.is_authenticated %}
+                    {% if request.user.is_superuser %}
+                        <a href="{% url 'delete_service' service.endpoint %}"><strong>Delete Service</strong></a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </header>
