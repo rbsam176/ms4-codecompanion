@@ -50,14 +50,16 @@
                 Services
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <li><a class="dropdown-item" href="#">Pair Programming</a></li>
-                <li><a class="dropdown-item" href="#">Code Review</a></li>
-                <li><a class="dropdown-item" href="#">Troubleshooting</a></li>
-                <li><a class="dropdown-item" href="#">Whiteboarding</a></li>
-                <li><a class="dropdown-item" href="#">Interview Prep</a></li>
-                <li><a class="dropdown-item" href="#">Deployment Assist</a></li>
+                {% for service in services %}
+                  <li><a class="dropdown-item" href="{% url 'service_detail' service.endpoint %}" class="text-muted mb-1 sub-link">{{ service }}</a></li>
+                {% endfor %}
                 <hr>
                 <li><a class="dropdown-item" href="{% url 'compare_services' %}"><strong>Compare Services</strong></a></li>
+                {% if request.user.is_authenticated %}
+                  {% if request.user.is_superuser %}
+                    <li><a class="dropdown-item" href="{% url 'add_service' %}"><strong>Add Service</strong></a></li>
+                  {% endif %}
+                {% endif %}
               </ul>
             </li>
             <a class="nav-link" href="#">Our Companions</a>
@@ -65,8 +67,8 @@
             <a class="nav-link" href="#">FAQ</a>
             <div class="col-12 col-md-8 d-block d-lg-none">
               <form method="GET" action="{% url 'search' %}" class="input-group my-3">
-                <input type="text" class="form-control form-control-lg search-input" name="q" placeholder="Enter service/companion name" aria-label="Enter service/companion name" aria-describedby="button-addon2">
-                <button type="submit" class="btn btn-hero" type="button" id="button-addon2">Search</button>
+                <input type="text" class="form-control form-control-lg search-input" name="q" placeholder="Enter service/companion name" aria-label="Enter service/companion name" aria-describedby="button-search-mobile">
+                <button type="submit" class="btn btn-hero" type="button" id="button-search-mobile">Search</button>
               </form>
             </div>
             {% if request.user.is_authenticated %}
@@ -99,8 +101,8 @@
           <div class="col-lg-7 col-xl-8"></div>
           <div class="col-lg-5 col-xl-4">
             <form method="GET" action="{% url 'search' %}" class="input-group mb-3">
-              <input type="text" class="form-control form-control-lg search-input" name="q" placeholder="Enter service/companion name" aria-label="Enter service/companion name" aria-describedby="button-addon2">
-              <button type="submit" class="btn btn-hero" type="button" id="button-addon2">Search</button>
+              <input type="text" class="form-control form-control-lg search-input" name="q" placeholder="Enter service/companion name" aria-label="Enter service/companion name" aria-describedby="button-search-desktop">
+              <button type="submit" class="btn btn-hero" type="button" id="button-search-desktop">Search</button>
             </form>
           </div>
         </div>
@@ -141,7 +143,7 @@
           <div class="col mt-4 text-center text-md-start">
             <h4 class="text-light">Services</h4>
             {% for service in services %}
-              <a href="{{ service.endpoint }}" class="text-muted mb-1 sub-link">{{ service }}</a><br>
+              <a href="{% url 'service_detail' service.endpoint %}" class="text-muted mb-1 sub-link">{{ service }}</a><br>
             {% endfor %}
             <a href="{% url 'compare_services' %}" class="text-muted mb-1 sub-link">Compare Services</a>
           </div>

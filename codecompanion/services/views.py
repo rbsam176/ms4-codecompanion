@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect, reverse
+from django.contrib import messages
 
 from .models import Service, PriceType
 from .forms import ServiceForm
@@ -27,7 +28,17 @@ def service_detail(request, endpoint):
 
 def add_service(request):
 	""" Add a service to the store """
-	form = ServiceForm()
+	if request.method == 'POST':
+		form = ServiceForm(request.POST)
+		if form.is_valid():
+			form.save()
+			messages.success(request, 'Successfully added service')
+			return redirect(reverse('add_service'))
+		else:
+			messages.error(request, 'Failed to add service')
+	else:
+		form = ServiceForm()
+		
 	template = 'services/add_service.html'
 	context = {
 		'form': form,
