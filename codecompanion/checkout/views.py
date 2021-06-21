@@ -46,17 +46,13 @@ def checkout(request):
             order.original_bag = json.dumps(bag)
             order.save()
             for service_name, quantity in bag.items():
-                print(service_name)
-                print(quantity)
                 try:
                     service = Service.objects.get(pk=service_name)
-                    print(service)
                     order_line_item = OrderLineItem(
                         service=service,
                         quantity=quantity,
                         order=order,
                     )
-                    print(order_line_item)
                     order_line_item.save()
                 except Service.DoesNotExist:
                     messages.error(request, (
