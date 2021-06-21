@@ -1,5 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Service
+
+from .models import Service, PriceType
+from .forms import ServiceForm
 
 def redirect_services(request):
 	return redirect('/services/compare-services')
@@ -21,3 +23,14 @@ def service_detail(request, endpoint):
 	}
 
 	return render(request, 'services/service_detail.html', context)
+
+
+def add_service(request):
+	""" Add a service to the store """
+	form = ServiceForm()
+	template = 'services/add_service.html'
+	context = {
+		'form': form,
+	}
+
+	return render(request, template, context)

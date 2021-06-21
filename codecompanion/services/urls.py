@@ -3,6 +3,8 @@ from . import views
 
 urlpatterns = [
     path('', views.redirect_services),
-    path('compare-services', views.compare_services, name='compare_services'),
-    path('<endpoint>', views.service_detail, name='service_detail'),
+    path('compare-services/', views.compare_services, name='compare_services'),
+    path('add/', views.add_service, name='add_service'),
+    path('<endpoint>/', views.service_detail, name='service_detail'),
+
 ]
