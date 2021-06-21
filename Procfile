@@ -1,1 +1,1 @@
-web: gunicorn codecompanionapp.wsgi:application
+web: gunicorn codecompanion.wsgi:application
