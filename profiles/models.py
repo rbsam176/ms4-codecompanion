@@ -9,7 +9,8 @@ class UserProfile(models.Model):
     email_address = models.EmailField(max_length=254, null=True, blank=True)
     first_name = models.CharField(max_length=254, null=True, blank=True)
     last_name = models.CharField(max_length=254, null=True, blank=True)
-    
+    is_companion = models.BooleanField(default=False)
+
     def __str__(self):
         return self.user.username
 

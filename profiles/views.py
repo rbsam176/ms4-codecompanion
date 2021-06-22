@@ -15,6 +15,9 @@ def profile(request):
 	if request.method == 'POST':
 		form = UserProfileForm(request.POST, instance=profile)
 		if form.is_valid():
+			if request.POST.get('is_companion'):
+				request.user.is_staff=True
+				request.user.save()
 			form.save()
 			messages.success(request, 'Profile updated successfully')
 		else:
