@@ -51,9 +51,10 @@ a {
     text-decoration: underline;
 }
 
-.hero-img {
+#hero-img {
     object-fit: contain;
     width: 100%;
+    max-height: 70vh;
 }
 
 .muted-nav {
@@ -89,18 +90,33 @@ a {
 }
 
 #nav {
-    /* background-color: #F9C620; */
-    background-color: white;
     min-height: 75px;
-    border-bottom: 2px solid;
-    border-image-slice: 1;
-    border-width: 4px;
-    border-image-source: linear-gradient(to left, rgba(171,29,224,1), rgba(0,180,251,1));
     position: fixed;
     top: 0;
     width: 100%;
     z-index: 10;
 }
+
+@media only screen and (min-width: 992px) {
+    #nav {
+        background: linear-gradient(to left, rgba(171,29,224,1), rgba(0,180,251,1));
+    }
+}
+
+#subnav {
+    background-color: white;
+    top: 0px;
+    position: fixed;
+    min-height: 70px;
+    padding: 0px;
+}
+
+.nav-mobile-border {
+    width: 100vw;
+    height: 5px;
+    background: linear-gradient(to left, rgba(171,29,224,1), rgba(0,180,251,1)); */
+    /* background-color: black; */
+/* }
 
 #logo {
     /* background-color: black; */
