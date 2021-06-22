@@ -42,8 +42,8 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <a href="{% url 'home' %}" id="logo" class="navbar-brand me-auto ps-4 my-2" href="#"><span class="title-code">code</span><span class="title-companion"> companion</span></a>
-        <div class="collapse navbar-collapse mx-4" id="navbarNavAltMarkup">
-          <div class="navbar-nav ms-2">
+        <div class="collapse navbar-collapse ms-3 me-0" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
             <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -82,17 +82,17 @@
         </div>
         <div class="d-lg-none nav-mobile-border"></div>
         <div class="ms-auto d-none d-lg-inline-block me-4">
-          <a class="btn btn-secondary mx-2" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+          <a class="btn btn-secondary mx-1" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
             <i class="fas fa-search"></i>
           </a>
           {% if request.user.is_authenticated %}
-            <a class="mx-2 btn-hero btn-signup" href="{% url 'profile' %}">Proflie</a>
-            <a class="mx-2 account-nav btn-login" href="{% url 'account_logout' %}">Logout</a>
+            <a class="mx-1 px-3 btn-hero btn-signup" href="{% url 'profile' %}">Profile</a>
+            <a class="mx-1 account-nav btn-login" href="{% url 'account_logout' %}">Logout</a>
+            <a class="mx-1" href="{% url 'view_bag' %}"><i class="fas fa-shopping-bag fa-lg"></i> {{ product_count }}</a>
           {% else %}
-            <a class="mx-2 btn-hero btn-signup" href="{% url 'account_signup' %}">Sign Up</a>
-            <a class="mx-2 account-nav btn-login" href="{% url 'account_login' %}">Login</a>
+            <a class="mx-1 btn-hero btn-signup" href="{% url 'account_signup' %}">Sign Up</a>
+            <a class="mx-1 account-nav btn-login" href="{% url 'account_login' %}">Login</a>
           {% endif %}
-          <a class="mx-2" href="{% url 'view_bag' %}"><i class="fas fa-shopping-bag fa-lg"></i> {{ product_count }}</a>
         </div>
       </div>
     </nav>
