@@ -11,46 +11,54 @@
             <div class="col-12 text-center my-4">
                 <h2>{{ profile }}: My profile</h2>
             </div>
-            <div class="row">
-                <div class="col-6">
-                    <form action="{% url 'profile' %}" method="POST" id="profile-update-form">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-                        <button>Update Info</button>
-                    </form>
-                </div>
-                <div class="col-6">
-                    <h4>Order history</h4><br>
-                    {% for order in orders %}
-                        <div class="row">
-                            <div class="col-3">
-                                <h5>Order number</h5>
-                                <a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:6 }}</a>
-                            </div>
-                            <div class="col-3">
-                                <h5>Order date</h5>
-                                <p>{{ order.date }}</p>
-                            </div>
-                            <div class="col-3">
-                                <h5>Items</h5>
-                                <ul class="list-unstyled">
-                                    {% for item in order.lineitems.all %}
-                                        <li>{{ item.service.name }} x {{ item.quantity }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            <div class="col-3">
-                                <h5>Order total</h5>
-                                <p>£{{ order.order_total }}</p>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
         </div>
     </header>
 {% endblock %}
 
 {% block content %}
-    
+    <div class="container">
+        {% if request.user.is_staff %}
+            <div class="row mb-4">
+                <div class="col-12">
+                    a
+                </div>
+            </div>
+        {% endif %}
+        <div class="row">
+            <div class="col-6">
+                <form action="{% url 'profile' %}" method="POST" id="profile-update-form">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button>Update Info</button>
+                </form>
+            </div>
+            <div class="col-6">
+                <h4>Order history</h4><br>
+                {% for order in orders %}
+                    <div class="row">
+                        <div class="col-3">
+                            <h5>Order number</h5>
+                            <a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:6 }}</a>
+                        </div>
+                        <div class="col-3">
+                            <h5>Order date</h5>
+                            <p>{{ order.date }}</p>
+                        </div>
+                        <div class="col-3">
+                            <h5>Items</h5>
+                            <ul class="list-unstyled">
+                                {% for item in order.lineitems.all %}
+                                    <li>{{ item.service.name }} x {{ item.quantity }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-3">
+                            <h5>Order total</h5>
+                            <p>£{{ order.order_total }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
