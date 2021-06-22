@@ -61,13 +61,31 @@
                                     </button>
                                 </div>
                                 <input class="form-control qty_input" type="number"
-                                            name="quantity" value="1" min="1" max="3">
+                                            name="quantity" value="1" min="1" max="3" required>
                                 <div class="input-group-append">
                                     <button class="increment-qty btn btn-black rounded-0">
                                                 <span class="icon">
                                                     <i class="fas fa-plus"></i>
                                                 </span>
                                     </button>
+                                </div>
+                                <div class="input-group my-4">
+                                    <select class="w-75 mx-auto" required>
+                                        <option value="" disabled selected>Select companion</option>
+                                        {% for member in staff %}
+                                            <option>{{ member }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="input-group my-4">
+                                    <select class="w-75 mx-auto" required>
+                                        <option value="" disabled selected>Select day of the week</option>
+                                        <option>Monday</option>
+                                        <option>Tuesday</option>
+                                        <option>Wednesday</option>
+                                        <option>Thursday</option>
+                                        <option>Friday</option>
+                                    </select>
                                 </div>
                                 <input type="submit" value="Add to bag">
                                 <input type="hidden" name="redirect_url" value="{{ request.path }}">

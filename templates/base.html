@@ -41,15 +41,16 @@
         <button class="navbar-toggler ms-4" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a href="{% url 'home' %}" id="logo" class="navbar-brand me-auto ps-4 my-2" href="#"><span class="title-code">code</span><span class="title-companion"> companion</span></a>
+        <a href="{% url 'home' %}" id="logo" class="navbar-brand me-auto ps-3 my-2" href="#"><span class="title-code">code</span><span class="title-companion"> companion</span></a>
+        <a class="mx-4 d-block d-lg-none" href="{% url 'view_bag' %}"><i class="fas fa-shopping-bag fa-lg"></i> {{ product_count }}</a>
         <div class="collapse navbar-collapse ms-3 me-0" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
+          <div class="navbar-nav pe-3">
             <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Services
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <ul class="dropdown-menu me-3" aria-labelledby="navbarDropdownMenuLink">
                 {% for service in services %}
                   <li><a class="dropdown-item" href="{% url 'service_detail' service.endpoint %}" class="text-muted mb-1 sub-link">{{ service }}</a></li>
                 {% endfor %}
@@ -73,10 +74,10 @@
             </div>
             {% if request.user.is_authenticated %}
               <a class="d-lg-none btn-signup btn-hero mobile-nav-item text-center mt-2" href="{% url 'profile' %}">Profile</a>
-              <a class="d-lg-none account-nav mobile-nav-item text-center my-2" href="{% url 'account_logout' %}">Logout</a>
+              <a class="d-lg-none account-nav mobile-nav-item text-center mt-2 mb-4" href="{% url 'account_logout' %}">Logout</a>
             {% else %}
               <a class="d-lg-none btn-signup btn-hero mobile-nav-item text-center mt-2" href="{% url 'account_signup' %}">Signup</a>
-              <a class="d-lg-none account-nav mobile-nav-item text-center my-2" href="{% url 'account_login' %}">Login</a>
+              <a class="d-lg-none account-nav mobile-nav-item text-center mt-2 mb-4" href="{% url 'account_login' %}">Login</a>
             {% endif %}
           </div>
         </div>
@@ -87,11 +88,11 @@
           </a>
           {% if request.user.is_authenticated %}
             <a class="mx-1 px-3 btn-hero btn-signup" href="{% url 'profile' %}">Profile</a>
-            <a class="mx-1 account-nav btn-login" href="{% url 'account_logout' %}">Logout</a>
+            <a class="mx-1 account-nav" href="{% url 'account_logout' %}">Logout</a>
             <a class="mx-1" href="{% url 'view_bag' %}"><i class="fas fa-shopping-bag fa-lg"></i> {{ product_count }}</a>
           {% else %}
             <a class="mx-1 btn-hero btn-signup" href="{% url 'account_signup' %}">Sign Up</a>
-            <a class="mx-1 account-nav btn-login" href="{% url 'account_login' %}">Login</a>
+            <a class="mx-1 account-nav" href="{% url 'account_login' %}">Login</a>
           {% endif %}
         </div>
       </div>
@@ -158,8 +159,8 @@
           </div>
           <div class="col-12 col-md mt-4 text-center text-md-start">
             <h4 class="text-light">Contact</h4>
-            <a href="#" class="text-muted mb-1 sub-link">contact@codecompanion.co.uk</a><br>
-            <a href="#" class="text-muted mb-1 sub-link">🇬🇧 +44 20 7946 0290</a><br>
+            <a href="mailto:contact@codecompanion.co.uk" class="text-muted mb-1 sub-link">contact@codecompanion.co.uk</a><br>
+            <a href="tel:+442079460290" class="text-muted mb-1 sub-link">🇬🇧 +44 20 7946 0290</a><br>
           </div>
       </div>
       <div class="row bg-dark pt-4 text-center">

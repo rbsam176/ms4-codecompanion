@@ -14,7 +14,6 @@ class UserProfileForm(forms.ModelForm):
             'email_address': 'Email Address',
             'first_name': 'First Name',
             'last_name': 'Last Name',
-            'account_type': 'None',
         }
 
         self.fields['email_address'].widget.attrs['autofocus'] = True

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from .models import Service, PriceType
 from .forms import ServiceForm
@@ -19,9 +20,11 @@ def service_detail(request, endpoint):
 	""" A view to return the view of each service """
 
 	service = get_object_or_404(Service, endpoint=endpoint)
+	staff = User.objects.filter(is_staff=True)
 
 	context = {
 		'service': service,
+		'staff': staff,
 	}
 
 	return render(request, 'services/service_detail.html', context)

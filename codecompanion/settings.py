@@ -208,4 +208,4 @@ STRIPE_CURRENCY = 'gbp'
 STRIPE_PUBLIC_KEY = config('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
 STRIPE_WH_SECRET = config('STRIPE_WH_SECRET')
-DEFAULT_FROM_EMAIL = 'hello@codecompanion.app'
+DEFAULT_FROM_EMAIL = 'contact@codecompanion.app'

@@ -113,23 +113,14 @@ a {
 
 .nav-mobile-border {
     width: 100vw;
-    height: 5px;
-    background: linear-gradient(to left, rgba(171,29,224,1), rgba(0,180,251,1)); */
-    /* background-color: black; */
-/* }
-
-#logo {
-    /* background-color: black; */
-    /* border: 2px solid;
-    border-image-slice: 1;
-    border-width: 2px;
-    border-image-source: linear-gradient(to left, rgba(171,29,224,1), rgba(0,180,251,1)); */
+    margin-top: 3px;
+    height: 6px;
+    background: linear-gradient(to left, rgba(171,29,224,1), rgba(0,180,251,1));
 }
 
 .title-code {
     font-family: 'Do Hyeon', sans-serif;
     font-size: 1.2em;
-    /* color: #F9C620; */
     color: black;
     letter-spacing: 2px;
 }
@@ -137,39 +128,35 @@ a {
 .title-companion {
     font-family: 'Josefin Sans', sans-serif;
     font-size: 1.3em;
-    /* color: #F9C620; */
-    /* color: black; */
-    /* color: linear-gradient(90deg, rgba(171,29,224,1) 0%, rgba(0,180,251,1) 100%); */
     background: #BB00E8;
     background: -webkit-linear-gradient(to right, #BB00E8 0%, #00B7FF 100%);
     background: -moz-linear-gradient(to right, #BB00E8 0%, #00B7FF 100%);
     background: linear-gradient(to right, #BB00E8 0%, #00B7FF 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    /* font-style: italic; */
+}
+
+@media only screen and (max-width: 375px) {
+    .title-code {
+        font-size: 0.8em;
+    }
+
+    .title-companion {
+        font-size: 0.9em;
+    }
 }
 
 #hero {
-    height: 100vh;
+    margin-top: 130px;
 }
 
-/* .hero-text {
-    font-size: 4em;
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 700;
-    letter-spacing: -4px;
-    word-spacing: -10px;
-    text-transform: uppercase;
-    line-height: 0.8em;
-} */
-
-/* .hero-highlight {
-    color: #F9C620;
-    background-color: black;
-    padding-top: 15px;
-    padding-right: 10px;
-    line-height: 1.25em;
-} */
+@media only screen and (min-width: 768px) {
+    #hero {
+        height: 100vh;
+        margin-top: 40px;
+    }
+}
 
 .hero-underline {
     text-decoration: underline;
@@ -212,7 +199,6 @@ a {
 }
 
 .services-bg {
-    /* background-color: #F9C620; */
     background: rgb(171,29,224);
     background: linear-gradient(90deg, rgba(171,29,224,1) 0%, rgba(0,180,251,1) 100%);
     padding: 15px;
@@ -220,10 +206,6 @@ a {
 
 .service-card {
     background-color: white;
-    /* border: 2px solid;
-    border-image-slice: 1;
-    border-width: 4px;
-    border-image-source: linear-gradient(to left, rgba(171,29,224,1), rgba(0,180,251,1)); */
     border-radius: 5px;
     height: 100%;
 }
@@ -245,7 +227,6 @@ a {
 .testimonial-block {
     background-color: white;
     padding: 15px;
-    /* border-radius: 25px; */
     border: 2px solid;
     border-image-slice: 1;
     border-width: 2px;

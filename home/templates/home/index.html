@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-12 col-lg-7">
+            <div class="col-12 col-md-7">
                 <div id="hero" class="container d-flex">
                     <div class="row align-self-center">
                         <h1 class="hero-text2"><span class="hero-underline">Boost</span> your learning with our experienced developer companions</h1>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-lg-5 text-center d-flex">
+            <div class="col-12 col-md-5 text-center d-flex">
                 <div class="row align-self-center">
                     <img id="hero-img" src="https://i.imgur.com/dkxNuwv.png">
                 </div>
@@ -35,23 +35,23 @@
             </div>
         </div>
         <div class="row d-flex my-4">
-            <div class="col m-4 text-center align-self-center">
-                <img class="company-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Apple_logo_black.svg/862px-Apple_logo_black.svg.png">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
+                <img class="company-logo" src="{% static 'images/apple-logo.png' %}">
             </div>
-            <div class="col m-4 text-center align-self-center">
-                <img class="company-logo" src="https://logos-world.net/wp-content/uploads/2020/09/Google-Logo.png">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
+                <img class="company-logo" src="{% static 'images/google-logo.png' %}">
             </div>
-            <div class="col m-4 text-center align-self-center">
-                <img class="company-logo" src="https://cdn.freelogovectors.net/wp-content/uploads/2021/02/monzo-logo-freelogovectors.net_.png">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
+                <img class="company-logo" src="{% static 'images/monzo-logo.png' %}">
             </div>
-            <div class="col m-4 text-center align-self-center">
-                <img class="company-logo" src="https://logos-world.net/wp-content/uploads/2020/09/Pinterest-Logo.png">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
+                <img class="company-logo" src="{% static 'images/pinterest-logo.png' %}">
             </div>
-            <div class="col m-4 text-center align-self-center">
-                <img class="company-logo" src="https://www.backbase.com/wp-content/uploads/2020/05/Microsoft-Logo-PNG-Transparent.png">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
+                <img class="company-logo" src="{% static 'images/microsoft-logo.png' %}">
             </div>
-            <div class="col m-4 text-center align-self-center">
-                <img class="company-logo" src="https://webassets.mongodb.com/_com_assets/cms/MongoDB_Logo_FullColorBlack_RGB-4td3yuxzjs.png">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
+                <img class="company-logo" src="{% static 'images/mongodb-logo.png' %}">
             </div>
         </div>
     </div>
@@ -95,22 +95,22 @@
             </div>
         </div>
         <div class="row d-flex my-2">
-            <div class="col m-4 text-center align-self-center">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
                 <img class="company-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/2560px-Python_logo_and_wordmark.svg.png">
             </div>
-            <div class="col m-4 text-center align-self-center">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
                 <img class="company-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Flask_logo.svg/1280px-Flask_logo.svg.png">
             </div>
-            <div class="col m-4 text-center align-self-center">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
                 <img class="company-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Django_logo.svg/1200px-Django_logo.svg.png">
             </div>
-            <div class="col m-4 text-center align-self-center">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
                 <img class="company-logo" src="https://cdn.freebiesupply.com/logos/thumbs/2x/javascript-logo.png">
             </div>
-            <div class="col m-4 text-center align-self-center">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
                 <img class="company-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/JQuery-Logo.svg/1280px-JQuery-Logo.svg.png">
             </div>
-            <div class="col m-4 text-center align-self-center">
+            <div class="col-6 col-md-4 col-lg-2 my-2 text-center align-self-center">
                 <img class="company-logo" src="https://brandslogos.com/wp-content/uploads/images/large/heroku-logo-1.png">
             </div>
         </div>
@@ -168,7 +168,7 @@
                 <div class="row my-4">
                     <div class="list-group px-2">
                         {% for service in services %}
-                            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <a href="{% url 'service_detail' service.endpoint %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                                 {{ service }}
                                 <i class="fas fa-caret-right"></i>
                             </a>

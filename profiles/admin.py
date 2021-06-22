@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import AccountType, UserProfile
+from .models import UserProfile
 
 
-admin.site.register(AccountType)
 admin.site.register(UserProfile)
