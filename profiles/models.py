@@ -6,10 +6,12 @@ from django.dispatch import receiver
 class UserProfile(models.Model):
     """ A user profile model for customer accounts """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email_address = models.EmailField(max_length=254, null=True, blank=True)
-    first_name = models.CharField(max_length=254, null=True, blank=True)
-    last_name = models.CharField(max_length=254, null=True, blank=True)
     is_companion = models.BooleanField(default=False)
+    monday_available = models.BooleanField(default=False)
+    tuesday_available = models.BooleanField(default=False)
+    wednesday_available = models.BooleanField(default=False)
+    thursday_available = models.BooleanField(default=False)
+    friday_available = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username

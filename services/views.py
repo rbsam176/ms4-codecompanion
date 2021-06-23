@@ -3,6 +3,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
+from django.http import JsonResponse, HttpResponse
+
+
+from profiles.models import UserProfile
+
 from .models import Service, PriceType
 from .forms import ServiceForm
 
@@ -16,15 +21,32 @@ def compare_services(request):
 	return render(request, 'services/compare_services.html')
 
 
+def companion_availability_check(request):
+	if request.method == 'GET':
+			day_selection = request.GET['day_selection']
+			# SOURCE: https://stackoverflow.com/a/9122180
+			matches = UserProfile.objects.filter(**{day_selection:True}).values('user')
+			user_ids = []
+			usernames = []
+
+			for id in matches:
+				user_ids.append(id['user'])
+				usernames.append(str(User.objects.get(id=id['user'])))
+
+			data = {
+				'available_companions': usernames
+			}
+			return JsonResponse(data, safe=False)
+
+
 def service_detail(request, endpoint):
 	""" A view to return the view of each service """
 
 	service = get_object_or_404(Service, endpoint=endpoint)
-	staff = User.objects.filter(is_staff=True)
+	# monday_people = UserProfile.objects.filter(monday_available=True)
 
 	context = {
 		'service': service,
-		'staff': staff,
 	}
 
 	return render(request, 'services/service_detail.html', context)

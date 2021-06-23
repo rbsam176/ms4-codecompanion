@@ -17,7 +17,7 @@ var style = {
         iconColor: '#dc3545'
     }
 };
-var card = elements.create('card', {style: style});
+var card = elements.create('card', {style: style, hidePostalCode: true});
 card.mount("#card-element");
 
 // Handle validation errors on card element

@@ -9,7 +9,7 @@
     <header class="container">
         <div class="row">
             <div class="col-12 text-center my-4">
-                <h2>{{ profile }}: My profile</h2>
+                <h2>{{ account }}: My profile</h2>
             </div>
         </div>
     </header>
@@ -17,18 +17,17 @@
 
 {% block content %}
     <div class="container">
-        {% if request.user.is_staff %}
-            <div class="row mb-4">
-                <div class="col-12">
-                    a
-                </div>
-            </div>
-        {% endif %}
         <div class="row">
             <div class="col-6">
                 <form action="{% url 'profile' %}" method="POST" id="profile-update-form">
                     {% csrf_token %}
-                    {{ form|crispy }}
+                    {{ user_form|crispy }}
+                    {{ companion_form|crispy }}
+                    {{ companion_check|crispy }}
+                    {% if request.user.is_staff %}
+                        <h4>Choose availability</h4>
+                        {{ form_availability|crispy }}
+                    {% endif %}
                     <button>Update Info</button>
                 </form>
             </div>

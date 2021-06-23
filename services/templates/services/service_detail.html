@@ -70,21 +70,18 @@
                                     </button>
                                 </div>
                                 <div class="input-group my-4">
-                                    <select class="w-75 mx-auto" required>
-                                        <option value="" disabled selected>Select companion</option>
-                                        {% for member in staff %}
-                                            <option>{{ member }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <div class="input-group my-4">
-                                    <select class="w-75 mx-auto" required>
+                                    <select id="daySelection" class="w-75 mx-auto" required>
                                         <option value="" disabled selected>Select day of the week</option>
                                         <option>Monday</option>
                                         <option>Tuesday</option>
                                         <option>Wednesday</option>
                                         <option>Thursday</option>
                                         <option>Friday</option>
+                                    </select>
+                                </div>
+                                <div class="input-group my-4">
+                                    <select id="companionSelection" class="w-75 mx-auto" required disabled>
+                                        <option value="" disabled selected>Select companion</option>
                                     </select>
                                 </div>
                                 <input type="submit" value="Add to bag">
@@ -101,4 +98,34 @@
 {% block postloadjs %}
     {{ block.super }}
     {% include 'services/includes/quantity_input_script.html' %}
+    
+    <script>
+        $("#daySelection").change(function(){
+            var day = $(this).val().toLowerCase() + "_available"
+
+            // SOURCE: https://simpleisbetterthancomplex.com/tutorial/2016/08/29/how-to-work-with-ajax-request-with-django.html
+            $.ajax(
+            {
+                type:"GET",
+                url: "/services/companion_availability_check",
+                data:{
+                        day_selection: day
+                },
+                success: function( data ) 
+                {
+                    if (data.available_companions.length > 0) {
+                        console.log(data.available_companions);
+                        $("#companionSelection").attr('disabled', false)
+                        for (companion in data.available_companions){
+                            $("#companionSelection").append(`<option class="dynamic-entry">${data.available_companions[companion]}</option>`)
+                        }
+                    } else {
+                        $("#companionSelection").attr('disabled', true)
+                        $("#companionSelection").children('.dynamic-entry').remove()
+                    }
+                }
+            })
+
+      });
+    </script>
 {% endblock %}
