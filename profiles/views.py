@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.models import User
 from .forms import UserProfileForm, UserForm, CompanionCheck
-from .models import UserProfile
+from .models import UserProfile, CompanionProfile
 
 from checkout.models import Order
 
@@ -17,45 +17,63 @@ def profile(request):
 	profile = get_object_or_404(UserProfile, user=request.user)
 	
 	# forms
-	user_form = UserForm(request.POST or None, instance=account)
-	companion_availability = UserProfileForm(request.POST or None, instance=profile)
-	companion_check = CompanionCheck(request.POST or None, instance=profile)
+	user_form = UserForm(request.POST or None, instance=account) # allauth standard
+	companion_check = CompanionCheck(request.POST or None, instance=profile) # custom user with companion boolean
 
 	# post logic
 	if request.method == 'POST':
-
-		if user_form.is_valid():
-			print('user form valid')
+		if user_form.is_valid() and companion_check.is_valid():
 			user_form.save()
-		
-		if companion_availability.is_valid():
-			print('companion form valid')
-			# if not companion, clear availability
-			if not request.POST.get('is_companion'):
-				profile.monday_available = False
-				profile.tuesday_available = False
-				profile.wednesday_available = False
-				profile.thursday_available = False
-				profile.friday_available = False
-			companion_availability.save()
-		
-		messages.success(request, 'Profile updated successfully')
+			companion_check.save()
 
-
-	if profile.is_companion:
-		companion_form = companion_availability
-	else:
-		companion_form = companion_check
+			if request.POST.get('is_companion'):
+				print('is companion enabled')
+				try:
+					companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+					companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
+					if companion_availability.is_valid():
+						companion_availability.save()
+						messages.success(request, 'Availability updated successfully')
+					pass
+				except:
+					# convert user to companion
+					new_companion = CompanionProfile(user=account)
+					new_companion.save()
+					messages.success(request, 'Converted profile to be companion')
+			else:
+				print('is companion NOT enabled')
+				# if companion checkbox unchecked
+				try:
+					companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+					# if user is companion, delete
+					companion_profile.delete()
+					messages.warning(request, 'You are no longer a companion')
+				except:
+					# if user is not companion, do nothing
+					messages.success(request, 'Updated profile successfully')
+					pass
 
 	orders = profile.orders.all()
 
 	template = 'profiles/profile.html'
-	context = {
-		'account': account,
-		'user_form': user_form,
-		'companion_form': companion_form,
-		'orders': orders,
-	}
+
+	if profile.is_companion:
+		companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+		companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
+		context = {
+			'account': account,
+			'user_form': user_form,
+			'companion_availability': companion_availability,
+			'companion_check': companion_check,
+			'orders': orders,
+		}
+	else:
+		context = {
+			'account': account,
+			'user_form': user_form,
+			'companion_check': companion_check,
+			'orders': orders,
+		}
 
 	return render(request, template, context)
 

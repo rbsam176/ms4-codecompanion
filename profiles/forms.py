@@ -1,5 +1,5 @@
 from django import forms
-from .models import UserProfile
+from .models import UserProfile, CompanionProfile
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -15,13 +15,13 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = UserProfile
+        model = CompanionProfile
         exclude = ['user']
 
 class CompanionCheck(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['is_companion']
+        exclude = ['user']
 
     # def __init__(self, *args, **kwargs):
     #     """ Add placeholders and classes, remove auto-generated

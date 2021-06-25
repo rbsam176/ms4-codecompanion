@@ -22,12 +22,8 @@
                 <form action="{% url 'profile' %}" method="POST" id="profile-update-form">
                     {% csrf_token %}
                     {{ user_form|crispy }}
-                    {{ companion_form|crispy }}
                     {{ companion_check|crispy }}
-                    {% if request.user.is_staff %}
-                        <h4>Choose availability</h4>
-                        {{ form_availability|crispy }}
-                    {% endif %}
+                    {{ companion_availability|crispy }}
                     <button>Update Info</button>
                 </form>
             </div>

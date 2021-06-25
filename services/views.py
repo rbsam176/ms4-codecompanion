@@ -3,10 +3,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 
 
-from profiles.models import UserProfile
+from profiles.models import UserProfile, CompanionProfile
 
 from .models import Service, PriceType
 from .forms import ServiceForm
@@ -24,14 +24,19 @@ def compare_services(request):
 def companion_availability_check(request):
 	if request.method == 'GET':
 			day_selection = request.GET['day_selection']
-			# SOURCE: https://stackoverflow.com/a/9122180
-			matches = UserProfile.objects.filter(**{day_selection:True}).values('user')
-			user_ids = []
-			usernames = []
+			service_selection = request.GET['service_selection']
+			service_match_formatted = service_selection.replace(" ", "_").lower() + "_offered"
 
-			for id in matches:
-				user_ids.append(id['user'])
-				usernames.append(str(User.objects.get(id=id['user'])))
+			# SOURCE: https://stackoverflow.com/a/9122180
+
+			# return list of companions available on selected day and offers selected service
+			companion_match = CompanionProfile.objects.filter(**{day_selection:True}, **{service_match_formatted:True}).values_list('user')
+
+			# unpack usernames to be returned to view
+			usernames = []
+			for list in companion_match:
+				for id in list:
+					usernames.append(str(User.objects.get(id=id)))
 
 			data = {
 				'available_companions': usernames
@@ -42,11 +47,24 @@ def companion_availability_check(request):
 def service_detail(request, endpoint):
 	""" A view to return the view of each service """
 
+	service_match_formatted = endpoint.replace("-", "_").lower() + "_offered"
+	days = [
+		'monday_available',
+		'tuesday_available',
+		'wednesday_available',
+		'thursday_available',
+		'friday_available',
+	]
+	days_count = {}
+	for day in days:
+		days_count[day] = CompanionProfile.objects.filter(**{service_match_formatted:True}, **{day:True}).count()
+
+	
 	service = get_object_or_404(Service, endpoint=endpoint)
-	# monday_people = UserProfile.objects.filter(monday_available=True)
 
 	context = {
 		'service': service,
+		'days_count': days_count,
 	}
 
 	return render(request, 'services/service_detail.html', context)

@@ -72,11 +72,11 @@
                                 <div class="input-group my-4">
                                     <select id="daySelection" class="w-75 mx-auto" required>
                                         <option value="" disabled selected>Select day of the week</option>
-                                        <option>Monday</option>
-                                        <option>Tuesday</option>
-                                        <option>Wednesday</option>
-                                        <option>Thursday</option>
-                                        <option>Friday</option>
+                                        <option{% if days_count.monday_available == 0 %} disabled{% endif %}>Monday</option>
+                                        <option{% if days_count.tuesday_available == 0 %} disabled{% endif %}>Tuesday</option>
+                                        <option{% if days_count.wednesday_available == 0 %} disabled{% endif %}>Wednesday</option>
+                                        <option{% if days_count.thursday_available == 0 %} disabled{% endif %}>Thursday</option>
+                                        <option{% if days_count.friday_available == 0 %} disabled{% endif %}>Friday</option>
                                     </select>
                                 </div>
                                 <div class="input-group my-4">
@@ -84,7 +84,7 @@
                                         <option value="" disabled selected>Select companion</option>
                                     </select>
                                 </div>
-                                <input type="submit" value="Add to bag">
+                                <input id="addToBag" type="submit" value="Add to bag" disabled>
                                 <input type="hidden" name="redirect_url" value="{{ request.path }}">
                             </div>
                         </div>
@@ -100,8 +100,18 @@
     {% include 'services/includes/quantity_input_script.html' %}
     
     <script>
+        $("#companionSelection").change(function(){
+            $("#addToBag").attr('disabled', false)
+        })
+
+        
+
         $("#daySelection").change(function(){
             var day = $(this).val().toLowerCase() + "_available"
+            var service = "{{ service }}"
+            console.log(service)
+            // remove pre-existing options
+            $("#companionSelection").children('.dynamic-entry').remove()
 
             // SOURCE: https://simpleisbetterthancomplex.com/tutorial/2016/08/29/how-to-work-with-ajax-request-with-django.html
             $.ajax(
@@ -109,22 +119,28 @@
                 type:"GET",
                 url: "/services/companion_availability_check",
                 data:{
-                        day_selection: day
+                        day_selection: day,
+                        service_selection: service,
                 },
                 success: function( data ) 
                 {
                     if (data.available_companions.length > 0) {
-                        console.log(data.available_companions);
                         $("#companionSelection").attr('disabled', false)
                         for (companion in data.available_companions){
+                            // add new options
                             $("#companionSelection").append(`<option class="dynamic-entry">${data.available_companions[companion]}</option>`)
                         }
                     } else {
                         $("#companionSelection").attr('disabled', true)
                         $("#companionSelection").children('.dynamic-entry').remove()
+                        $("#addToBag").attr('disabled', true)
                     }
                 }
             })
+
+            if ($("#companionSelection").attr('disabled', false)){
+                $("#addToBag").attr('disabled', false)
+            }
 
       });
     </script>
