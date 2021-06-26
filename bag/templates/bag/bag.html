@@ -46,6 +46,8 @@
                                                     </div>
                                                     <input class="form-control qty_input" type="number"
                                                                 name="quantity" value="{{ item.quantity }}" min="1" max="3">
+                                                    <input type="hidden" name="companion" value="{{ item.companion_selected }}">
+                                                    <input type="hidden" name="day" value="{{ item.day_selected }}">
                                                     <div class="input-group-append">
                                                         <button class="increment-qty btn btn-black rounded-0">
                                                                     <span class="icon">
@@ -58,7 +60,7 @@
                                             </div>
                                         </form>
                                         <a class="update-link text-info"><small>Update</small>
-                                        <a class="remove-item text-danger" id="delete_{{ item.service_name }}"><small>Delete</small>
+                                        <a class="remove-item text-danger" id="delete_{{ item.service_name }}_{{ item.day_selected }}_{{ item.companion_selected }}"><small>Delete</small>
                                     </td>
                                     <td class="p-3 w-25">
                                         <p class="my-0"><strong>{{ item.service_price }}</strong> {{ item.service_price_type.get_friendly_name }}</p>

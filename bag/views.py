@@ -54,27 +54,39 @@ def add_to_bag(request, service_name):
         messages.success(request, f'Added "{service.name}" to your bag')
     
     request.session['bag'] = bag
-    print(request.session['bag'])
     return redirect(redirect_url)
 
 
 def adjust_bag(request, service_name):
     """ Adjust quantity of the relevant service in the shopping bag """
     quantity = int(request.POST.get('quantity'))
+    day_selected = request.POST.get('day', 'day_selected')
+    companion_selected = request.POST.get('companion', 'companion_selected')
     bag = request.session.get('bag', {})
-    bag[service_name] = quantity
-    messages.info(request, f'Updated "{service_name}" quantity to {bag[service_name]}')
+
+    for item in bag[service_name]:
+        if item['day_selected'] == day_selected and item['companion_selected'] == companion_selected:
+            item['quantity'] = quantity
+
+    messages.info(request, f'Updated "{service_name}" quantity to {quantity}')
     request.session['bag'] = bag
     return redirect(reverse('view_bag'))
 
 
 def remove_from_bag(request, service_name):
     """ Remove item from the shopping bag """
+    name = service_name.split("_")[0]
+    day = service_name.split("_")[1]
+    companion = service_name.split("_")[2]
     try:
         bag = request.session.get('bag', {})
-        bag.pop(service_name)
+        for item in bag[name]:
+            if item['day_selected'] == day and item['companion_selected'] == companion:
+                print(item)
+                deletion_index = bag[name].index(item)
+                del bag[name][deletion_index]
         request.session['bag'] = bag
-        messages.warning(request, f'Removed "{service_name}" from your bag')
+        messages.warning(request, f'Removed "{name}" from your bag')
         return HttpResponse(status=200)
 
     except Exception as e:
