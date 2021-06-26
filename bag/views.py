@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse, HttpResponse
+from django.shortcuts import get_object_or_404, render, redirect, reverse, HttpResponse
 from django.contrib import messages
 
 from services.models import Service
@@ -12,16 +12,45 @@ def view_bag(request):
 def add_to_bag(request, service_name):
     """ Add a quantity of the clicked service to the shopping bag """
     quantity = int(request.POST.get('quantity'))
+    day_selected = request.POST.get('daySelection')
+    companion_selected = request.POST.get('companionSelection')
+
     redirect_url = request.POST.get('redirect_url')
     bag = request.session.get('bag', {})
 
     service = Service.objects.get(pk=service_name)
 
+    # if bag has service in it already
     if service_name in list(bag.keys()):
-        bag[service_name] += quantity
+        already_exists = False
+        # for every bag entry of this service
+        for x in bag[service_name]:
+            # if bag entry has the same day and companion selected
+            if x['day_selected'] == day_selected and x['companion_selected'] == companion_selected:
+                # increment the quantity
+                x['quantity'] += 1
+                # mark as it already existing in the bag
+                already_exists = True
+
+        order = {
+            'quantity': quantity,
+            'day_selected': day_selected,
+            'companion_selected': companion_selected,
+        }
+        
+        # if bag has service in it but not the same day/companion
+        if already_exists == False:
+            # add to bag dict
+            bag[service_name].append(order)
+
         messages.success(request, f'Added "{service.name}" to your bag')
     else:
-        bag[service_name] = quantity
+        order = {
+            'quantity': quantity,
+            'day_selected': day_selected,
+            'companion_selected': companion_selected,
+        }
+        bag[service_name] = [order]
         messages.success(request, f'Added "{service.name}" to your bag')
     
     request.session['bag'] = bag

@@ -70,7 +70,7 @@
                                     </button>
                                 </div>
                                 <div class="input-group my-4">
-                                    <select id="daySelection" class="w-75 mx-auto" required>
+                                    <select id="daySelection" name="daySelection" class="w-75 mx-auto" required>
                                         <option value="" disabled selected>Select day of the week</option>
                                         <option{% if days_count.monday_available == 0 %} disabled{% endif %}>Monday</option>
                                         <option{% if days_count.tuesday_available == 0 %} disabled{% endif %}>Tuesday</option>
@@ -80,7 +80,7 @@
                                     </select>
                                 </div>
                                 <div class="input-group my-4">
-                                    <select id="companionSelection" class="w-75 mx-auto" required disabled>
+                                    <select id="companionSelection" name="companionSelection" class="w-75 mx-auto" required disabled>
                                         <option value="" disabled selected>Select companion</option>
                                     </select>
                                 </div>
@@ -109,7 +109,6 @@
         $("#daySelection").change(function(){
             var day = $(this).val().toLowerCase() + "_available"
             var service = "{{ service }}"
-            console.log(service)
             // remove pre-existing options
             $("#companionSelection").children('.dynamic-entry').remove()
 

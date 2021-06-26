@@ -29,7 +29,8 @@
                             {% for item in bag_items %}
                                 <tr>
                                     <td class="p-3 w-25">
-                                        <p class="my-0">{{ item.service_name }}</p>
+                                        <p>{{ item.service_name }}</p>
+                                        <small>with <strong>{{ item.companion_selected }}</strong> on <strong>{{ item.day_selected }}</strong></small>
                                     </td>
                                     <td class="p-3 w-25">
                                         <form class="update-form" action="{% url 'adjust_bag' item.service_name %}" method="POST">
