@@ -44,6 +44,7 @@
                             <ul class="list-unstyled">
                                 {% for item in order.lineitems.all %}
                                     <li>{{ item.service.name }} x {{ item.quantity }}</li>
+                                    <li><strong>{{ item.companion_selected }}</strong> on <strong>{{ item.day_selected }}</strong></li>
                                 {% endfor %}
                             </ul>
                         </div>

@@ -82,7 +82,6 @@ def remove_from_bag(request, service_name):
         bag = request.session.get('bag', {})
         for item in bag[name]:
             if item['day_selected'] == day and item['companion_selected'] == companion:
-                print(item)
                 deletion_index = bag[name].index(item)
                 del bag[name][deletion_index]
         request.session['bag'] = bag

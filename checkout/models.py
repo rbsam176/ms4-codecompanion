@@ -5,7 +5,7 @@ from django.db.models import Sum
 from django.conf import settings
 
 from services.models import Service
-from profiles.models import UserProfile
+from profiles.models import UserProfile, CompanionProfile
 
 class Order(models.Model):
     order_number = models.CharField(max_length=32, null=False, editable=False)
@@ -39,9 +39,11 @@ class Order(models.Model):
 class OrderLineItem(models.Model):
     order = models.ForeignKey(Order, null=False, blank=False, on_delete=models.CASCADE, related_name='lineitems')
     service = models.ForeignKey(Service, null=False, blank=False, on_delete=models.CASCADE)
-    companion = models.CharField(max_length=254, null=False, blank=False)
+    companion_selected = models.CharField(max_length=254, null=False, blank=True)
+    day_selected = models.CharField(max_length=254, null=False, blank=True)
     quantity = models.IntegerField(null=False, blank=False, default=0)
     lineitem_total = models.DecimalField(max_digits=6, decimal_places=2, null=False, blank=False)
+
 
     def save(self, *args, **kwargs):
         """ Override the original save method to set the order number if it hasn't been set already """

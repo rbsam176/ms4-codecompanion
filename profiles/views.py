@@ -53,7 +53,7 @@ def profile(request):
 					messages.success(request, 'Updated profile successfully')
 					pass
 
-	orders = profile.orders.all()
+	orders = profile.orders.all().order_by('-date')
 
 	template = 'profiles/profile.html'
 

@@ -26,6 +26,8 @@ def bag_contents(request):
             product_count += x['quantity']
             total += x['quantity'] * service_price
 
+    # print(bag_items)
+
     context = {
         'bag_items': bag_items,
         'product_count': product_count,

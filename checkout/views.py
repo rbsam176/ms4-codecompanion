@@ -2,12 +2,12 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse, HttpR
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.conf import settings
-
+from django.contrib.auth.models import User
 from .forms import OrderForm
 from .models import Order, OrderLineItem
 from services.models import Service
 from bag.context_processors import bag_contents
-from profiles.models import UserProfile
+from profiles.models import UserProfile, CompanionProfile
 
 import stripe
 import json
@@ -45,15 +45,20 @@ def checkout(request):
             order.stripe_pid = pid
             order.original_bag = json.dumps(bag)
             order.save()
-            for service_name, quantity in bag.items():
+            flat_bag = []
+            for item in bag.items():
                 try:
-                    service = Service.objects.get(pk=service_name)
-                    order_line_item = OrderLineItem(
-                        service=service,
-                        quantity=quantity,
-                        order=order,
-                    )
-                    order_line_item.save()
+                    service = Service.objects.get(pk=item[0])
+                    if len(item[1]) > 1:
+                        for sub_item in item[1]:
+                            companion = User.objects.filter(username=sub_item['companion_selected']).values('username')
+                            sub_item['companion_selected'] = companion
+                            flat_bag.append((service, sub_item))
+                    else:
+                        companion = User.objects.filter(username=item[1][0]['companion_selected']).values('username')
+                        item[1][0]['companion_selected'] = companion
+                        flat_bag.append((service, item[1][0]))
+
                 except Service.DoesNotExist:
                     messages.error(request, (
                         "A service in your bag was not found in the database. "
@@ -61,6 +66,18 @@ def checkout(request):
                     )
                     order.delete()
                     return redirect(reverse('view_bag'))
+            
+            print(flat_bag)
+
+            for x in flat_bag:
+                order_line_item = OrderLineItem(
+                    service=x[0],
+                    quantity=x[1]['quantity'],
+                    companion_selected=x[1]['companion_selected'],
+                    day_selected=x[1]['day_selected'],
+                    order=order,
+                )
+                order_line_item.save()
 
             # request.session['save_info'] = 'save-info' in request.POST 
             return redirect(reverse('checkout_success', args=[order.order_number]))
