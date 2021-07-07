@@ -65,7 +65,7 @@
             </li>
             <a class="nav-link" href="#">Our Companions</a>
             <a class="nav-link" href="#">Book Session</a>
-            <a class="nav-link" href="#">FAQ</a>
+            <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
             <div class="col-12 col-md-8 d-block d-lg-none">
               <form method="GET" action="{% url 'search' %}" class="input-group my-3">
                 <input type="text" class="form-control form-control-lg search-input" name="q" placeholder="Enter service/companion name" aria-label="Enter service/companion name" aria-describedby="button-search-mobile">
@@ -151,11 +151,11 @@
           </div>
           <div class="col mt-4 text-center text-md-start">
             <h4 class="text-light">FAQ</h4>
-            <a href="#" class="text-muted mb-1 sub-link">Payment</a><br>
-            <a href="#" class="text-muted mb-1 sub-link">Refunds</a><br>
-            <a href="#" class="text-muted mb-1 sub-link">Privacy</a><br>
-            <a href="#" class="text-muted mb-1 sub-link">Accounts</a><br>
-            <a href="#" class="text-muted mb-1 sub-link">Service</a><br>
+            <a href="{% url 'faq' %}#payment" class="text-muted mb-1 sub-link">Payment</a><br>
+            <a href="{% url 'faq' %}#refunds" class="text-muted mb-1 sub-link">Refunds</a><br>
+            <a href="{% url 'faq' %}#privacy" class="text-muted mb-1 sub-link">Privacy</a><br>
+            <a href="{% url 'faq' %}#accounts" class="text-muted mb-1 sub-link">Accounts</a><br>
+            <a href="{% url 'faq' %}#service" class="text-muted mb-1 sub-link">Service</a><br>
           </div>
           <div class="col-12 col-md mt-4 text-center text-md-start">
             <h4 class="text-light">Contact</h4>
