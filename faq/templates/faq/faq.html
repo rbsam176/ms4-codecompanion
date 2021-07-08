@@ -27,7 +27,7 @@
                                 {% if item.get_faq_category == header %}    
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+                                            <button id="faqEntry-{{ item.id }}" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
                                                 {{ item }}
                                             </button>
                                         </h2>
@@ -46,4 +46,22 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block postloadjs %}
+    <script type="text/javascript">
+        $(".accordion-button").on('click', function(){
+            if ($(this).attr('aria-expanded') == 'true'){
+                var clickId = $(this).attr('id').split('-')[1]
+                $.ajax(
+                {
+                    type:"GET",
+                    url: "/faq/counter",
+                    data:{
+                        clickId: clickId,
+                    },
+                })
+            }
+        })
+    </script>
 {% endblock %}
