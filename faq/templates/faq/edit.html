@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <header class="container">
+        <div class="row">
+            <div class="col-12 text-center mt-4">
+                <a href="{% url 'faq' %}"><i class="float-start fas fa-arrow-left"></i></a>
+                <h2>FAQ</h2>
+                <h4>Edit an entry</h4>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form action="{% url 'edit_faq' faq_id %}" method="POST">
+                    {% csrf_token %}
+                    {{ faq_edit_form|crispy }}
+                    <button type="submit" name="edit" class="btn btn-hero">Edit</button>
+                    <button type="submit" name="delete" onclick="return confirm('Are you sure?')" class="ps-3 text-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block postloadjs %}
+    <script type="text/javascript">
+        // $("#deleteFaq").on('click', function(event){
+        //     if ($("#deleteFaq").text('Delete')) {
+        //         event.preventDefault();
+        //         console.log('prevent')
+        //         $(this).text('Are you sure?')
+        //         $(this).attr('href', 'https://www.google.com')
+        //     }
+        // })
+
+    </script>
+{% endblock %}

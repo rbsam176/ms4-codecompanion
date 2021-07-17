@@ -41,7 +41,7 @@
                                     </div>
                                     {% if request.user.is_superuser %}
                                         <div class="col-1 text-center my-auto">
-                                            <a href="#"><i class="far fa-edit"></i></a>
+                                            <a href="{% url 'edit_faq' item.id %}"><i class="far fa-edit"></i></a>
                                         </div>
                                     {% endif %}
                                 {% endif %}
