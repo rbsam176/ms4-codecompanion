@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_css %}
-    <!-- <link rel="stylesheet" href="{% static 'checkout/css/profile.css' %}"> -->
-{% endblock %}
-
 {% block page_header %}
     <header class="container">
         <div class="row">
@@ -21,29 +17,42 @@
             <div class="col-12">
                 {% for header in faq_categories_names %}
                     <div class="row my-4">
-                        <h4>{{ header|title }}</h4>
-                        <div class="accordion" id="accordionExample">
+                        <h4>{{ header|title }}
+                        {% if request.user.is_superuser %}    
+                            <a href="{% url 'add_faq' %}"><i class="text-success fas fa-plus-circle"></i></a>
+                        {% endif %}
+                        </h4>
+                        <div class="accordion row" id="accordionExample">
                             {% for item in faq_content %}
-                                {% if item.get_faq_category == header %}    
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="heading{{ forloop.counter }}">
-                                            <button id="faqEntry-{{ item.id }}" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
-                                                {{ item }}
-                                            </button>
-                                        </h2>
-                                        <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
-                                            <div class="accordion-body">
-                                                {{ item.get_faq_content }}
+                                {% if item.get_faq_category == header %}  
+                                    <div class="{% if request.user.is_superuser %}col-11{% else %}col-12{% endif %}"> 
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                                                <button id="faqEntry-{{ item.id }}" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
+                                                    {{ item }}
+                                                </button>
+                                            </h2>
+                                            <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#accordionExample">
+                                                <div class="accordion-body">
+                                                    {{ item.get_faq_content }}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    {% if request.user.is_superuser %}
+                                        <div class="col-1 text-center my-auto">
+                                            <a href="#"><i class="far fa-edit"></i></a>
+                                        </div>
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </div>
                     </div>
-
                 {% endfor %}
             </div>
+        </div>
+        <div class="col-12 text-center">
+            <a href="#"><small>Still need help?</small></a>
         </div>
     </div>
 {% endblock %}

@@ -28,3 +28,7 @@ def faq_counter(request):
 		data = None
 		
 	return JsonResponse(data, safe=False)
+
+
+def add_faq(request):
+	return render(request, 'faq/add.html')
