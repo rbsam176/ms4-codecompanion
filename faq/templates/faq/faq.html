@@ -18,8 +18,8 @@
                 {% for header in faq_categories_names %}
                     <div class="row my-4">
                         <h4>{{ header|title }}
-                        {% if request.user.is_superuser %}    
-                            <a href="{% url 'add_faq' %}"><i class="text-success fas fa-plus-circle"></i></a>
+                        {% if request.user.is_superuser %}
+                            <a href="{% url 'add_faq' header.id %}"><i class="text-success fas fa-plus-circle"></i></a>
                         {% endif %}
                         </h4>
                         <div class="accordion row" id="accordionExample">

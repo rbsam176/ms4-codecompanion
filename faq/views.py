@@ -33,8 +33,10 @@ def faq_counter(request):
 	return JsonResponse(data, safe=False)
 
 
-def add_faq(request):
-	faq_form = FaqForm(request.POST or None)
+def add_faq(request, header_id=None):
+	# default_category = FaqEntry.objects.filter(id=header_id)
+	# print(default_category)
+	faq_form = FaqForm(request.POST or None, header_id=header_id)
 
 	if request.method == 'POST':
 		if faq_form.is_valid():
@@ -42,7 +44,7 @@ def add_faq(request):
 			messages.success(request, 'Added FAQ entry')
 
 	context = {
-		'faq_form': faq_form,
+		'faq_form': faq_form
 	}
 
 	if request.user.is_superuser:
