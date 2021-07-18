@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <header class="container">
+        <div class="row">
+            <div class="col-12 text-center my-4">
+                <a href="{% url 'profile' %}"><i class="float-start fas fa-arrow-left"></i></a>
+                <h2>View Order</h2>
+                <span class="fs-6 text-muted">Logged in as <i>{{ account }}</i></span> <a href="{% url 'account_logout' %}">(Not you?)</a>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 d-none d-md-block">
+                <div class="row justify-content-center">
+                    <div class="col-1 mx-0 px-0 point-col">
+                        <span class="chain-points"></span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 link-col">
+                        <span class="chain-link"></span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 point-col">
+                        <span class="chain-points"></span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 link-col">
+                        <span class="chain-link"></span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 point-col">
+                        <span class="chain-points"></span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 link-col">
+                        <span class="chain-link"></span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 point-col">
+                        <span class="chain-points"></span>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-1 mx-0 px-0 text-center text-col">
+                        <span>Order placed</span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 text-link"></div>
+                    <div class="col-1 mx-0 px-0 text-center text-col">
+                        <span>Session activated</span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 text-link"></div>
+                    <div class="col-1 mx-0 px-0 text-center text-col">
+                        <span>Session active</span>
+                    </div>
+                    <div class="col-1 mx-0 px-0 text-link"></div>
+                    <div class="col-1 mx-0 px-0 text-center text-col">
+                        <span>Session expired</span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+{% endblock %}

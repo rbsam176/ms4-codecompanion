@@ -11,7 +11,7 @@ class OrderAdmin(admin.ModelAdmin):
                        'order_total', 'original_bag', 'stripe_pid')
 
     fields = ('order_number', 'user_profile', 'date', 'email_address',
-              'order_total', 'original_bag', 'stripe_pid')
+              'order_total', 'original_bag', 'stripe_pid', 'active', 'expired')
 
     list_display = ('order_number', 'date', 'email_address',
               'order_total' )

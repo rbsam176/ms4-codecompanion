@@ -18,20 +18,24 @@
         {% csrf_token %}
         <div class="row">
             <div class="col-12">
-                <h3 class="mt-4 mb-2">Pending approval</h3>
-                {% for question in faq_questions %}
-                    {% if not question.approved %}
-                        <ul class="list-group">
-                            <li class="list-group-item my-2 py-3 d-flex">
-                                <span class="align-self-center">{{ question }} ({{ question.approved }})</span>
-                                <span class="ms-auto mt-1">
-                                    <a href="{% url 'edit_question' question.id %}" class="btn px-1"><i class="fs-4 my-auto text-success far fa-check-circle"></i></a>
-                                    <button type="submit" name="delete" value="{{ question.id }}" class="btn px-1"><i class="fs-4 my-auto text-danger fas fa-ban"></i></button>
-                                </span>
-                            </li>
-                        </ul>
-                    {% endif %}
-                {% endfor %}
+                {% if faq_questions.count > 0 %}
+                    <h3 class="mt-4 mb-2">Pending approval</h3>
+                    {% for question in faq_questions %}
+                        {% if not question.approved %}
+                            <ul class="list-group">
+                                <li class="list-group-item my-2 py-3 d-flex">
+                                    <span class="align-self-center">{{ question }} ({{ question.approved }})</span>
+                                    <span class="ms-auto mt-1">
+                                        <a href="{% url 'edit_question' question.id %}" class="btn px-1"><i class="fs-4 my-auto text-success far fa-check-circle"></i></a>
+                                        <button type="submit" name="delete" value="{{ question.id }}" class="btn px-1"><i class="fs-4 my-auto text-danger fas fa-ban"></i></button>
+                                    </span>
+                                </li>
+                            </ul>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <h3 class="mt-4 mb-2">Nothing in the approval queue</h3>
+                {% endif %}
             </div>
         </div>
     </form>

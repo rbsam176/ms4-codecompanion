@@ -9,7 +9,11 @@
     <header class="container">
         <div class="row">
             <div class="col-12 text-center my-4">
-                <h2>{{ account }}: My profile</h2>
+                <h2>Profile</h2>
+                <span class="fs-6 text-muted">Logged in as <i>{{ account }}</i></span> <a href="{% url 'account_logout' %}">(Not you?)</a>
+                {% if request.user.is_superuser %}
+                    <br><a href="{% url 'admin_controls' %}" class="btn btn-hero my-3">Admin Controls</a>
+                {% endif %}
             </div>
         </div>
     </header>
@@ -18,22 +22,39 @@
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="col-6">
+            <div class="col-12">
                 <form action="{% url 'profile' %}" method="POST" id="profile-update-form">
                     {% csrf_token %}
-                    {{ user_form|crispy }}
-                    {{ companion_check|crispy }}
-                    {{ companion_availability|crispy }}
-                    <button>Update Info</button>
+                    <div class="row">
+                        <div class="col-6">
+                            {{ user_form|crispy }}
+                            <button>Update Info</button>
+                        </div>
+                        <div class="col-6">
+                            {{ companion_check|crispy }}
+                            {{ companion_availability|crispy }}
+                            <button>Update Info</button>
+                        </div>
+                    </div>
                 </form>
             </div>
-            <div class="col-6">
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <a href="{% url 'active_sessions' %}" class="my-4 w-100 btn btn-hero mb-3">View Active Sessions</a>
                 <h4>Order history</h4><br>
                 {% for order in orders %}
                     <div class="row">
                         <div class="col-3">
-                            <h5>Order number</h5>
+                            <h5>Order number/status</h5>
                             <a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:6 }}</a>
+                            {% if order.active %}
+                                <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-success">Active</a>
+                            {% elif order.expired %}
+                                <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-secondary">Expired</a>
+                            {% else %}
+                                <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-warning">Unclaimed</a>
+                            {% endif %}
                         </div>
                         <div class="col-3">
                             <h5>Order date</h5>

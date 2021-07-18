@@ -21,7 +21,7 @@
                     {% csrf_token %}
                     {{ faq_edit_form|crispy }}
                     <button type="submit" name="edit" class="btn btn-hero">Edit</button>
-                    <button type="submit" name="delete" onclick="return confirm('Are you sure?')" class="ps-3 text-danger">Delete</button>
+                    <button type="submit" name="delete" onclick="return confirm('Are you sure?')" class="ps-3 btn text-danger">Delete</button>
                 </form>
             </div>
         </div>

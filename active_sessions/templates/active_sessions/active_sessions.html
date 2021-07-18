@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <header class="container">
+        <div class="row">
+            <div class="col-12 text-center my-4">
+                <a href="{% url 'profile' %}"><i class="float-start fas fa-arrow-left"></i></a>
+                <h2>Active Sessions</h2>
+                <span class="fs-6 text-muted">Logged in as <i>{{ account }}</i></span> <a href="{% url 'account_logout' %}">(Not you?)</a>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                {% for x in orders %}
+                    {{ x }}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
