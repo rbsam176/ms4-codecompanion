@@ -1,6 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from faq.models import FaqEntry, FaqCategory
 from .forms import FaqForm, NewFaq
 
@@ -47,11 +46,6 @@ def add_faq(request, header_id=None):
 	context = {
 		'faq_form': faq_form
 	}
-
-	# next steps: remove superuser requirements, handle user adding differently to superuser
-	# normal user adds will go to admin profile page queue for approval
-
-	# next app: messaging system for companions and users
 
 	return render(request, 'faq/add.html', context)
 

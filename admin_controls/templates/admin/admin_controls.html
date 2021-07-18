@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_header %}
+    <header class="container">
+        <div class="row">
+            <div class="col-12 mt-4">
+                <h2 class="text-center">Admin</h2>
+                <h2 class="text-left">FAQ </h2>
+                <hr>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <form class="container" action="{% url 'admin_controls' %}" method="POST">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-12">
+                <h3 class="mt-4 mb-2">Pending approval</h3>
+                {% for question in faq_questions %}
+                    {% if not question.approved %}
+                        <ul class="list-group">
+                            <li class="list-group-item my-2 py-3 d-flex">
+                                <span class="align-self-center">{{ question }} ({{ question.approved }})</span>
+                                <span class="ms-auto mt-1">
+                                    <a href="{% url 'edit_question' question.id %}" class="btn px-1"><i class="fs-4 my-auto text-success far fa-check-circle"></i></a>
+                                    <button type="submit" name="delete" value="{{ question.id }}" class="btn px-1"><i class="fs-4 my-auto text-danger fas fa-ban"></i></button>
+                                </span>
+                            </li>
+                        </ul>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </form>
+{% endblock %}
