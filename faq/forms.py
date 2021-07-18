@@ -1,5 +1,5 @@
 from django import forms
-from .models import FaqEntry
+from .models import FaqEntry, FaqQuestion
 
 class FaqForm(forms.ModelForm):
     class Meta:
@@ -17,4 +17,15 @@ class FaqForm(forms.ModelForm):
             self.initial['category'] = header_id
         self.fields['title'].widget.attrs['required'] = True
         self.fields['content'].widget.attrs['required'] = True
- 
+
+
+class NewFaq(forms.ModelForm):
+    class Meta:
+        model = FaqQuestion
+        fields = ('category', 'question',)
+    
+    def __init__(self, *args, **kwargs):
+        """ Ensure fields are required """
+        super().__init__(*args, **kwargs)
+        self.fields['category'].widget.attrs['required'] = True
+        self.fields['question'].widget.attrs['required'] = True

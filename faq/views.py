@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from faq.models import FaqEntry, FaqCategory
-from .forms import FaqForm
+from .forms import FaqForm, NewFaq
 
 from django.http import JsonResponse
 
@@ -34,9 +34,10 @@ def faq_counter(request):
 
 
 def add_faq(request, header_id=None):
-	# default_category = FaqEntry.objects.filter(id=header_id)
-	# print(default_category)
-	faq_form = FaqForm(request.POST or None, header_id=header_id)
+	if request.user.is_superuser:
+		faq_form = FaqForm(request.POST or None, header_id=header_id)
+	else:
+		faq_form = NewFaq(request.POST or None)
 
 	if request.method == 'POST':
 		if faq_form.is_valid():
@@ -47,10 +48,12 @@ def add_faq(request, header_id=None):
 		'faq_form': faq_form
 	}
 
-	if request.user.is_superuser:
-		return render(request, 'faq/add.html', context)
-	else:
-		return redirect('faq')
+	# next steps: remove superuser requirements, handle user adding differently to superuser
+	# normal user adds will go to admin profile page queue for approval
+
+	# next app: messaging system for companions and users
+
+	return render(request, 'faq/add.html', context)
 
 
 def redirect_services(request):

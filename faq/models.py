@@ -21,3 +21,15 @@ class FaqEntry(models.Model):
 
     def get_faq_content(self):
         return self.content
+
+
+class FaqQuestion(models.Model):
+    category = models.ForeignKey('FaqCategory', null=True, blank=False, on_delete=models.SET_NULL)
+    question = models.CharField(max_length=254, null=True, blank=False)
+    approved = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.question or ''
+    
+    def get_faq_category(self):
+        return self.category

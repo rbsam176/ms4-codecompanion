@@ -20,7 +20,7 @@
                 <form action="{% url 'add_faq' %}" method="POST">
                     {% csrf_token %}
                     {{ faq_form|crispy }}
-                    <button type="submit" class="btn btn-hero">Add</button>
+                    <button type="submit" class="btn btn-hero">{% if request.user.is_superuser %}Add{% else %}Ask{% endif %}</button>
                 </form>
             </div>
         </div>

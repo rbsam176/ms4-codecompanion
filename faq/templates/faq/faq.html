@@ -51,9 +51,11 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="col-12 text-center">
-            <a href="#"><small>Still need help?</small></a>
-        </div>
+        {% if not request.user.is_superuser %}
+            <div class="col-12 text-center">
+                <a href="{% url 'add_faq' %}"><h5>Still have questions?</h5></a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 
