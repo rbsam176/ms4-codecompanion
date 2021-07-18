@@ -41,7 +41,10 @@ def add_faq(request, header_id=None):
 	if request.method == 'POST':
 		if faq_form.is_valid():
 			faq_form.save()
-			messages.success(request, 'Added FAQ entry')
+			if request.user.is_superuser:
+				messages.success(request, 'Added FAQ entry')
+			else:
+				messages.success(request, 'Submitted question for approval')
 
 	context = {
 		'faq_form': faq_form
