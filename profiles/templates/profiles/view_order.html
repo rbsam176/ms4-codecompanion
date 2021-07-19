@@ -7,7 +7,7 @@
             <div class="col-12 text-center my-4">
                 <a href="{% url 'profile' %}"><i class="float-start fas fa-arrow-left"></i></a>
                 <h2>View Order</h2>
-                <span class="fs-6 text-muted">Logged in as <i>{{ account }}</i></span> <a href="{% url 'account_logout' %}">(Not you?)</a>
+                <span class="fs-6 text-muted">Order number: {{ order }}</span>
             </div>
         </div>
     </header>
@@ -16,38 +16,39 @@
 {% block content %}
     <div class="container">
         <div class="row">
+            <!-- DESKTOP -->
             <div class="col-12 d-none d-md-block">
                 <div class="row justify-content-center">
                     <div class="col-1 mx-0 px-0 point-col">
                         <span class="chain-points"></span>
                     </div>
                     <div class="col-1 mx-0 px-0 link-col">
-                        <span class="chain-link"></span>
+                        <span class="chain-link chain-link-horizontal"></span>
                     </div>
                     <div class="col-1 mx-0 px-0 point-col">
                         <span class="chain-points"></span>
                     </div>
                     <div class="col-1 mx-0 px-0 link-col">
-                        <span class="chain-link"></span>
+                        <span class="chain-link chain-link-horizontal{% if not order.active %} inactive-link{% endif %}"></span>
                     </div>
                     <div class="col-1 mx-0 px-0 point-col">
-                        <span class="chain-points"></span>
+                        <span class="chain-points{% if not order.active %} inactive-point{% endif %}"></span>
                     </div>
                     <div class="col-1 mx-0 px-0 link-col">
-                        <span class="chain-link"></span>
+                        <span class="chain-link chain-link-horizontal{% if not order.expired %} inactive-link{% endif %}"></span>
                     </div>
                     <div class="col-1 mx-0 px-0 point-col">
-                        <span class="chain-points"></span>
+                        <span class="chain-points{% if not order.expired %} inactive-point{% endif %}"></span>
                     </div>
                 </div>
-
                 <div class="row justify-content-center">
                     <div class="col-1 mx-0 px-0 text-center text-col">
                         <span>Order placed</span>
                     </div>
                     <div class="col-1 mx-0 px-0 text-link"></div>
                     <div class="col-1 mx-0 px-0 text-center text-col">
-                        <span>Session activated</span>
+                        <span>Awaiting activation</span><br>
+                        <a href="#" class="small">Activate now!</a>
                     </div>
                     <div class="col-1 mx-0 px-0 text-link"></div>
                     <div class="col-1 mx-0 px-0 text-center text-col">
@@ -57,8 +58,35 @@
                     <div class="col-1 mx-0 px-0 text-center text-col">
                         <span>Session expired</span>
                     </div>
-
                 </div>
+            </div>
+            <!-- MOBILE -->
+            <div class="col-12 d-block d-md-none">
+                <div class="row">
+                    <div class="col-2 text-center offset-3">
+                        <div class="chain-points"></div>
+                        <div class="chain-link chain-link-vertical"></div>
+                        <div class="chain-points"></div>
+                        <div class="chain-link chain-link-vertical{% if not order.active %} inactive-link{% endif %}"></div>
+                        <div class="chain-points{% if not order.active %} inactive-point{% endif %}"></div>
+                        <div class="chain-link chain-link-vertical{% if not order.expired %} inactive-link{% endif %}"></div>
+                        <div class="chain-points{% if not order.expired %} inactive-point{% endif %}"></div>
+                    </div>
+                    <div class="col-6 ps-0">
+                        <div class="link-text-vertical">Order placed</div>
+                        <div class="link-text-vertical">
+                            Awaiting activation<br>
+                            <a href="#" class="small">Activate now!</a>
+                        </div>
+                        <div class="link-text-vertical">Session active</div>
+                        <div class="link-text-vertical">Session expired</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                a
             </div>
         </div>
 
