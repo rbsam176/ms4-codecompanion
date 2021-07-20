@@ -48,13 +48,13 @@
                         <div class="col-3">
                             <h5>Order number/status</h5>
                             <a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:6 }}</a>
-                            {% if order.active %}
+                            <!-- {% if order.active %} -->
                                 <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-success">Active</a>
-                            {% elif order.expired %}
+                            <!-- {% elif order.expired %} -->
                                 <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-secondary">Expired</a>
-                            {% else %}
+                            <!-- {% else %} -->
                                 <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-warning">Unclaimed</a>
-                            {% endif %}
+                            <!-- {% endif %} -->
                         </div>
                         <div class="col-3">
                             <h5>Order date</h5>
