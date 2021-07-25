@@ -2,9 +2,9 @@ from django.shortcuts import get_object_or_404
 from services.models import Service
 
 def bag_contents(request):
-    total = 0
-    product_count = 0
     bag = request.session.get('bag', {})
+    total = 0
+    print(bag)
 
     bag_items = []
 
@@ -13,24 +13,21 @@ def bag_contents(request):
         service = get_object_or_404(Service, pk=object)
         service_price = service.price
         service_price_type = service.price_type
+        service_duration = service.duration
         for x in detail:
             bag_items.append({
                 'service_name': service.name,
-                'quantity': x['quantity'],
-                'day_selected': x['day_selected'],
+                'start_datetime': x['start_datetime'],
                 'companion_selected': x['companion_selected'],
                 'service_price': service_price,
                 'service_price_type': service_price_type,
+                'service_duration': service_duration,
             })
-            # increment the product count and total cost
-            product_count += x['quantity']
-            total += x['quantity'] * service_price
-
-    # print(bag_items)
+            total += service_price
 
     context = {
         'bag_items': bag_items,
-        'product_count': product_count,
+        'product_count': len(bag_items),
         'total': total,
     }
 

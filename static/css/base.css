@@ -258,6 +258,61 @@ a {
     padding: 10px;
 }
 
+.datepicker {
+    width: 65px;
+    height: 100%;
+    background-color: white;
+    display: inline-block;
+    border: 2px dotted black;
+    cursor: pointer;
+    position: relative;
+}
+
+.datepicker-enabled {
+    border: 3px solid rgb(92, 92, 92);
+}
+
+.datepicker-disabled {
+    background-color: rgb(221, 221, 221);
+    cursor: not-allowed;
+}
+
+.datepicker-disabled > span {
+    color: gray;
+}
+
+.datepicker:hover {
+    border: 2px solid black;
+}
+
+.date-radio {
+    visibility: hidden;
+    position: absolute;
+}
+
+.datepicker-text {
+    display: block;
+    text-align: center;
+    font-weight: 600;
+    padding: 2.5px;
+    line-height: 20px;
+}
+
+.day-title {
+    font-size: 18px;
+    color: red;
+}
+
+.date-title {
+    font-size: 26px;
+    color: black;
+}
+
+.month-title {
+    font-size: 18px;
+    color: black;
+}
+
 .img-quote {
     border-radius: 50%;
 }

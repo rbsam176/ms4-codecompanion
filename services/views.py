@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -59,12 +60,53 @@ def service_detail(request, endpoint):
 	for day in days:
 		days_count[day] = CompanionProfile.objects.filter(**{service_match_formatted:True}, **{day:True}).count()
 
+	def get_day_initial(weekday):
+		initials = {
+			0: 'MON',
+			1: 'TUE',
+			2: 'WED',
+			3: 'THU',
+			4: 'FRI',
+			5: 'SAT',
+			6: 'SUN',
+		}
+
+		if initials[weekday]:
+			return initials[weekday]
+	
+	def get_month_initial(month):
+		initials = {
+			1: 'JAN',
+			2: 'FEB',
+			3: 'MAR',
+			4: 'APR',
+			5: 'MAY',
+			6: 'JUN',
+			7: 'JUL',
+			8: 'AUG',
+			9: 'SEP',
+			10: 'OCT',
+			11: 'NOV',
+			12: 'DEC',
+		}
+
+		if initials[month]:
+			return initials[month]
+	
+	today = datetime.date.today()
+	next_5_days = {}
+	for date in range(7):
+		if (today + datetime.timedelta(days=date)).weekday() != 5 and (today + datetime.timedelta(days=date)).weekday() != 6:
+			if len(next_5_days) <= 5:
+				date_adding = today + datetime.timedelta(days=date)
+				next_5_days[date_adding] = {'day_index': date_adding.weekday(), 'day': get_day_initial(date_adding.weekday()), 'date': date_adding.day, 'month_index': date_adding.month, 'month': get_month_initial(date_adding.month)}
 	
 	service = get_object_or_404(Service, endpoint=endpoint)
 
 	context = {
 		'service': service,
 		'days_count': days_count,
+		'next_5_days': next_5_days,
 	}
 
 	return render(request, 'services/service_detail.html', context)

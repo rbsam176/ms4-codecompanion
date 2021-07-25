@@ -53,7 +53,47 @@
                     <div class="col-12">
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-prepend">
+                                <div id="datepicker-container" class="mx-auto">
+                                    {% for key, value in next_5_days.items %}
+                                        <label class="datepicker rounded">
+                                            <input name="date-selection" class="date-radio" type="radio">
+                                            <span class="day-title datepicker-text">{{ value.day }}</span>
+                                            <span class="date-title datepicker-text">{{ value.date }}</span>
+                                            <span class="month-title datepicker-text">{{ value.month }}</span>
+                                        </label>
+                                    {% endfor %}
+                                    <!-- <label class="datepicker rounded">
+                                        <input name="date-selection" class="date-radio" type="radio">
+                                        <span class="day-title datepicker-text">MON</span>
+                                        <span class="date-title datepicker-text">24</span>
+                                        <span class="month-title datepicker-text">JUL</span>
+                                    </label>
+                                    <label class="datepicker rounded">
+                                        <input name="date-selection" class="date-radio" type="radio">
+                                        <span class="day-title datepicker-text">TUE</span>
+                                        <span class="date-title datepicker-text">25</span>
+                                        <span class="month-title datepicker-text">JUL</span>
+                                    </label>
+                                    <label class="datepicker rounded">
+                                        <input name="date-selection" class="date-radio" type="radio">
+                                        <span class="day-title datepicker-text">WED</span>
+                                        <span class="date-title datepicker-text">26</span>
+                                        <span class="month-title datepicker-text">JUL</span>
+                                    </label>
+                                    <label class="datepicker rounded">
+                                        <input name="date-selection" class="date-radio" type="radio">
+                                        <span class="day-title datepicker-text">THU</span>
+                                        <span class="date-title datepicker-text">27</span>
+                                        <span class="month-title datepicker-text">JUL</span>
+                                    </label>
+                                    <label class="datepicker rounded">
+                                        <input name="date-selection" class="date-radio" disabled type="radio">
+                                        <span class="day-title datepicker-text">FRI</span>
+                                        <span class="date-title datepicker-text">28</span>
+                                        <span class="month-title datepicker-text">JUL</span>
+                                    </label> -->
+                                </div>
+                                <!-- <div class="input-group-prepend">
                                     <button class="decrement-qty btn btn-black rounded-0" disabled>
                                                 <span class="icon">
                                                     <i class="fas fa-minus"></i>
@@ -68,8 +108,8 @@
                                                     <i class="fas fa-plus"></i>
                                                 </span>
                                     </button>
-                                </div>
-                                <div class="input-group my-4">
+                                </div> -->
+                                <!-- <div class="input-group my-4">
                                     <select id="daySelection" name="daySelection" class="w-75 mx-auto" required>
                                         <option value="" disabled selected>Select day of the week</option>
                                         <option{% if days_count.monday_available == 0 %} disabled{% endif %}>Monday</option>
@@ -78,13 +118,21 @@
                                         <option{% if days_count.thursday_available == 0 %} disabled{% endif %}>Thursday</option>
                                         <option{% if days_count.friday_available == 0 %} disabled{% endif %}>Friday</option>
                                     </select>
-                                </div>
+                                </div> -->
                                 <div class="input-group my-4">
-                                    <select id="companionSelection" name="companionSelection" class="w-75 mx-auto" required disabled>
+                                    <!-- <select id="companionSelection" name="companionSelection" class="w-75 mx-auto" required disabled>
                                         <option value="" disabled selected>Select companion</option>
+                                    </select> -->
+                                    <select id="companionSelection" name="companionSelection" class="w-75 mx-auto" required>
+                                        <option value="" disabled selected>Select companion</option>
+                                        <option>companion</option>
+                                        <option>sambaker</option>
                                     </select>
                                 </div>
-                                <input id="addToBag" type="submit" value="Add to bag" disabled>
+                                <input type="date" name="date">
+                                <input type="time" name="time" min="09:00" max="18:00">
+                                <!-- <input id="addToBag" type="submit" value="Add to bag" disabled> -->
+                                <input id="addToBag" type="submit" value="Add to bag">
                                 <input type="hidden" name="redirect_url" value="{{ request.path }}">
                             </div>
                         </div>
@@ -97,13 +145,24 @@
 
 {% block postloadjs %}
     {{ block.super }}
-    {% include 'services/includes/quantity_input_script.html' %}
+    <!-- {% include 'services/includes/quantity_input_script.html' %} -->
     
     <script>
-        $("#companionSelection").change(function(){
-            $("#addToBag").attr('disabled', false)
-        })
+        // $("#companionSelection").change(function(){
+        //     $("#addToBag").attr('disabled', false)
+        // })
 
+        // APPLY ACTIVE STYLE TO CHECKED DATEPICKER
+        $(".date-radio").on('click', function(){
+            if ($(this).prop('checked')){
+                $('.date-radio').parent('label').removeClass('datepicker-enabled')
+                $(this).parent('label').addClass('datepicker-enabled')
+            }
+        })
+        // APPLY DISABLED STYLE TO DISABLED DATEPICKER
+        if ($(".date-radio").is(':disabled')){
+            $(".date-radio:disabled").parent('label').addClass('datepicker-disabled')
+        }
         
 
         $("#daySelection").change(function(){

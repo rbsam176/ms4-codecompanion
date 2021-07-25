@@ -15,8 +15,6 @@ class Order(models.Model):
     order_total = models.DecimalField(max_digits=10, decimal_places=2, null=False, default=0)
     original_bag = models.TextField(null=False, blank=False, default='')
     stripe_pid = models.CharField(max_length=254, null=False, blank=False, default='')
-    start_datetime = models.DateTimeField(null=True)
-    end_datetime = models.DateTimeField(null=True)
 
     def _generate_order_number(self):
         """ Generate a random, unique order number using UUID """
@@ -42,8 +40,8 @@ class OrderLineItem(models.Model):
     order = models.ForeignKey(Order, null=False, blank=False, on_delete=models.CASCADE, related_name='lineitems')
     service = models.ForeignKey(Service, null=False, blank=False, on_delete=models.CASCADE)
     companion_selected = models.CharField(max_length=254, null=False, blank=True)
-    day_selected = models.CharField(max_length=254, null=False, blank=True)
-    quantity = models.IntegerField(null=False, blank=False, default=0)
+    start_datetime = models.DateTimeField(null=True)
+    end_datetime = models.DateTimeField(null=True)
     lineitem_total = models.DecimalField(max_digits=6, decimal_places=2, null=False, blank=False)
 
 

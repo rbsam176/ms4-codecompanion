@@ -18,6 +18,7 @@ class Service(models.Model):
     description = models.CharField(max_length=254)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     price_type = models.ForeignKey('PriceType', null=True, blank=True, on_delete=models.SET_NULL)
+    duration = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     bullet_point_1 = models.CharField(max_length=254, null=True, blank=True)
     bullet_point_2 = models.CharField(max_length=254, null=True, blank=True)
     bullet_point_3 = models.CharField(max_length=254, null=True, blank=True)
