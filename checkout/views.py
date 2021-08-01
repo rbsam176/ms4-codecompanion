@@ -45,42 +45,66 @@ def checkout(request):
             order.stripe_pid = pid
             order.original_bag = json.dumps(bag)
             order.save()
-            flat_bag = []
-            for item in bag.items():
-                try:
-                    service = Service.objects.get(pk=item[0])
-                    if len(item[1]) > 1:
-                        for sub_item in item[1]:
-                            companion = User.objects.filter(username=sub_item['companion_selected']).values('username')
-                            sub_item['companion_selected'] = companion
-                            flat_bag.append((service, sub_item))
-                    else:
-                        companion = User.objects.filter(username=item[1][0]['companion_selected']).values('username')
-                        item[1][0]['companion_selected'] = companion
-                        flat_bag.append((service, item[1][0]))
+            # EXTRACT BAG CONTENTS INTO INDIVIDUAL ITEMS
+            flattened = []
+            for x in bag.keys():
+                if len(bag[x]) > 1:
+                    for y in bag[x]:
+                        try:
+                            y['companion_selected'] = User.objects.get(username=y['companion_selected'])
+                        except User.DoesNotExist:
+                            messages.error(request, (
+                                "There was an issue with your account."
+                                "Please contact us via the email address at the bottom of this page for assistance.")
+                            )
+                            order.delete()
+                            return redirect(reverse('view_bag'))
 
-                except Service.DoesNotExist:
-                    messages.error(request, (
-                        "A service in your bag was not found in the database. "
-                        "Please contact us via the email address at the bottom of this page for assistance.")
-                    )
-                    order.delete()
-                    return redirect(reverse('view_bag'))
-            
-            print(flat_bag)
-
-            for x in flat_bag:
+                        try:
+                            y['service'] = Service.objects.get(name=x)
+                            flattened.append(y)
+                        except Service.DoesNotExist: 
+                            messages.error(request, (
+                                "A service in your bag was not found in the database. "
+                                "Please contact us via the email address at the bottom of this page for assistance.")
+                            )
+                            order.delete()
+                            return redirect(reverse('view_bag'))
+                else:
+                    try:
+                        bag[x][0]['companion_selected'] = User.objects.get(username=bag[x][0]['companion_selected'])
+                    except User.DoesNotExist:
+                        messages.error(request, (
+                            "There was an issue with your account."
+                            "Please contact us via the email address at the bottom of this page for assistance.")
+                        )
+                        order.delete()
+                        return redirect(reverse('view_bag'))
+                    try:
+                        bag[x][0]['service'] = Service.objects.get(name=x)
+                        flattened.append(bag[x][0])
+                    except Service.DoesNotExist: 
+                        messages.error(request, (
+                            "A service in your bag was not found in the database. "
+                            "Please contact us via the email address at the bottom of this page for assistance.")
+                        )
+                        order.delete()
+                        return redirect(reverse('view_bag'))
+            print('start')
+            print(flattened)
+            print('end')
+            for x in flattened:
                 order_line_item = OrderLineItem(
-                    service=x[0],
-                    quantity=x[1]['quantity'],
-                    companion_selected=x[1]['companion_selected'],
-                    day_selected=x[1]['day_selected'],
+                    service=x['service'],
+                    companion_selected=x['companion_selected'],
+                    start_datetime=x['start_datetime'],
+                    end_datetime=x['end_datetime'],
                     order=order,
+                    lineitem_total=x['service'].price,
                 )
                 order_line_item.save()
-
-            # request.session['save_info'] = 'save-info' in request.POST 
             return redirect(reverse('checkout_success', args=[order.order_number]))
+
         else:
             messages.error(request, "There was an error in the form. Please verify all information is correct")
     else:

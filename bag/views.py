@@ -15,8 +15,8 @@ def add_to_bag(request, service_name):
     service = Service.objects.get(pk=service_name)
 
     companion_selected = request.POST.get('companionSelection')
-    date = request.POST.get('date')
-    start_time = request.POST.get('time')
+    date = request.POST.get('date-selection')
+    start_time = request.POST.get('time-selection')
     datetime_combined = f'{date} {start_time}:00.000000'
     start_datetime = datetime.strptime(datetime_combined, '%Y-%m-%d %H:%M:%S.%f')
     end_datetime = start_datetime + timedelta(hours=float(service.duration))
@@ -54,6 +54,8 @@ def add_to_bag(request, service_name):
         messages.success(request, f'Added "{service.name}" to your bag')
         request.session['bag'] = bag
         return redirect(redirect_url)
+    
+    return redirect(redirect_url)
 
     # NEXT STEPS:
         # ensure the user can't add another of the same service name within the duration of the existing session

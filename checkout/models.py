@@ -44,11 +44,5 @@ class OrderLineItem(models.Model):
     end_datetime = models.DateTimeField(null=True)
     lineitem_total = models.DecimalField(max_digits=6, decimal_places=2, null=False, blank=False)
 
-
-    def save(self, *args, **kwargs):
-        """ Override the original save method to set the order number if it hasn't been set already """
-        self.lineitem_total = self.service.price * self.quantity
-        super().save(*args, **kwargs)
-
     def __str__(self):
         return f'Service: {self.service.name} order number {self.order.order_number}'
