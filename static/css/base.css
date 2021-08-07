@@ -272,8 +272,13 @@ a {
     border: 3px solid rgb(92, 92, 92);
 }
 
-.datepicker-disabled {
+label.datepicker-disabled {
     background-color: rgb(221, 221, 221);
+    cursor: not-allowed;
+}
+
+label.datepicker-disabled:hover {
+    border: 2px dotted black;
     cursor: not-allowed;
 }
 

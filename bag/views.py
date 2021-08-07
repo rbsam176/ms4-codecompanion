@@ -11,7 +11,7 @@ def view_bag(request):
 	return render(request, 'bag/bag.html')
 
 def add_to_bag(request, service_name):
-    """ Add a quantity of the clicked service to the shopping bag """
+    """ Add the clicked service to the shopping bag """
     service = Service.objects.get(pk=service_name)
 
     companion_selected = request.POST.get('companionSelection')
@@ -57,29 +57,6 @@ def add_to_bag(request, service_name):
     
     return redirect(redirect_url)
 
-    # NEXT STEPS:
-        # ensure the user can't add another of the same service name within the duration of the existing session
-        # make sure date time html input is always capturing correct format, once had it fail
-        # make sure stringifying the datetime object isn't going to cause issues, i think it's a string in the object that gets added to the database, so that will need to be converted back into a datetime object
-        # ensure when checking out that the database holds the correct information about the order line items
-        # allow user to adjust the date from bag, maybe this removes it and goes back to service detail with inputs prepopulated
-
-
-# def adjust_bag(request, service_name):
-#     """ Adjust quantity of the relevant service in the shopping bag """
-#     # quantity = int(request.POST.get('quantity'))
-#     # day_selected = request.POST.get('day', 'day_selected')
-#     companion_selected = request.POST.get('companion', 'companion_selected')
-#     bag = request.session.get('bag', {})
-
-#     # for item in bag[service_name]:
-#     #     if item['day_selected'] == day_selected and item['companion_selected'] == companion_selected:
-#     #         item['quantity'] = quantity
-
-#     messages.info(request, f'Updated "{service_name}" quantity to {quantity}')
-#     request.session['bag'] = bag
-#     return redirect(reverse('view_bag'))
-
 
 def remove_from_bag(request, service_name):
     """ Remove item from the shopping bag """
@@ -90,8 +67,12 @@ def remove_from_bag(request, service_name):
         bag = request.session.get('bag', {})
         for item in bag[name]:
             if item['start_datetime'] == start_datetime and item['companion_selected'] == companion:
-                deletion_index = bag[name].index(item)
-                del bag[name][deletion_index]
+                print('if trigerred')
+                if len(bag[name]) == 1:
+                    del bag[name]
+                elif len(bag[name]) > 1:
+                    deletion_index = bag[name].index(item)
+                    del bag[name][deletion_index]
         request.session['bag'] = bag
         messages.warning(request, f'Removed "{name}" from your bag')
         return HttpResponse(status=200)

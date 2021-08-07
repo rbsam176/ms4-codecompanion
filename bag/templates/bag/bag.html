@@ -21,13 +21,11 @@
                             <thead class="text-black">
                                 <tr>
                                     <th scope="col">Service name</th>
-                                    <!-- <th scope="col">Qty</th> -->
                                     <th scope="col">Price</th>
                                 </tr>
                             </thead>
 
                             {% for item in bag_items %}
-                                {{ item }}
                                 <tr>
                                     <td class="p-3 w-25">
                                         <p>{{ item.service_name }}</p>
@@ -55,7 +53,7 @@
                     <span class="icon">
                         <i class="fas fa-chevron-left"></i>
                     </span>
-                    <a href="#"><span class="text-uppercase">Keep Shopping</span></a>
+                    <a href="{% url 'compare_services' %}"><span class="text-uppercase">Keep Shopping</span></a>
                 {% endif %}
             </div>
         </div>
@@ -64,24 +62,13 @@
 
 {% block postloadjs %}
     {{ block.super }}
-    {% include 'services/includes/quantity_input_script.html' %}
-
     <script type="text/javascript">
-        // UPDATE QUANTITY ON CLICK
-        // $('.update-link').click(function(e){
-        //     var form = $(this).prev('.update-form');
-        //     form.submit();
-        // })
-
         // DELETE ITEM FROM BAG AND REFRESH ON CLICK
         $('.remove-item').click(function(e) {
             var csrfToken = "{{ csrf_token }}"
             var itemName = $(this).attr('id').split('delete_')[1];
-            console.log($(this))
-            console.log(itemName)
             var url = `/bag/remove/${itemName}/`;
             var data = {'csrfmiddlewaretoken': csrfToken};
-
             $.post(url, data)
              .done(function(){
                  location.reload();

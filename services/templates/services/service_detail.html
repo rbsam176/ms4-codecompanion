@@ -55,8 +55,8 @@
                             <div class="input-group">
                                 <div id="datepicker-container" class="mx-auto">
                                     {% for key, value in next_5_days.items %}
-                                        <label class="datepicker rounded">
-                                            <input name="date-selection" class="date-radio" type="radio" value="{{ key|date:'Y-m-d' }}" required>
+                                        <label class="datepicker rounded {% if not value.companions_available %}datepicker-disabled{% endif %}">
+                                            <input name="date-selection" class="date-radio" type="radio" value="{{ key|date:'Y-m-d' }}" {% if not value.companions_available %}disabled{% endif %} required>
                                             <span class="day-title datepicker-text">{{ value.day }}</span>
                                             <span class="date-title datepicker-text">{{ value.date }}</span>
                                             <span class="month-title datepicker-text">{{ value.month }}</span>
@@ -86,36 +86,24 @@
 
 {% block postloadjs %}
     {{ block.super }}
-    <!-- {% include 'services/includes/quantity_input_script.html' %} -->
     
     <script>
-        // $("#companionSelection").change(function(){
-        //     $("#addToBag").attr('disabled', false)
-        // })
-
-        // APPLY ACTIVE STYLE TO CHECKED DATEPICKER
-        // $(".date-radio").on('click', function(){
-        //     if ($(this).prop('checked')){
-        //         $('.date-radio').parent('label').removeClass('datepicker-enabled')
-        //         $(this).parent('label').addClass('datepicker-enabled')
-        //     }
-        // })
-        // APPLY DISABLED STYLE TO DISABLED DATEPICKER
-        // if ($(".date-radio").is(':disabled')){
-        //     $(".date-radio:disabled").parent('label').addClass('datepicker-disabled')
-        // }
-
+        // SET GLOBAL VARIABLE WITH AJAX RESPONSE
         var availability_data;
 
         $(".date-radio").on('click', function(){
-            // MAINTAIN DISABLED STATE
+            // RESET STATE BACK TO DEFAULT
             $("#companionSelection").attr('disabled', true)
             $("#time-selection").attr('disabled', true)
-            // RESETS COMPANION DROPDOWN VALUES
-            $("#companionSelection").children('.dynamic-entry').remove()
+            $("#companionSelection").children('option').remove()
+            $("#companionSelection").append(`<option value="" disabled selected>Select companion</option>`)
+            $("#time-selection").children('option').remove()
+            $("#time-selection").append(`<option value="" disabled selected>Select time</option>`)
+
+            // CAPTURE DATA AND SERVICE SELECTION
             var date = $(this).val()
             var service = "{{ service }}"
-            // SEND DATE AND SERVICE SELECTION VALUES TO SERVER
+            // SEND TO SERVER
             // SOURCE: https://simpleisbetterthancomplex.com/tutorial/2016/08/29/how-to-work-with-ajax-request-with-django.html
             $.ajax(
             {
@@ -128,14 +116,18 @@
                 success: function( data ) 
                 {
                     if (data.available_companions.length > 0) {
+                        // ASSIGN RETURNED DATA TO GLOBAL VARIABLE
                         availability_data = data.available_companions
                         // REMOVE DISABLED STATE
                         $("#companionSelection").attr('disabled', false)
                         for (companion in data.available_companions){
                             available_companion = Object.keys(data.available_companions[companion])
                             // ADD COMPANIONS TO DROPDOWN
-                            $("#companionSelection").append(`<option class="dynamic-entry">${available_companion}</option>`)
+                            $("#companionSelection").append(`<option>${available_companion}</option>`)
                         }
+                    } else {
+                        // APPEND BACK DEFAULT DROPDOWN VALUE
+                        $("#companionSelection").append(`<option value="" disabled selected>Select companion</option>`)
                     }
                 }
             })
@@ -145,10 +137,9 @@
             $("#time-selection").attr('disabled', false)
             for (companion in availability_data){
                 if (availability_data[companion][$(this).val()]){
-                    console.log(availability_data[companion])
                     time_slots = Object.values(availability_data[companion][$(this).val()])
                     for (slot in time_slots){
-                        $("#time-selection").append(`<option class="dynamic-entry">${time_slots[slot]['start_time']} - ${time_slots[slot]['end_time']}</option>`)
+                        $("#time-selection").append(`<option value="${time_slots[slot]['start_time']}">${time_slots[slot]['start_time']} - ${time_slots[slot]['end_time']}</option>`)
                     }
                 }
             }
