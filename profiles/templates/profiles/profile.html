@@ -1,10 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'checkout/css/profile.css' %}">
-{% endblock %}
-
 {% block page_header %}
     <header class="container">
         <div class="row">
@@ -39,43 +35,147 @@
                 </form>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <a href="{% url 'active_sessions' %}" class="my-4 w-100 btn btn-hero mb-3">View Active Sessions</a>
-                <h4>Order history</h4><br>
-                {% for order in orders %}
-                    <div class="row">
-                        <div class="col-3">
-                            <h5>Order number/status</h5>
-                            <a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:6 }}</a>
-                            <!-- {% if order.active %} -->
-                                <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-success">Active</a>
-                            <!-- {% elif order.expired %} -->
-                                <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-secondary">Expired</a>
-                            <!-- {% else %} -->
-                                <a href="{% url 'order_history' order.order_number %}" class="no-hover badge bg-warning">Unclaimed</a>
-                            <!-- {% endif %} -->
-                        </div>
-                        <div class="col-3">
-                            <h5>Order date</h5>
-                            <p>{{ order.date }}</p>
-                        </div>
-                        <div class="col-3">
-                            <h5>Items</h5>
-                            <ul class="list-unstyled">
-                                {% for item in order.lineitems.all %}
-                                    <li>{{ item.service.name }} x {{ item.quantity }}</li>
-                                    <li><strong>{{ item.companion_selected }}</strong> on <strong>{{ item.day_selected }}</strong></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="col-3">
-                            <h5>Order total</h5>
-                            <p>£{{ order.order_total }}</p>
-                        </div>
+
+        <div class="my-4">
+            <h4 class="m-0">Your upcoming sessions{% if sessions|length > 0 %} <span class="text-muted">({{ sessions|length }}){% endif %}</span></h4>
+            <small class="text-muted">Check back here when your session is about to begin.</small>
+        </div>
+        <!-- MOBILE UPCOMING SESSIONS -->
+        {% if sessions|length > 0 %}
+            <div class="container d-block d-sm-none">
+                {% for item in sessions %}
+                    <div class="row mobile-table-container my-2">
+                        <div class="col-12"><strong>{{ item.session.service }}</strong></div>
+                        <div class="col-12">{{ item.session.start_datetime }}</div>
+                        <div class="col-12">with <i>{{ item.session.companion_selected }}</i></div>
+                        {% if item.status == 'upcoming' %}
+                            <div class="col-12">
+                                <span class="no-hover badge bg-warning">{{ item.status|title }}</span>
+                            </div>
+                        {% elif item.status == 'active' %}
+                            <div class="col-12">
+                                <a class="btn-hero" href="{% url 'active_sessions' %}">Join session</a>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endfor %}
             </div>
-        </div>
+            <!-- DESKTOP UPCOMING SESSIONS -->
+            <div class="container d-none d-sm-block">
+                <div class="row my-4 border-bottom">
+                    <div class="col-3">
+                        <h5>Service</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Companion</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Start date</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Status</h5>
+                    </div>
+                </div>
+                {% for item in sessions %}
+                    <div class="row">
+                        <div class="col-3">{{ item.session.service }}</div>
+                        <div class="col-3">{{ item.session.start_datetime }}</div>
+                        <div class="col-3">{{ item.session.companion_selected }}</div>
+                        {% if item.status == 'upcoming' %}
+                            <div class="col-3">
+                                <span class="no-hover badge bg-warning">{{ item.status|title }}</span>
+                            </div>
+                        {% elif item.status == 'active' %}
+                            <div class="col-3">
+                                <a class="btn-hero" href="{% url 'active_sessions' %}">Join session</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="h5 py-5 text-muted">No upcoming or active sessions.</div>
+                </div>
+            </div>
+        {% endif %}
+
+        <h4 class="my-4 pt-5">Order history{% if orders|length > 0 %} <span class="text-muted">({{ orders|length }}){% endif %}</span></h4>
+        {% if orders|length > 0 %}
+            <!-- MOBILE ORDER HISTORY -->
+            <div class="container d-block d-md-none">
+                {% for order in orders %}
+                <div class="row mobile-table-container mb-4">
+                    <div class="col-12 mt-2 pb-2">
+                        <span>Order no.</span><br>
+                        <a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:16 }}</a>
+                    </div>
+                    <div class="col-12 pb-4">
+                        <span>Ordered on</span><br>
+                        {{ order.date }}
+                    </div>
+                    <div class="col-12">
+                        <ul class="list-unstyled border-top">
+                            {% for item in order.lineitems.all %}
+                                <li class="border-bottom py-4 my-2">
+                                    <div>
+                                        - <strong>{{ item.service.name }}</strong><br>
+                                        with <i>{{ item.companion_selected }}</i> on<br>
+                                        <i>{{ item.start_datetime }}</i>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-12 mb-2">
+                        Total: £{{ order.order_total }}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <!-- DESKTOP ORDER HISTORY -->
+            <div class="container d-none d-md-block">
+                <div class="row my-4 border-bottom">
+                    <div class="col-3">
+                        <h5>Order no.</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Order date</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Services</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Total</h5>
+                    </div>
+                </div>
+                <div class="row" {% if item.status == 'active' %}class="table-success"{% endif %}>
+                    {% for order in orders %}
+                        <div class="col-3"><a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:16 }}</a></div>
+                        <div class="col-3">{{ order.date }}</div>
+                        <div class="col-3">
+                            <ul class="list-unstyled">
+                                {% for item in order.lineitems.all %}
+                                    <li>
+                                        <p>- <strong>{{ item.service.name }}</strong><br>
+                                        with <i>{{ item.companion_selected }}</i> on<br>
+                                        <i>{{ item.start_datetime }}</i></p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-3">£{{ order.order_total }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="h5 py-5 text-muted">No previous orders have been made.</div>
+                </div>
+            </div>
+        {% endif %}
+    
     </div>
 {% endblock %}

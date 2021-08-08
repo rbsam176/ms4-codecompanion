@@ -6,7 +6,11 @@ from django.contrib.auth.models import User
 from .forms import UserProfileForm, UserForm, CompanionCheck
 from .models import UserProfile, CompanionProfile
 
-from checkout.models import Order
+from checkout.models import Order, OrderLineItem
+
+import datetime
+import pytz
+
 
 @login_required
 def profile(request):
@@ -55,6 +59,27 @@ def profile(request):
 
 	orders = profile.orders.all().order_by('-date')
 
+	sessions = []
+
+	timezone = pytz.timezone("UTC")
+
+	for order in orders:
+		for session in OrderLineItem.objects.filter(order=order):
+			current_ts = timezone.localize(datetime.datetime.now())
+
+			if current_ts < session.start_datetime:
+				status = 'upcoming'
+				sessions.append({
+				'session': session,
+				'status': status
+				})
+			if current_ts == session.start_datetime or current_ts > session.start_datetime and current_ts < session.end_datetime:
+				status = 'active'
+				sessions.append({
+				'session': session,
+				'status': status
+				})
+
 	template = 'profiles/profile.html'
 
 	if profile.is_companion:
@@ -66,6 +91,7 @@ def profile(request):
 			'companion_availability': companion_availability,
 			'companion_check': companion_check,
 			'orders': orders,
+			'sessions': sessions,
 		}
 	else:
 		context = {
@@ -73,6 +99,7 @@ def profile(request):
 			'user_form': user_form,
 			'companion_check': companion_check,
 			'orders': orders,
+			'sessions': sessions,
 		}
 
 	return render(request, template, context)
@@ -81,13 +108,33 @@ def profile(request):
 def order_history(request, order_number):
 	order = get_object_or_404(Order, order_number=order_number)
 	account = get_object_or_404(User, username=request.user)
-	profile = get_object_or_404(UserProfile, user=request.user)
 
-	# template = 'checkout/checkout_success.html'
+	lineitems = OrderLineItem.objects.filter(order=order)
+
+	sessions = []
+
+	timezone = pytz.timezone("UTC")
+
+	current_ts = timezone.localize(datetime.datetime.now())
+
+	for item in lineitems:
+		if current_ts < item.start_datetime:
+			status = 'upcoming'
+		elif current_ts == item.start_datetime or current_ts > item.start_datetime and current_ts < item.end_datetime:
+			status = 'active'
+		else:
+			status = 'expired'
+
+		sessions.append({
+			'lineitem': item,
+			'status': status
+			})
+
 	template = 'profiles/view_order.html'
 	context = {
 		'order': order,
 		'account': account,
+		'lineitems': sessions,
 	}
 
 	return render(request, template, context)

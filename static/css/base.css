@@ -326,6 +326,14 @@ label.datepicker-disabled:hover {
     cursor: pointer;
 }
 
+.mobile-table-container {
+    padding: 15px;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid silver;
+    text-align: center;
+}
+
 #order-chain {
     width: 100%;
     height: 50px;

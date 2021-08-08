@@ -7,7 +7,8 @@
             <div class="col-12 text-center my-4">
                 <a href="{% url 'profile' %}"><i class="float-start fas fa-arrow-left"></i></a>
                 <h2>View Order</h2>
-                <span class="fs-6 text-muted">Order number: {{ order }}</span>
+                <span class="fs-6 text-muted">Order number: {{ order }}</span><br>
+                <span class="fs-6 text-muted">Total spent: {{ order.order_total }}</span>
             </div>
         </div>
     </header>
@@ -15,82 +16,93 @@
 
 {% block content %}
     <div class="container">
-        <div class="row">
-            <!-- DESKTOP -->
-            <div class="col-12 d-none d-md-block">
-                <div class="row justify-content-center">
-                    <div class="col-1 mx-0 px-0 point-col">
-                        <span class="chain-points"></span>
-                    </div>
-                    <div class="col-1 mx-0 px-0 link-col">
-                        <span class="chain-link chain-link-horizontal"></span>
-                    </div>
-                    <div class="col-1 mx-0 px-0 point-col">
-                        <span class="chain-points"></span>
-                    </div>
-                    <div class="col-1 mx-0 px-0 link-col">
-                        <!-- <span class="chain-link chain-link-horizontal{% if not order.active %} inactive-link{% endif %}"></span> -->
-                    </div>
-                    <div class="col-1 mx-0 px-0 point-col">
-                        <!-- <span class="chain-points{% if not order.active %} inactive-point{% endif %}"></span> -->
-                    </div>
-                    <div class="col-1 mx-0 px-0 link-col">
-                        <!-- <span class="chain-link chain-link-horizontal{% if not order.expired %} inactive-link{% endif %}"></span> -->
-                    </div>
-                    <div class="col-1 mx-0 px-0 point-col">
-                        <!-- <span class="chain-points{% if not order.expired %} inactive-point{% endif %}"></span> -->
-                    </div>
+        <hr>
+        {% for item in lineitems %}
+            <div class="row my-4">
+                <div class="col-12 text-center mt-2 mb-4">
+                        <h5 class="pb-2">{{ item.lineitem.service }} <span class="text-muted">(£{{ item.lineitem.lineitem_total }})</span></h5>
+                        {% if not item.status == 'active' and not item.status == 'expired' %}
+                            <p>Come back on <strong>{{ item.lineitem.start_datetime }}</strong> to start your session with <strong>{{ item.lineitem.companion_selected }}</strong></p>
+                        {% elif item.status == 'active' %}
+                            <p>Your session started with <strong>{{ item.lineitem.companion_selected }}</strong> at <strong>{{ item.lineitem.start_datetime }}</strong>.</p>
+                            <a class="btn-hero" href="{% url 'active_sessions' %}">Join session</a>
+                        {% else %}
+                            <p>Your session with <strong>{{ item.lineitem.companion_selected }}</strong> at <br>
+                                <strong>{{ item.lineitem.start_datetime }}</strong> has expired.</p>
+                        {% endif %}
                 </div>
-                <div class="row justify-content-center">
-                    <div class="col-1 mx-0 px-0 text-center text-col">
-                        <span>Order placed</span>
-                    </div>
-                    <div class="col-1 mx-0 px-0 text-link"></div>
-                    <div class="col-1 mx-0 px-0 text-center text-col">
-                        <span>Awaiting activation</span><br>
-                        <a href="#" class="small">Activate now!</a>
-                    </div>
-                    <div class="col-1 mx-0 px-0 text-link"></div>
-                    <div class="col-1 mx-0 px-0 text-center text-col">
-                        <span>Session active</span>
-                    </div>
-                    <div class="col-1 mx-0 px-0 text-link"></div>
-                    <div class="col-1 mx-0 px-0 text-center text-col">
-                        <span>Session expired</span>
-                    </div>
-                </div>
-            </div>
-            <!-- MOBILE -->
-            <div class="col-12 d-block d-md-none">
-                <div class="row">
-                    <div class="col-2 text-center offset-3">
-                        <div class="chain-points"></div>
-                        <div class="chain-link chain-link-vertical"></div>
-                        <div class="chain-points"></div>
-                        <!-- <div class="chain-link chain-link-vertical{% if not order.active %} inactive-link{% endif %}"></div> -->
-                        <!-- <div class="chain-points{% if not order.active %} inactive-point{% endif %}"></div> -->
-                        <!-- <div class="chain-link chain-link-vertical{% if not order.expired %} inactive-link{% endif %}"></div> -->
-                        <!-- <div class="chain-points{% if not order.expired %} inactive-point{% endif %}"></div> -->
-                    </div>
-                    <div class="col-6 ps-0">
-                        <div class="link-text-vertical">Order placed</div>
-                        <div class="link-text-vertical">
-                            Awaiting activation<br>
-                            <a href="#" class="small">Activate now!</a>
+                <!-- DESKTOP -->
+                <div class="col-12 d-none d-md-block">
+                    <div class="row justify-content-center">
+                        <div class="col-1 mx-0 px-0 point-col">
+                            <span class="chain-points"></span>
                         </div>
-                        <div class="link-text-vertical">Session active</div>
-                        <div class="link-text-vertical">Session expired</div>
+                        <div class="col-1 mx-0 px-0 link-col">
+                            <span class="chain-link chain-link-horizontal"></span>
+                        </div>
+                        <div class="col-1 mx-0 px-0 point-col">
+                            <span class="chain-points"></span>
+                        </div>
+                        <div class="col-1 mx-0 px-0 link-col">
+                            <span class="chain-link chain-link-horizontal{% if not item.status == 'active' and not item.status == 'expired' %} inactive-link{% endif %}"></span>
+                        </div>
+                        <div class="col-1 mx-0 px-0 point-col">
+                            <span class="chain-points{% if not item.status == 'active' and not item.status == 'expired' %} inactive-point{% endif %}"></span>
+                        </div>
+                        <div class="col-1 mx-0 px-0 link-col">
+                            <span class="chain-link chain-link-horizontal{% if not item.status == 'expired' %} inactive-link{% endif %}"></span>
+                        </div>
+                        <div class="col-1 mx-0 px-0 point-col">
+                            <span class="chain-points{% if not item.status == 'expired' %} inactive-point{% endif %}"></span>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-1 mx-0 px-0 text-center text-col">
+                            <span>Order placed</span>
+                        </div>
+                        <div class="col-1 mx-0 px-0 text-link"></div>
+                        <div class="col-1 mx-0 px-0 text-center text-col">
+                            <span>Awaiting session</span>
+                        </div>
+                        <div class="col-1 mx-0 px-0 text-link"></div>
+                        <div class="col-1 mx-0 px-0 text-center text-col">
+                            <span>Session active</span><br>
+                            {% if item.status == 'active' %}
+                                <a href="{% url 'active_sessions' %}" class="small">Join session</a>
+                            {% endif %}
+                        </div>
+                        <div class="col-1 mx-0 px-0 text-link"></div>
+                        <div class="col-1 mx-0 px-0 text-center text-col">
+                            <span>Session expired</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- MOBILE -->
+                <div class="col-12 d-block d-md-none">
+                    <div class="row">
+                        <div class="col-2 text-center offset-3">
+                            <div class="chain-points"></div>
+                            <div class="chain-link chain-link-vertical"></div>
+                            <div class="chain-points"></div>
+                            <div class="chain-link chain-link-vertical{% if not item.status == 'active' and not item.status == 'expired' %} inactive-link{% endif %}"></div>
+                            <div class="chain-points{% if not item.status == 'active' and not item.status == 'expired' %} inactive-point{% endif %}"></div>
+                            <div class="chain-link chain-link-vertical{% if not item.status == 'expired' %} inactive-link{% endif %}"></div>
+                            <div class="chain-points{% if not item.status == 'expired' %} inactive-point{% endif %}"></div>
+                        </div>
+                        <div class="col-6 ps-0">
+                            <div class="link-text-vertical">Order placed</div>
+                            <div class="link-text-vertical">Awaiting session</div>
+                            <div class="link-text-vertical">
+                                <span>Session active</span><br>
+                                {% if item.status == 'active' %}
+                                    <a href="{% url 'active_sessions' %}" class="small">Join session</a>
+                                {% endif %}
+                            </div>
+                            <div class="link-text-vertical">Session expired</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                a
-            </div>
-        </div>
-
-
-
+        {% endfor %}
     </div>
 {% endblock %}
