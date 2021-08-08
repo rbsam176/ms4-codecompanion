@@ -409,6 +409,10 @@ label.datepicker-disabled:hover {
     top: 35px;
 }
 
+#jitsi_container {
+    height: calc(100vh - 230px);
+}
+
 footer {
     color: white;
 }

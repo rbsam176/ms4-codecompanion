@@ -24,8 +24,8 @@
                         {% if not item.status == 'active' and not item.status == 'expired' %}
                             <p>Come back on <strong>{{ item.lineitem.start_datetime }}</strong> to start your session with <strong>{{ item.lineitem.companion_selected }}</strong></p>
                         {% elif item.status == 'active' %}
-                            <p>Your session started with <strong>{{ item.lineitem.companion_selected }}</strong> at <strong>{{ item.lineitem.start_datetime }}</strong>.</p>
-                            <a class="btn-hero" href="{% url 'active_sessions' %}">Join session</a>
+                            <p>Your session starting at <strong>{{ item.lineitem.start_datetime }}</strong> with <strong>{{ item.lineitem.companion_selected }}</strong> has begun.</p>
+                            <a class="btn-hero rounded my-4" href="{% url 'active_sessions' order_number=order %}">Join session</a>
                         {% else %}
                             <p>Your session with <strong>{{ item.lineitem.companion_selected }}</strong> at <br>
                                 <strong>{{ item.lineitem.start_datetime }}</strong> has expired.</p>
@@ -68,7 +68,7 @@
                         <div class="col-1 mx-0 px-0 text-center text-col">
                             <span>Session active</span><br>
                             {% if item.status == 'active' %}
-                                <a href="{% url 'active_sessions' %}" class="small">Join session</a>
+                                <a href="{% url 'active_sessions' order_number=order %}" class="small">Join session</a>
                             {% endif %}
                         </div>
                         <div class="col-1 mx-0 px-0 text-link"></div>
@@ -95,7 +95,7 @@
                             <div class="link-text-vertical">
                                 <span>Session active</span><br>
                                 {% if item.status == 'active' %}
-                                    <a href="{% url 'active_sessions' %}" class="small">Join session</a>
+                                    <a href="{% url 'active_sessions' order_number=order %}" class="small">Join session</a>
                                 {% endif %}
                             </div>
                             <div class="link-text-vertical">Session expired</div>

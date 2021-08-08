@@ -53,8 +53,8 @@
                                 <span class="no-hover badge bg-warning">{{ item.status|title }}</span>
                             </div>
                         {% elif item.status == 'active' %}
-                            <div class="col-12">
-                                <a class="btn-hero" href="{% url 'active_sessions' %}">Join session</a>
+                            <div class="col-12 my-4">
+                                <a class="btn-hero rounded" href="{% url 'active_sessions' order_number=item.session.order %}">Join session </a>
                             </div>
                         {% endif %}
                     </div>
@@ -87,7 +87,7 @@
                             </div>
                         {% elif item.status == 'active' %}
                             <div class="col-3">
-                                <a class="btn-hero" href="{% url 'active_sessions' %}">Join session</a>
+                                <a class="btn-hero rounded" href="{% url 'active_sessions' order_number=item.session.order %}">Join session</a>
                             </div>
                         {% endif %}
                     </div>

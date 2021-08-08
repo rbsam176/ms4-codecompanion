@@ -8,6 +8,11 @@
                 <a href="{% url 'profile' %}"><i class="float-start fas fa-arrow-left"></i></a>
                 <h2>Active Sessions</h2>
                 <span class="fs-6 text-muted">Logged in as <i>{{ account }}</i></span> <a href="{% url 'account_logout' %}">(Not you?)</a>
+                <p class="my-4">
+                    <strong>{{ session.service }}</strong> with <i>{{ session.companion_selected }}</i><br>
+                    <strong>Start time:</strong> {{ session.start_datetime }}<br>
+                    <strong>End time:</strong> {{ session.end_datetime }}
+                </p>
             </div>
         </div>
     </header>
@@ -17,10 +22,54 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                {% for x in orders %}
-                    {{ x }}
-                {% endfor %}
+                <div id="jitsi_container"></div>
+                <div class="text-center mt-4">
+                    <a class="small" href="https://meet.jit.si/meet/CodeCompanion-{{ order.order_number }}">
+                    <span class="text-muted">Problem with the call?</span><br>
+                    Click here to join directly with Jitsi.
+                    </a>
+                </div>
             </div>
         </div>
     </div>
+    
+{% endblock %}
+
+{% block postloadjs %}
+    <script src='https://meet.jit.si/external_api.js'></script>
+    <script type="text/javascript">
+
+        var first_name = '{{ account.first_name }}'
+        var last_name = '{{ account.last_name }}'
+        var username = '{{ request.user }}'
+        var displayName;
+        if (first_name && last_name){
+            displayName = first_name + " " + last_name
+        } else {
+            displayName = username
+        }
+        var order_number = '{{ order.order_number }}'
+        var subject = "{{ session.service }} with {{ session.companion_selected }}"
+
+        const domain = 'meet.jit.si';
+        const options = {
+            roomName: `CodeCompanion-${order_number}`,
+            width: '100%',
+            height: '100%',
+            parentNode: document.querySelector('#jitsi_container'),
+            userInfo: {
+                displayName: `${displayName}`,
+            },
+        };
+        
+        try {
+            const api = new JitsiMeetExternalAPI(domain, options);
+            api.executeCommand('subject', `${subject}`);
+        } catch(err) {
+            $("#jitsi_container").append(`
+                <p class="text-center">An error occured. ${err}</p>
+            `)
+        }
+
+    </script>
 {% endblock %}
