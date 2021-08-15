@@ -61,11 +61,9 @@ def profile(request):
 
 	sessions = []
 
-	timezone = pytz.timezone("UTC")
-
 	for order in orders:
 		for session in OrderLineItem.objects.filter(order=order):
-			current_ts = timezone.localize(datetime.datetime.now())
+			current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
 
 			if current_ts < session.start_datetime:
 				status = 'upcoming'
@@ -79,6 +77,7 @@ def profile(request):
 				'session': session,
 				'status': status
 				})
+
 
 	template = 'profiles/profile.html'
 
@@ -113,9 +112,8 @@ def order_history(request, order_number):
 
 	sessions = []
 
-	timezone = pytz.timezone("UTC")
-
-	current_ts = timezone.localize(datetime.datetime.now())
+	# current_ts = datetime.datetime.now(tz=pytz.timezone('Europe/London'))
+	current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
 
 	for item in lineitems:
 		if current_ts < item.start_datetime:

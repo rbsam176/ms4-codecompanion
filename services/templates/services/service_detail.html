@@ -71,6 +71,9 @@
                                 <div class="input-group my-2">
                                     <select id="time-selection" name="time-selection" class="form-select" disabled required>
                                         <option value="" disabled selected>Select time</option>
+                                        {% for slot in slots %}
+                                            <option value="{{ slot.start_time|time:"H:i" }}">{{ slot.start_time|time:"H:i" }} - {{ slot.end_time|time:"H:i" }}</option>
+                                        {% endfor %}
                                     </select>
                                 </div>
                                 <button id="addToBag" class="btn btn-hero rounded mt-2" type="submit">Add to bag</button>
@@ -88,6 +91,8 @@
     {{ block.super }}
     
     <script>
+
+
         // SET GLOBAL VARIABLE WITH AJAX RESPONSE
         var availability_data;
 
@@ -97,12 +102,13 @@
             $("#time-selection").attr('disabled', true)
             $("#companionSelection").children('option').remove()
             $("#companionSelection").append(`<option value="" disabled selected>Select companion</option>`)
-            $("#time-selection").children('option').remove()
-            $("#time-selection").append(`<option value="" disabled selected>Select time</option>`)
+            // $("#time-selection").children('option').remove()
+            // $("#time-selection").append(`<option value="" disabled selected>Select time</option>`)
 
             // CAPTURE DATA AND SERVICE SELECTION
             var date = $(this).val()
             var service = "{{ service }}"
+
             // SEND TO SERVER
             // SOURCE: https://simpleisbetterthancomplex.com/tutorial/2016/08/29/how-to-work-with-ajax-request-with-django.html
             $.ajax(
@@ -135,11 +141,55 @@
 
         $("#companionSelection").on('input', function(){
             $("#time-selection").attr('disabled', false)
+            // $("#time-selection").empty()
             for (companion in availability_data){
                 if (availability_data[companion][$(this).val()]){
                     time_slots = Object.values(availability_data[companion][$(this).val()])
                     for (slot in time_slots){
-                        $("#time-selection").append(`<option value="${time_slots[slot]['start_time']}">${time_slots[slot]['start_time']} - ${time_slots[slot]['end_time']}</option>`)
+
+                        // LOCAL DISPLAYED TIME
+                        var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
+                        var end_ts_local = new Date(time_slots[slot]['end_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
+                        // var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString('en-GB', { timeZone: 'Europe/London' }).replace(/(.*)\D\d+/, '$1')
+                        // var end_ts_local = new Date(time_slots[slot]['end_time']).toLocaleTimeString('en-GB', { timeZone: 'Europe/London' }).replace(/(.*)\D\d+/, '$1')
+
+
+                        $("#time-selection > option").each(function() {
+                            if (this.value == new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')){
+                                if (time_slots[slot]['status'] == 'disabled'){
+                                    $(this).attr('disabled', true)
+                                }
+                            }
+                        })
+
+
+                        // UTC TIME UNFORMATTED
+                        var utc_unformatted = new Date(time_slots[slot]['start_time'])
+
+                        // UTC TIME HOUR FORMATTING
+                        var start_hour = utc_unformatted.getUTCHours()
+                        if (start_hour.toString().length < 2){
+                            start_hour = "0" + start_hour
+                        }
+                        // UTC TIME MINUTES FORMATTING
+                        var start_minutes = utc_unformatted.getUTCMinutes()
+                        if (start_minutes.toString().length < 2){
+                            start_minutes = "0" + start_minutes
+                        }
+                        // UTC TIME FORMATTED
+                        var start_ts = start_hour + ":" + start_minutes
+
+                        // ADDED DISABLED STATE
+                        if (time_slots[slot]['status'] == 'disabled'){   
+                            var status = time_slots[slot]['status']
+                        } else {
+                            var status = ''
+                        }
+                        // UTC AS THE VALUE
+                        // $("#time-selection").append(`<option ${status} value="${start_ts}">${start_ts_local} - ${end_ts_local}</option>`)
+                        // LOCAL AS THE VALUE
+                        // $("#time-selection").append(`<option ${status} value="${start_ts_local}">${start_ts_local} - ${end_ts_local}</option>`)
+
                     }
                 }
             }

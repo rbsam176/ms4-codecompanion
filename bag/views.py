@@ -67,7 +67,6 @@ def remove_from_bag(request, service_name):
         bag = request.session.get('bag', {})
         for item in bag[name]:
             if item['start_datetime'] == start_datetime and item['companion_selected'] == companion:
-                print('if trigerred')
                 if len(bag[name]) == 1:
                     del bag[name]
                 elif len(bag[name]) > 1:

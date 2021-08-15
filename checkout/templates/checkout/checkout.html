@@ -32,14 +32,11 @@
                         <tr>
                             <td class="p-3 w-25">
                                 <p class="my-0">{{ item.service_name }}</p>
-                                <small>with <strong>{{ item.companion_selected }}</strong> on <strong>{{ item.start_datetime }}</strong></small>
+                                <small>with <strong>{{ item.companion_selected }}</strong> on <strong>{{ item.start_datetime|date:"D d M, g:iA" }}</strong></small>
                             </td>
                             <td class="p-3 w-25">
                                 <p class="my-0"><strong>{{ item.service_price }}</strong> {{ item.service_price_type.get_friendly_name }}</p>
                             </td>
-                            <!-- <td class="p-3 w-25">
-                                <p class="my-0">{{ item.quantity }}</p>
-                            </td> -->
                         </tr>
                     {% endfor %}
                 </div>

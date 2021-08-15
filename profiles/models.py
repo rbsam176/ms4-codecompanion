@@ -16,6 +16,7 @@ class CompanionProfile(models.Model):
     wednesday_available = models.BooleanField(default=False)
     thursday_available = models.BooleanField(default=False)
     friday_available = models.BooleanField(default=False)
+    bio = models.TextField(blank=True)
 
     def __str__(self):
         return self.user.username

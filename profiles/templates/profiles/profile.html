@@ -3,9 +3,9 @@
 
 {% block page_header %}
     <header class="container">
-        <div class="row">
+        <div class="row mb-4">
             <div class="col-12 text-center my-4">
-                <h2>Profile</h2>
+                <h2>Your Profile</h2>
                 <span class="fs-6 text-muted">Logged in as <i>{{ account }}</i></span> <a href="{% url 'account_logout' %}">(Not you?)</a>
                 {% if request.user.is_superuser %}
                     <br><a href="{% url 'admin_controls' %}" class="btn btn-hero my-3">Admin Controls</a>
@@ -22,31 +22,69 @@
                 <form action="{% url 'profile' %}" method="POST" id="profile-update-form">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-12 col-md-6 mb-5">
+                            <h4 class="pb-2">Update account</h4>
                             {{ user_form|crispy }}
-                            <button>Update Info</button>
+                            <!-- <button class="btn btn-hero">Save Changes</button> -->
                         </div>
-                        <div class="col-6">
+                        <div class="col-12 col-md-6">
+                            <h3>Are you an experienced developer?</h3>
+                            <h5 class="text-muted">You could help the next generation of developers by joining Code Companion!</h5>
+                            <h6>All you need to do is</h6>
+                            <ul class="mb-4">
+                                <li>Tick the box below to convert your account to a Companion account</li>
+                                <li>Tell us what services you are experienced in</li>
+                                <li>Submit your availability</li>
+                                <li>Ensure your account email address matches your PayPal account so we can transfer funds to you after you complete each session</li>
+                            </ul>
+                            <hr>
                             {{ companion_check|crispy }}
-                            {{ companion_availability|crispy }}
-                            <button>Update Info</button>
+                            <!-- <button class="btn btn-hero">Convert account</button> -->
                         </div>
                     </div>
+                    <div class="row mt-4">
+                        <div class="col-12 col-lg-6">
+                            {{ companion_availability.bio|as_crispy_field }}
+                        </div>
+                        <div class="col-12 col-lg-6 px-3">
+                            <div class="row">
+                                <div class="col-12 col-md-6 my-4">
+                                    <h4 class="pb-2">Your availability</h4>
+                                    {{ companion_availability.monday_available|as_crispy_field }}
+                                    {{ companion_availability.tuesday_available|as_crispy_field }}
+                                    {{ companion_availability.wednesday_available|as_crispy_field }}
+                                    {{ companion_availability.thursday_available|as_crispy_field }}
+                                    {{ companion_availability.friday_available|as_crispy_field }}
+                                </div>
+                                <div class="col-12 col-md-6 my-4">
+                                    <h4 class="pb-2">Services offered</h4>
+                                    {{ companion_availability.peer_programming_offered|as_crispy_field }}
+                                    {{ companion_availability.code_review_offered|as_crispy_field }}
+                                    {{ companion_availability.troubleshooting_offered|as_crispy_field }}
+                                    {{ companion_availability.whiteboarding_session_offered|as_crispy_field }}
+                                    {{ companion_availability.interview_prep_offered|as_crispy_field }}
+                                    {{ companion_availability.deployment_assist_offered|as_crispy_field }}
+                                </div>
+                                <!-- <button type="submit" class="btn btn-hero mx-2">Submit changes to Companion profile</button> -->
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-hero mx-2 mb-4">Save changes</button>
                 </form>
             </div>
         </div>
 
         <div class="my-4">
             <h4 class="m-0">Your upcoming sessions{% if sessions|length > 0 %} <span class="text-muted">({{ sessions|length }}){% endif %}</span></h4>
-            <small class="text-muted">Check back here when your session is about to begin.</small>
+            {% if sessions|length > 0 %}<small class="text-muted">Check back here when your session is about to begin.</small>{% endif %}
         </div>
         <!-- MOBILE UPCOMING SESSIONS -->
         {% if sessions|length > 0 %}
-            <div class="container d-block d-sm-none">
+            <div class="container d-block d-md-none">
                 {% for item in sessions %}
                     <div class="row mobile-table-container my-2">
                         <div class="col-12"><strong>{{ item.session.service }}</strong></div>
-                        <div class="col-12">{{ item.session.start_datetime }}</div>
+                        <div class="col-12">{{ item.session.start_datetime|date:"D d M, g:iA" }}</div>
                         <div class="col-12">with <i>{{ item.session.companion_selected }}</i></div>
                         {% if item.status == 'upcoming' %}
                             <div class="col-12">
@@ -61,7 +99,7 @@
                 {% endfor %}
             </div>
             <!-- DESKTOP UPCOMING SESSIONS -->
-            <div class="container d-none d-sm-block">
+            <div class="container d-none d-md-block">
                 <div class="row my-4 border-bottom">
                     <div class="col-3">
                         <h5>Service</h5>
@@ -79,8 +117,8 @@
                 {% for item in sessions %}
                     <div class="row">
                         <div class="col-3">{{ item.session.service }}</div>
-                        <div class="col-3">{{ item.session.start_datetime }}</div>
                         <div class="col-3">{{ item.session.companion_selected }}</div>
+                        <div class="col-3">{{ item.session.start_datetime|date:"D d M, g:iA" }}</div>
                         {% if item.status == 'upcoming' %}
                             <div class="col-3">
                                 <span class="no-hover badge bg-warning">{{ item.status|title }}</span>
@@ -113,7 +151,7 @@
                     </div>
                     <div class="col-12 pb-4">
                         <span>Ordered on</span><br>
-                        {{ order.date }}
+                        {{ order.date|date:"d M Y, g:iA" }}
                     </div>
                     <div class="col-12">
                         <ul class="list-unstyled border-top">
@@ -122,7 +160,7 @@
                                     <div>
                                         - <strong>{{ item.service.name }}</strong><br>
                                         with <i>{{ item.companion_selected }}</i> on<br>
-                                        <i>{{ item.start_datetime }}</i>
+                                        <i>{{ item.start_datetime|date:"D d M, g:iA" }}</i>
                                     </div>
                                 </li>
                             {% endfor %}
@@ -153,14 +191,14 @@
                 <div class="row" {% if item.status == 'active' %}class="table-success"{% endif %}>
                     {% for order in orders %}
                         <div class="col-3"><a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:16 }}</a></div>
-                        <div class="col-3">{{ order.date }}</div>
+                        <div class="col-3">{{ order.date|date:"d M Y, g:iA" }}</div>
                         <div class="col-3">
                             <ul class="list-unstyled">
                                 {% for item in order.lineitems.all %}
                                     <li>
                                         <p>- <strong>{{ item.service.name }}</strong><br>
                                         with <i>{{ item.companion_selected }}</i> on<br>
-                                        <i>{{ item.start_datetime }}</i></p>
+                                        <i>{{ item.start_datetime|date:"D d M, g:iA" }}</i></p>
                                     </li>
                                 {% endfor %}
                             </ul>

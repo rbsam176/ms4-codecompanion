@@ -28,6 +28,7 @@ def cache_checkout_data(request):
                 of the page.')
         return HttpResponse(content=e, status=400)
 
+
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
@@ -50,6 +51,7 @@ def checkout(request):
             for x in bag.keys():
                 if len(bag[x]) > 1:
                     for y in bag[x]:
+
                         try:
                             y['companion_selected'] = User.objects.get(username=y['companion_selected'])
                         except User.DoesNotExist:
@@ -90,10 +92,9 @@ def checkout(request):
                         )
                         order.delete()
                         return redirect(reverse('view_bag'))
-            print('start')
-            print(flattened)
-            print('end')
+
             for x in flattened:
+
                 order_line_item = OrderLineItem(
                     service=x['service'],
                     companion_selected=x['companion_selected'],

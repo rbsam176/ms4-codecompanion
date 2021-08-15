@@ -29,13 +29,14 @@
                                 <tr>
                                     <td class="p-3 w-25">
                                         <p>{{ item.service_name }}</p>
-                                        <small>with <strong>{{ item.companion_selected }}</strong> on <strong>{{ item.start_datetime }}</strong></small>
+                                        <small>with <strong>{{ item.companion_selected }}</strong> on <strong>{{ item.start_datetime|date:"D d M, g:iA" }}<br></strong></small>
                                     </td>
                                     <td class="p-3 w-25">
                                         <p class="my-0"><strong>{{ item.service_price }}</strong> {{ item.service_price_type.get_friendly_name }}</p>
                                     </td>
                                     <td class="p-3 w-25">
-                                        <a class="remove-item text-danger" id="delete_{{ item.service_name }}_{{ item.start_datetime }}_{{ item.companion_selected }}"><small>Delete</small>
+                                        <!-- 2021-08-16 09:00:00 -->
+                                        <a class="remove-item text-danger" id="delete_{{ item.service_name }}_{{ item.start_datetime|date:'Y-m-d H:i:s' }}_{{ item.companion_selected }}"><small>Delete</small>
                                     </td>
                                 </tr>
                             {% endfor %}

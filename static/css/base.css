@@ -413,6 +413,14 @@ label.datepicker-disabled:hover {
     height: calc(100vh - 230px);
 }
 
+input[type='checkbox'].convert-toggle {
+    /* background-color: red; */
+}
+
+.convert-toggle + label {
+    /* background-color: yellow; */
+}
+
 footer {
     color: white;
 }

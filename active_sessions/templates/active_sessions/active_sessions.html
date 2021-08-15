@@ -10,8 +10,8 @@
                 <span class="fs-6 text-muted">Logged in as <i>{{ account }}</i></span> <a href="{% url 'account_logout' %}">(Not you?)</a>
                 <p class="my-4">
                     <strong>{{ session.service }}</strong> with <i>{{ session.companion_selected }}</i><br>
-                    <strong>Start time:</strong> {{ session.start_datetime }}<br>
-                    <strong>End time:</strong> {{ session.end_datetime }}
+                    <strong>Start time:</strong> {{ session.start_datetime|date:"g:iA" }}<br>
+                    <strong>End time:</strong> {{ session.end_datetime|date:"g:iA" }}
                 </p>
             </div>
         </div>
