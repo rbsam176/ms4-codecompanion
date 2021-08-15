@@ -1,6 +1,8 @@
 from django import forms
 from .models import UserProfile, CompanionProfile
 from django.contrib.auth.models import User
+import datetime
+import pytz
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -28,8 +30,24 @@ class UserProfileForm(forms.ModelForm):
         for field in self.fields:
             if '_offered' in field:
                 self.fields[field].label = field.replace('_offered', '').replace('_', ' ').capitalize()
-            if '_available' in field:
-                self.fields[field].label = field.replace('_available', '').capitalize()
+            # if '_available' in field:
+                # self.fields[field].label = field.replace('_available', '').capitalize()
+        today = datetime.datetime.now(tz=pytz.timezone('UTC'))
+
+        next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
+        self.fields['monday_available'].label = next_monday.strftime("%a %d %b")
+
+        next_tuesday = next_monday + datetime.timedelta(days=+1)
+        self.fields['tuesday_available'].label = next_tuesday.strftime("%a %d %b")
+
+        next_wednesday = next_tuesday + datetime.timedelta(days=+1)
+        self.fields['wednesday_available'].label = next_wednesday.strftime("%a %d %b")
+
+        next_thursday = next_wednesday + datetime.timedelta(days=+1)
+        self.fields['thursday_available'].label = next_thursday.strftime("%a %d %b")
+
+        next_friday = next_thursday + datetime.timedelta(days=+1)
+        self.fields['friday_available'].label = next_friday.strftime("%a %d %b")
 
 class CompanionCheck(forms.ModelForm):
     class Meta:

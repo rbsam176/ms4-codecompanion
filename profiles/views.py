@@ -64,6 +64,8 @@ def profile(request):
 	for order in orders:
 		for session in OrderLineItem.objects.filter(order=order):
 			current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
+			# SECONDS BETWEEN CURRENT TIME AND START TIME
+			seconds_until = (session.start_datetime - current_ts).total_seconds()
 
 			if current_ts < session.start_datetime:
 				status = 'upcoming'
@@ -71,7 +73,7 @@ def profile(request):
 				'session': session,
 				'status': status
 				})
-			if current_ts == session.start_datetime or current_ts > session.start_datetime and current_ts < session.end_datetime:
+			if current_ts == session.start_datetime or seconds_until < 300 or current_ts > session.start_datetime and current_ts < session.end_datetime:
 				status = 'active'
 				sessions.append({
 				'session': session,
@@ -110,19 +112,28 @@ def order_history(request, order_number):
 
 	lineitems = OrderLineItem.objects.filter(order=order)
 
+	current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
+
 	sessions = []
 
 	# current_ts = datetime.datetime.now(tz=pytz.timezone('Europe/London'))
 	current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
 
 	for item in lineitems:
+		# SECONDS BETWEEN CURRENT TIME AND START TIME
+		seconds_until = (item.start_datetime - current_ts).total_seconds()
+
+		print(seconds_until)
+
+		
 		if current_ts < item.start_datetime:
 			status = 'upcoming'
-		elif current_ts == item.start_datetime or current_ts > item.start_datetime and current_ts < item.end_datetime:
+		elif current_ts == item.start_datetime or seconds_until < 300 or current_ts > item.start_datetime and current_ts < item.end_datetime:
 			status = 'active'
 		else:
 			status = 'expired'
 
+		print(status)
 		sessions.append({
 			'lineitem': item,
 			'status': status

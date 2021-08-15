@@ -20,8 +20,11 @@ def active_sessions(request, order_number):
     # CHECK FOR ACTIVE SESSIONS
     lineitems = OrderLineItem.objects.filter(order=order)
     session = None
-    timezone = pytz.timezone("UTC")
-    current_ts = timezone.localize(datetime.datetime.now())
+
+    # timezone = pytz.timezone("UTC")
+    # current_ts = timezone.localize(datetime.datetime.now())
+    current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
+    
     for item in lineitems:
         seconds_until = (item.start_datetime - current_ts).total_seconds()
         # IF WITHIN 5 MIN OF SESSION START TIME, OR CURRENT TIME IS START TIME, OR CURRENT TIME IS BETWEEN START AND END TIME

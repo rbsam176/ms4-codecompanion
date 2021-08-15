@@ -91,6 +91,15 @@ def companion_availability_check(request):
 									slot['status'] = 'disabled'
 							else:
 								slot['status'] = 'disabled'
+						
+
+				# DISABLE START TIMES EARLIER THAN CURRENT UTC TIME
+				if slot['start_time'] <= datetime.datetime.utcnow().replace(tzinfo=pytz.utc):
+					if "status" in slot:
+						if slot['status'] != 'disabled':
+							slot['status'] = 'disabled'
+					else:
+						slot['status'] = 'disabled'
 
 			return available_slots
 
