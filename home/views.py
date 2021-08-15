@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.db.models import Q
 from services.models import Service
 from faq.models import FaqEntry
+from profiles.models import CompanionProfile
 
 def index(request):
 	""" A view to return the index page and top 4 faq """
@@ -11,6 +12,7 @@ def index(request):
 		'faq_ordered': faq_ordered,
 	}
 	return render(request, 'home/index.html', context)
+
 
 def search(request):
 	""" A view to return the search page """
@@ -34,3 +36,14 @@ def search(request):
 	}
 
 	return render(request, 'home/search.html', context)
+
+
+def companions(request):
+	""" A view to return the list of companions page """
+	companions = CompanionProfile.objects.all()
+
+	context = {
+	'companions': companions,
+	}
+
+	return render(request, 'home/companions.html', context)

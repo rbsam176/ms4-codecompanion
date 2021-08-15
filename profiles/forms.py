@@ -14,6 +14,8 @@ class UserForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['required'] = True
         self.fields['email'].label = "Email Address*"
+        self.fields['first_name'].widget.attrs['required'] = True
+        self.fields['last_name'].widget.attrs['required'] = True
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -33,6 +35,8 @@ class UserProfileForm(forms.ModelForm):
             # if '_available' in field:
                 # self.fields[field].label = field.replace('_available', '').capitalize()
         today = datetime.datetime.now(tz=pytz.timezone('UTC'))
+
+        # SOURCE: https://stackoverflow.com/questions/8801084/how-to-calculate-next-friday/8801540
 
         next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
         self.fields['monday_available'].label = next_monday.strftime("%a %d %b")

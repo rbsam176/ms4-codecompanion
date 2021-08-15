@@ -21,6 +21,7 @@ class CompanionProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+
 class UserProfile(models.Model):
     """ A user profile model for customer accounts """
     user = models.OneToOneField(User, on_delete=models.CASCADE)

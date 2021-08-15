@@ -63,6 +63,7 @@ def companion_availability_check(request):
 
 
 		def check_availability(companion, date):
+			# SOURCE https://stackoverflow.com/questions/4668619/how-do-i-filter-query-objects-by-date-range-in-django
 			companion_orders = OrderLineItem.objects.filter(companion_selected=companion).filter(start_datetime__gte=date)
 			available_slots = generateTimeSlots(service, date)
 

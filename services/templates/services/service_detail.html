@@ -148,6 +148,7 @@
                     for (slot in time_slots){
 
                         // LOCAL DISPLAYED TIME
+                        // SOURCE: https://stackoverflow.com/questions/21298035/how-to-get-localetime-without-seconds-in-javascript
                         var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
                         var end_ts_local = new Date(time_slots[slot]['end_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
                         // var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString('en-GB', { timeZone: 'Europe/London' }).replace(/(.*)\D\d+/, '$1')
