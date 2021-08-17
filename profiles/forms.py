@@ -20,20 +20,22 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = CompanionProfile
-        exclude = ['user']
+        # exclude = ['user']
+        exclude = ['user', 'peer_programming_offered', 'code_review_offered', 'troubleshooting_offered', 'whiteboarding_session_offered', 'interview_prep_offered', 'deployment_assist_offered']
     
+
     def __init__(self, *args, **kwargs):
         """ Sets custom labels/placeholders """
         super().__init__(*args, **kwargs)
         # BIO
         self.fields['bio'].label = "Your bio"
         self.fields['bio'].widget.attrs['placeholder'] = "Write a little about yourself and your professional experience so students can determine if you would be the best fit for them."
+        
         # AVAILABILTY & SERVICES CUSTOM LABELS
-        for field in self.fields:
-            if '_offered' in field:
-                self.fields[field].label = field.replace('_offered', '').replace('_', ' ').capitalize()
-            # if '_available' in field:
-                # self.fields[field].label = field.replace('_available', '').capitalize()
+        # for field in self.fields:
+        #     if '_offered' in field:
+        #         self.fields[field].label = field.replace('_offered', '').replace('_', ' ').capitalize()
+
         today = datetime.datetime.now(tz=pytz.timezone('UTC'))
 
         # SOURCE: https://stackoverflow.com/questions/8801084/how-to-calculate-next-friday/8801540

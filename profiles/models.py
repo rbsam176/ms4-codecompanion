@@ -21,6 +21,11 @@ class CompanionProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+    
+    def full_name(self):
+        full_name = self.user.first_name + " " + self.user.last_name
+        return full_name
+
 
 class UserProfile(models.Model):
     """ A user profile model for customer accounts """

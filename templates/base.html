@@ -180,6 +180,9 @@
         }
         var toastElList = [].slice.call(document.querySelectorAll('.toast'))
         var toastList = toastElList.map(function (toastEl) {
+          if ($(toastEl).hasClass('warning')){
+            option['delay'] = 5000
+          }
           return new bootstrap.Toast(toastEl, option).show()
         })
       </script>

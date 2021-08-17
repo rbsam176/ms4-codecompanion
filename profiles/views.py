@@ -7,6 +7,7 @@ from .forms import UserProfileForm, UserForm, CompanionCheck
 from .models import UserProfile, CompanionProfile
 
 from checkout.models import Order, OrderLineItem
+from services.models import Service
 
 import datetime
 import pytz
@@ -19,10 +20,15 @@ def profile(request):
 	# user accounts
 	account = get_object_or_404(User, username=request.user)
 	profile = get_object_or_404(UserProfile, user=request.user)
+	companion_profile = get_object_or_404(CompanionProfile, user=request.user)
 	
 	# forms
 	user_form = UserForm(request.POST or None, instance=account) # allauth standard
 	companion_check = CompanionCheck(request.POST or None, instance=profile) # custom user with companion boolean
+
+	companion_services = []
+	for service in Service.objects.filter(companion=companion_profile):
+		companion_services.append(service)
 
 	# post logic
 	if request.method == 'POST':
@@ -33,14 +39,46 @@ def profile(request):
 			if request.POST.get('is_companion'):
 				print('is companion enabled')
 				try:
-					companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+					# companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+
+					# LIST OF ALL SERVICES
+					all_services = Service.objects.all()
+					# LIST OF ALL SERVICES CHECKED ON FORM SUBMISSION
+					services_checked = []
+					for service in request.POST.getlist('service_offered'):
+						services_checked.append(get_object_or_404(Service, name=service))
+
+					# DEFINE EMPTY MESSAGE
+					pre_existing_message = None
+
+					# ADD/REMOVE COMPANION FROM SERVICE OBJECT
+					for service in all_services:
+						# ADD
+						if service in services_checked and service not in companion_services:
+							service_obj = get_object_or_404(Service, name=service)
+							service_obj.companion.add(companion_profile)
+							companion_services.append(service_obj)
+						# REMOVE
+						if service in companion_services and service not in services_checked:
+							service.companion.remove(companion_profile)
+							companion_services.remove(service)
+							# CHECK IF COMPANION HAS UPCOMING SESSIONS BOOKED FOR THIS SERVICE
+							now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+							pre_existing = len(OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now).filter(service=service))
+							# IF THEY DO, DEFINE WARNING MESSAGE
+							if pre_existing > 0:
+								plural = 's' if pre_existing > 1 else ''
+								pre_existing_message = f'You have {pre_existing} {service} session{plural} coming up that you will still be liable for. Please contact us to discuss cancelling these sessions.'
+
 					companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
 					if companion_availability.is_valid():
 						companion_availability.save()
-						messages.success(request, 'Availability updated successfully')
-					pass
+						messages.success(request, 'Account updated successfully')
+						# IF COMPANION IS UNCHECKING SERVICE AND HAS UPCOMING SESSIONS
+						if pre_existing_message:
+							messages.warning(request, pre_existing_message)
 				except:
-					# convert user to companion
+					# CONVERT USER TO COMPANION
 					new_companion = CompanionProfile(user=account)
 					new_companion.save()
 					messages.success(request, 'Converted profile to be companion')
@@ -93,6 +131,7 @@ def profile(request):
 			'companion_check': companion_check,
 			'orders': orders,
 			'sessions': sessions,
+			'companion_services': companion_services,
 		}
 	else:
 		context = {
@@ -101,6 +140,7 @@ def profile(request):
 			'companion_check': companion_check,
 			'orders': orders,
 			'sessions': sessions,
+			'companion_services': companion_services,
 		}
 
 	return render(request, template, context)

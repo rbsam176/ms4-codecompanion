@@ -59,12 +59,12 @@
                                 </div>
                                 <div class="col-12 col-md-6 my-4">
                                     <h4 class="pb-2">Services offered</h4>
-                                    {{ companion_availability.peer_programming_offered|as_crispy_field }}
-                                    {{ companion_availability.code_review_offered|as_crispy_field }}
-                                    {{ companion_availability.troubleshooting_offered|as_crispy_field }}
-                                    {{ companion_availability.whiteboarding_session_offered|as_crispy_field }}
-                                    {{ companion_availability.interview_prep_offered|as_crispy_field }}
-                                    {{ companion_availability.deployment_assist_offered|as_crispy_field }}
+                                    {% for service in services %}
+                                        <div class="form-check mb-3">
+                                            <input id="{{ service.endpoint }}" value="{{ service }}" name="service_offered" class="form-check-input" type="checkbox"{% if service in companion_services %} checked{% endif %}>
+                                            <label for="{{ service.endpoint }}" class="form-check-label">{{ service }}</label>
+                                        </div>
+                                    {% endfor %}
                                 </div>
                                 <!-- <button type="submit" class="btn btn-hero mx-2">Submit changes to Companion profile</button> -->
                             </div>

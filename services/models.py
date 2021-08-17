@@ -1,3 +1,4 @@
+from profiles.models import CompanionProfile
 from django.db import models
 
 class PriceType(models.Model):
@@ -9,6 +10,7 @@ class PriceType(models.Model):
 
     def get_friendly_name(self):
         return self.friendly_name
+
 
 class Service(models.Model):
     """ A model to represent every service offered """
@@ -23,6 +25,7 @@ class Service(models.Model):
     bullet_point_2 = models.CharField(max_length=254, null=True, blank=True)
     bullet_point_3 = models.CharField(max_length=254, null=True, blank=True)
     bullet_point_4 = models.CharField(max_length=254, null=True, blank=True)
+    companion = models.ManyToManyField(CompanionProfile)
 
     def get_icon(self):
         return self.icon

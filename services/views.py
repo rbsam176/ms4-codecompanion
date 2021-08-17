@@ -117,6 +117,7 @@ def companion_availability_check(request):
 		if len(companion_match) == 1:
 			companion = User.objects.get(id=companion_match[0])
 			username = companion.username
+			# username = CompanionProfile.objects.get(id=companion_match[0]).full_name()
 			if len(check_availability(companion, dt)) > 0:
 				available_companions.append({str(username): check_availability(companion, dt)})
 
