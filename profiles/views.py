@@ -103,7 +103,7 @@ def profile(request):
 		for session in OrderLineItem.objects.filter(order=order):
 			current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
 			# SECONDS BETWEEN CURRENT TIME AND START TIME
-			seconds_until = (session.start_datetime - current_ts).total_seconds()
+			seconds_until = (current_ts - session.start_datetime).total_seconds()
 
 			if current_ts < session.start_datetime:
 				status = 'upcoming'
@@ -111,12 +111,14 @@ def profile(request):
 				'session': session,
 				'status': status
 				})
+
 			if current_ts == session.start_datetime or seconds_until < 300 or current_ts > session.start_datetime and current_ts < session.end_datetime:
 				status = 'active'
 				sessions.append({
 				'session': session,
 				'status': status
 				})
+
 
 
 	template = 'profiles/profile.html'
@@ -161,7 +163,7 @@ def order_history(request, order_number):
 
 	for item in lineitems:
 		# SECONDS BETWEEN CURRENT TIME AND START TIME
-		seconds_until = (item.start_datetime - current_ts).total_seconds()
+		seconds_until = (current_ts - item.start_datetime).total_seconds()
 
 		print(seconds_until)
 

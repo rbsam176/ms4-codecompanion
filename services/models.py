@@ -33,6 +33,9 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
+    def get_companions(self):
+        return self.companion
+
     def get_endpoint(self):
         return self.get_endpoint
 

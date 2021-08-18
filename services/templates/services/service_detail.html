@@ -92,7 +92,6 @@
     
     <script>
 
-
         // SET GLOBAL VARIABLE WITH AJAX RESPONSE
         var availability_data;
 
@@ -102,8 +101,6 @@
             $("#time-selection").attr('disabled', true)
             $("#companionSelection").children('option').remove()
             $("#companionSelection").append(`<option value="" disabled selected>Select companion</option>`)
-            // $("#time-selection").children('option').remove()
-            // $("#time-selection").append(`<option value="" disabled selected>Select time</option>`)
 
             // CAPTURE DATA AND SERVICE SELECTION
             var date = $(this).val()
@@ -140,8 +137,11 @@
         })
 
         $("#companionSelection").on('input', function(){
+            // RESET TIME SELECTION STATE
             $("#time-selection").attr('disabled', false)
-            // $("#time-selection").empty()
+            $("#time-selection").prop('selectedIndex', 0)
+
+            // POPULATE VALUES ACCORDINGLY
             for (companion in availability_data){
                 if (availability_data[companion][$(this).val()]){
                     time_slots = Object.values(availability_data[companion][$(this).val()])
@@ -157,8 +157,15 @@
 
                         $("#time-selection > option").each(function() {
                             if (this.value == new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')){
-                                if (time_slots[slot]['status'] == 'disabled'){
+                                $(this).attr('disabled', false)
+                                $(this).css('display', 'block')
+                                if (time_slots[slot]['status'] == 'clash'){
                                     $(this).attr('disabled', true)
+                                } else if (time_slots[slot]['status'] == 'expired'){
+                                    $(this).css('display', 'none')
+                                    console.log('hi')
+                                } else {
+                                    $(this).attr('disabled', false)
                                 }
                             }
                         })

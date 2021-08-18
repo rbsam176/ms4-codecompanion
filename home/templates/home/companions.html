@@ -25,62 +25,16 @@
                             <p>{{ companion.bio }}</p>
                             <div class="row gy-2 w-100">
                                 <h6>Services</h6>
+                                {% for service in services %}
                                 <div class="col-6">
-                                    {% if companion.peer_programming_offered %}
-                                        <i class="fas text-success fa-check-circle"></i>
+                                    {% if companion in service.companion.all %}
+                                        <i class="fas text-success fa-check-circle"></i> <span>{{ service }}</span>
                                     {% else %}
-                                        <i class="far fa-times-circle"></i>
+                                        <span class="text-muted"><i class="far fa-times-circle"></i> {{ service }}</span>
                                     {% endif %}
-                                    <span {% if not companion.peer_programming_offered %} class="text-muted"{% endif %}>Peer Programming</span>
                                 </div>
-
-                                <div class="col-6">
-                                    {% if companion.code_review_offered %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.code_review_offered %} class="text-muted"{% endif %}>Code Review</span>
-                                </div>
-
-                                <div class="col-6">
-                                    {% if companion.troubleshooting_offered %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.troubleshooting_offered %} class="text-muted"{% endif %}>Troubleshooting</span>
-                                </div>
-
-                                <div class="col-6">
-                                    {% if companion.whiteboarding_session_offered %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.whiteboarding_session_offered %} class="text-muted"{% endif %}>Whiteboarding Session</span>
-                                </div>
-
-                                <div class="col-6">
-                                    {% if companion.interview_prep_offered %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.interview_prep_offered %} class="text-muted"{% endif %}>Interview Prep</span>
-                                </div>
-
-                                <div class="col-6">
-                                    {% if companion.deployment_assist_offered %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.deployment_assist_offered %} class="text-muted"{% endif %}>Deployment Assist</span>
-                                </div>
-
-                                <hr>
-
+                                {% endfor %}
+                                <hr class="my-3">
                                 <h6>Availability</h6>
 
                                 <div class="col-6">
