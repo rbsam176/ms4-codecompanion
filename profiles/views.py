@@ -122,10 +122,14 @@ def profile(request):
 		companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
 
 		# GET COMPANION UPCOMING SESSIONS
-		now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+		# now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+		now = datetime.datetime.now(tz=pytz.timezone('UTC'))
+		print(now)
+		print(OrderLineItem.objects.filter(companion_selected=companion_profile).values('start_datetime'))
 		companion_sessions = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now)
 		companion_sessions_formatted = []
 		for session in companion_sessions:
+			print(session)
 			# SECONDS BETWEEN CURRENT TIME AND START TIME
 			seconds_until = (session.start_datetime - now).total_seconds()
 
@@ -143,6 +147,7 @@ def profile(request):
 				'status': status
 				})
 		
+		print(companion_sessions_formatted)
 
 		context = {
 			'account': account,

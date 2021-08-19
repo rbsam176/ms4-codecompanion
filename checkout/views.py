@@ -37,9 +37,10 @@ def checkout(request):
         bag = request.session.get('bag', {})
 
         form_data = {
-            'email_address': request.POST['email_address'],
+            'notes': request.POST['notes'],
         }
         order_form = OrderForm(form_data)
+        # order_form = OrderForm()
         if order_form.is_valid():
             order = order_form.save(commit=False)
             pid = request.POST.get('client_secret').split('_secret')[0]
@@ -150,7 +151,7 @@ def checkout_success(request, order_number):
         order.save()
 
     messages.success(request, f'Order successfull! Your order number is {order_number}. \
-        An email will be sent to {order.email_address} with confirmation')
+        A confirmation email will be sent.')
 
     if 'bag' in request.session:
         del request.session['bag']

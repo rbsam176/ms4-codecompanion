@@ -97,6 +97,17 @@
                                 <a class="btn-hero rounded" href="{% url 'active_sessions' order_number=item.session.order %}">Join session </a>
                             </div>
                         {% endif %}
+                        {% if item.session.order.notes %}
+                            <button class="btn-none" data-bs-toggle="collapse" href="#x{{ item.session.order.order_number|slice:':10' }}" role="button" aria-expanded="false" aria-controls="x{{ item.session.order.order_number|slice:':10' }}">
+                                <i class="fs-5 far fa-clipboard ps-2 pt-3"></i>
+                            </button>
+                        {% endif %}
+                        <div class="collapse mt-2" id="x{{ item.session.order.order_number|slice:':10' }}">
+                            <div class="card card-body">
+                                <strong>Notes from student: </strong>
+                                {{ item.session.order.notes }}
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -117,9 +128,15 @@
                     </div>
                 </div>
                 {% for item in companion_sessions %}
-                    <div class="row my-4">
+                    <div class="row py-3">
                         <div class="col-3">{{ item.session.service }}</div>
-                        <div class="col-3">{{ item.session.order.user_profile }}</div>
+                        <div class="col-3">{{ item.session.order.user_profile }}
+                            {% if item.session.order.notes %}
+                                <button class="btn-none" data-bs-toggle="collapse" href="#x{{ item.session.order.order_number|slice:':10' }}" role="button" aria-expanded="false" aria-controls="x{{ item.session.order.order_number|slice:':10' }}">
+                                    <i class="fs-5 far fa-clipboard ps-2"></i>
+                                </button>
+                            {% endif %}
+                        </div>
                         <div class="col-3">{{ item.session.start_datetime|date:"D d M, g:iA" }}</div>
                         {% if item.status == 'upcoming' %}
                             <div class="col-3">
@@ -130,6 +147,12 @@
                                 <a class="btn-hero rounded" href="{% url 'active_sessions' order_number=item.session.order %}">Join session</a>
                             </div>
                         {% endif %}
+                    </div>
+                    <div class="collapse row" id="x{{ item.session.order.order_number|slice:':10' }}">
+                        <div class="card card-body col-12">
+                            <strong>Notes from student: </strong>
+                            {{ item.session.order.notes }}
+                        </div>
                     </div>
                 {% endfor %}
             </div>

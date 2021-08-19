@@ -16,11 +16,11 @@ class Service(models.Model):
     """ A model to represent every service offered """
     icon = models.CharField(max_length=254)
     name = models.CharField(max_length=254, primary_key=True)
-    endpoint = models.CharField(max_length=254)
+    endpoint = models.CharField(max_length=254, null=True)
     description = models.CharField(max_length=254)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     price_type = models.ForeignKey('PriceType', null=True, on_delete=models.SET_NULL)
-    duration = models.DecimalField(max_digits=6, decimal_places=2)
+    duration = models.DecimalField(max_digits=6, decimal_places=2, null=True)
     bullet_point_1 = models.CharField(max_length=254, null=True, blank=True)
     bullet_point_2 = models.CharField(max_length=254, null=True, blank=True)
     bullet_point_3 = models.CharField(max_length=254, null=True, blank=True)

@@ -53,12 +53,13 @@ form.addEventListener('submit', function(ev) {
     };
     var url = '/checkout/cache_checkout_data/';
 
+
     $.post(url, postData).done(function(){
         stripe.confirmCardPayment(clientSecret, {
             payment_method: {
                 card: card,
             },
-            receipt_email: $.trim(form.email_address.value),
+            receipt_email: $.trim(form.user_email.value),
         }).then(function(result) {
             if (result.error) {
                 var errorDiv = document.getElementById('card-errors');

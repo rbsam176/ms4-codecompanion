@@ -251,6 +251,11 @@ a {
     border-image-source: linear-gradient(to left, rgba(171,29,224,1), rgba(0,180,251,1));
 }
 
+.btn-none {
+    border: none;
+    background: none;
+}
+
 .stay-together {
     display: inline-block;
 }

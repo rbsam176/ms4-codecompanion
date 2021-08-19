@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['2d31fcc057d2.ngrok.io', '127.0.0.1', 'codecompanionapp.herokuapp.com']
+ALLOWED_HOSTS = ['9ea37a0c7fe0.ngrok.io', '127.0.0.1', 'codecompanionapp.herokuapp.com']
 
 # Application definition
 
