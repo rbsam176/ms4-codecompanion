@@ -18,6 +18,7 @@ def search(request):
 	""" A view to return the search page """
 
 	services = Service.objects.all()
+	companions = CompanionProfile.objects.all()
 	query = None
 
 	if request.GET:
@@ -27,12 +28,16 @@ def search(request):
 				messages.error(request, "You didn't enter a search query")
 				return redirect(reverse('home'))
 			
-			queries = Q(name__icontains=query)
-			services = services.filter(queries)
+			services_query = Q(name__icontains=query)
+			services_results = services.filter(services_query)
+
+			companions_query = Q(user__username__icontains=query)
+			companions_results = companions.filter(companions_query)
 	
 	context = {
-		'services': services,
 		'search_term': query,
+		'services_results': services_results,
+		'companions_results': companions_results,
 	}
 
 	return render(request, 'home/search.html', context)

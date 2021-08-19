@@ -5,15 +5,58 @@
     <header class="container">
         <div class="row">
             <div class="col-12 text-center my-4">
-                <h2>Search results</h2>
+                <h2>Search results for "{{ search_term }}"</h2>
             </div>
         </div>
     </header>
 {% endblock %}
 
 {% block content %}
-    {{ search_term }}
-    {% for service in services %}
-        {{ service }}
-    {% endfor %}
+    <div class="container">
+        <div class="row mt-4 mb-2 py-2 border-bottom">
+            <div class="col-12">
+                <h4 class="d-inline pe-2">Services</h4> <span class="text-muted">{{ services_results|length }} result</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {% if services_results|length > 0 %}
+                    <ul class="list-unstyled">
+                        {% for service in services_results %}
+                            <li>
+                                <a class="fs-5" href="{% url 'service_detail' service.endpoint %}">{{ service }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No services matched your search query.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row mt-4 mb-2 py-2 border-bottom">
+            <div class="col-12">
+                <h4 class="d-inline pe-2">Companions</h4> <span class="text-muted">{{ companions_results|length }} result{% if companions|length != 1 %}s{% endif %}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {% if companions_results|length > 0 %}
+                    <ul class="list-unstyled">
+                        {% for companion in companions_results %}
+                            <li>
+                                <a class="fs-5" href="{% url 'companions' %}#{{ companion }}">{{ companion }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No companions matched your search query.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
