@@ -95,37 +95,55 @@ def profile(request):
 					messages.success(request, 'Updated profile successfully')
 					pass
 
+	# GET UPCOMING SESSIONS
 	orders = profile.orders.all().order_by('-date')
-
 	sessions = []
-
 	for order in orders:
 		for session in OrderLineItem.objects.filter(order=order):
 			current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
 			# SECONDS BETWEEN CURRENT TIME AND START TIME
-			seconds_until = (current_ts - session.start_datetime).total_seconds()
-
-			if current_ts < session.start_datetime:
+			seconds_until = (session.start_datetime - current_ts).total_seconds()
+			if current_ts < session.start_datetime and seconds_until > 300:
 				status = 'upcoming'
 				sessions.append({
 				'session': session,
 				'status': status
 				})
-
-			if current_ts == session.start_datetime or seconds_until < 300 or current_ts > session.start_datetime and current_ts < session.end_datetime:
+			if current_ts == session.start_datetime or seconds_until < 300 and seconds_until > 0 or current_ts > session.start_datetime and current_ts < session.end_datetime:
 				status = 'active'
 				sessions.append({
 				'session': session,
 				'status': status
 				})
-
-
-
+	
 	template = 'profiles/profile.html'
 
 	if profile.is_companion:
-		companion_profile = get_object_or_404(CompanionProfile, user=request.user)
 		companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
+
+		# GET COMPANION UPCOMING SESSIONS
+		now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+		companion_sessions = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now)
+		companion_sessions_formatted = []
+		for session in companion_sessions:
+			# SECONDS BETWEEN CURRENT TIME AND START TIME
+			seconds_until = (session.start_datetime - now).total_seconds()
+
+			if now < session.start_datetime and seconds_until > 300:
+				status = 'upcoming'
+				companion_sessions_formatted.append({
+				'session': session,
+				'status': status
+				})
+
+			if now == session.start_datetime or seconds_until < 300 and seconds_until > 0 or now > session.start_datetime and now < session.end_datetime:
+				status = 'active'
+				companion_sessions_formatted.append({
+				'session': session,
+				'status': status
+				})
+		
+
 		context = {
 			'account': account,
 			'user_form': user_form,
@@ -134,6 +152,7 @@ def profile(request):
 			'orders': orders,
 			'sessions': sessions,
 			'companion_services': companion_services,
+			'companion_sessions': companion_sessions_formatted,
 		}
 	else:
 		context = {
@@ -163,14 +182,11 @@ def order_history(request, order_number):
 
 	for item in lineitems:
 		# SECONDS BETWEEN CURRENT TIME AND START TIME
-		seconds_until = (current_ts - item.start_datetime).total_seconds()
+		seconds_until = (item.start_datetime - current_ts).total_seconds()
 
-		print(seconds_until)
-
-		
-		if current_ts < item.start_datetime:
+		if current_ts < item.start_datetime and seconds_until > 300:
 			status = 'upcoming'
-		elif current_ts == item.start_datetime or seconds_until < 300 or current_ts > item.start_datetime and current_ts < item.end_datetime:
+		elif current_ts == item.start_datetime or seconds_until < 300 and seconds_until > 0 or current_ts > item.start_datetime and current_ts < item.end_datetime:
 			status = 'active'
 		else:
 			status = 'expired'

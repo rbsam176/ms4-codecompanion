@@ -75,8 +75,79 @@
             </div>
         </div>
 
-        <div class="my-4">
-            <h4 class="m-0">Your upcoming sessions{% if sessions|length > 0 %} <span class="text-muted">({{ sessions|length }}){% endif %}</span></h4>
+
+        <div class="my-5">
+            <h4 class="m-0">Your upcoming sessions <span class="text-muted">(as companion){% if companion_sessions|length > 0 %} ({{ companion_sessions|length }}){% endif %}</span></h4>
+            {% if companion_sessions|length > 0 %}<small class="text-muted">Check back here when your session is about to begin.</small>{% endif %}
+        </div>
+        <!-- MOBILE UPCOMING COMPANION SESSIONS -->
+        {% if companion_sessions|length > 0 %} 
+            <div class="container d-block d-md-none">
+                {% for item in companion_sessions %}
+                    <div class="row mobile-table-container my-2">
+                        <div class="col-12"><strong>{{ item.session.service }}</strong></div>
+                        <div class="col-12">{{ item.session.start_datetime|date:"D d M, g:iA" }}</div>
+                        <div class="col-12">with <i>{{ item.session.companion_selected }}</i></div>
+                        {% if item.status == 'upcoming' %}
+                            <div class="col-12">
+                                <span class="no-hover badge bg-warning">{{ item.status|title }}</span>
+                            </div>
+                        {% elif item.status == 'active' %}
+                            <div class="col-12 my-4">
+                                <a class="btn-hero rounded" href="{% url 'active_sessions' order_number=item.session.order %}">Join session </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- DESKTOP UPCOMING COMPANION SESSIONS -->
+            <div class="container d-none d-md-block">
+                <div class="row my-4 border-bottom">
+                    <div class="col-3">
+                        <h5>Service</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Student</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Start date</h5>
+                    </div>
+                    <div class="col-3">
+                        <h5>Status</h5>
+                    </div>
+                </div>
+                {% for item in companion_sessions %}
+                    <div class="row my-4">
+                        <div class="col-3">{{ item.session.service }}</div>
+                        <div class="col-3">{{ item.session.order.user_profile }}</div>
+                        <div class="col-3">{{ item.session.start_datetime|date:"D d M, g:iA" }}</div>
+                        {% if item.status == 'upcoming' %}
+                            <div class="col-3">
+                                <span class="no-hover badge bg-warning">{{ item.status|title }}</span>
+                            </div>
+                        {% elif item.status == 'active' %}
+                            <div class="col-3">
+                                <a class="btn-hero rounded" href="{% url 'active_sessions' order_number=item.session.order %}">Join session</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="h5 py-5 text-muted">No upcoming or active sessions.</div>
+                </div>
+            </div>
+        {% endif %}
+
+
+
+
+
+
+        <div class="my-5">
+            <h4 class="m-0">Your upcoming sessions{% if sessions|length > 0 %} <span class="text-muted">({{ sessions|length }})</span>{% endif %}</h4>
             {% if sessions|length > 0 %}<small class="text-muted">Check back here when your session is about to begin.</small>{% endif %}
         </div>
         <!-- MOBILE UPCOMING SESSIONS -->
@@ -116,7 +187,7 @@
                     </div>
                 </div>
                 {% for item in sessions %}
-                    <div class="row">
+                    <div class="row my-4">
                         <div class="col-3">{{ item.session.service }}</div>
                         <div class="col-3">{{ item.session.companion_selected }}</div>
                         <div class="col-3">{{ item.session.start_datetime|date:"D d M, g:iA" }}</div>
@@ -140,7 +211,7 @@
             </div>
         {% endif %}
 
-        <h4 class="my-4 pt-5">Order history{% if orders|length > 0 %} <span class="text-muted">({{ orders|length }}){% endif %}</span></h4>
+        <h4 class="my-4 pt-5">Order history{% if orders|length > 0 %} <span class="text-muted">({{ orders|length }})</span>{% endif %}</h4>
         {% if orders|length > 0 %}
             <!-- MOBILE ORDER HISTORY -->
             <div class="container d-block d-md-none">
@@ -156,15 +227,19 @@
                     </div>
                     <div class="col-12">
                         <ul class="list-unstyled border-top">
-                            {% for item in order.lineitems.all %}
-                                <li class="border-bottom py-4 my-2">
-                                    <div>
-                                        - <strong>{{ item.service.name }}</strong><br>
-                                        with <i>{{ item.companion_selected }}</i> on<br>
-                                        <i>{{ item.start_datetime|date:"D d M, g:iA" }}</i>
-                                    </div>
-                                </li>
-                            {% endfor %}
+                            {% if order.lineitems.all|length > 0 %}
+                                {% for item in order.lineitems.all %}
+                                    <li class="border-bottom py-4 my-2">
+                                        <div>
+                                            - <strong>{{ item.service.name }}</strong><br>
+                                            with <i>{{ item.companion_selected }}</i> on<br>
+                                            <i>{{ item.start_datetime|date:"D d M, g:iA" }}</i>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li><i>This service is no longer being offered. Please contact us for support.</i></li>
+                            {% endif %}
                         </ul>
                     </div>
                     <div class="col-12 mb-2">
@@ -195,13 +270,17 @@
                         <div class="col-3">{{ order.date|date:"d M Y, g:iA" }}</div>
                         <div class="col-3">
                             <ul class="list-unstyled">
-                                {% for item in order.lineitems.all %}
-                                    <li>
-                                        <p>- <strong>{{ item.service.name }}</strong><br>
-                                        with <i>{{ item.companion_selected }}</i> on<br>
-                                        <i>{{ item.start_datetime|date:"D d M, g:iA" }}</i></p>
-                                    </li>
-                                {% endfor %}
+                                {% if order.lineitems.all|length > 0 %}
+                                    {% for item in order.lineitems.all %}
+                                        <li>
+                                            <p>- <strong>{{ item.service.name }}</strong><br>
+                                            with <i>{{ item.companion_selected }}</i> on<br>
+                                            <i>{{ item.start_datetime|date:"D d M, g:iA" }}</i></p>
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li><i>This service is no longer being offered. Please contact us for support.</i></li>
+                                {% endif %}
                             </ul>
                         </div>
                         <div class="col-3">£{{ order.order_total }}</div>

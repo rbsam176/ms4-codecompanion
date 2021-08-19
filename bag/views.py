@@ -15,6 +15,7 @@ def add_to_bag(request, service_name):
     service = Service.objects.get(pk=service_name)
 
     companion_selected = request.POST.get('companionSelection')
+
     date = request.POST.get('date-selection')
     start_time = request.POST.get('time-selection')
     datetime_combined = f'{date} {start_time}:00.000000'
@@ -24,6 +25,12 @@ def add_to_bag(request, service_name):
 
     redirect_url = request.POST.get('redirect_url')
     bag = request.session.get('bag', {})
+
+    # PREVENTS USER BOOKING SESSION WITH THEMSELF
+    if str(companion_selected) == str(request.user):
+        print('same')
+        messages.error(request, 'You are not able to book a session with yourself')
+        return redirect(redirect_url)
 
     order = {
         'start_datetime': str(start_datetime),
@@ -38,7 +45,7 @@ def add_to_bag(request, service_name):
             # if the order has the same companion and datetime, fail
             if x['start_datetime'] == str(start_datetime) and x['companion_selected'] == companion_selected:
                 print('already exists')
-                messages.error(request, f'Already added "{service.name}" at this time to your bag')
+                messages.error(request, f'Already added "{service.name}" at the selected time to your bag')
                 return redirect(redirect_url)
             # else add to existing orders list 
             else:

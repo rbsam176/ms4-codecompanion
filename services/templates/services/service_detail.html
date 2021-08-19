@@ -92,6 +92,8 @@
     
     <script>
 
+        var user = '{{ request.user }}'
+
         // SET GLOBAL VARIABLE WITH AJAX RESPONSE
         var availability_data;
 
@@ -121,9 +123,9 @@
                     if (data.available_companions.length > 0) {
                         // ASSIGN RETURNED DATA TO GLOBAL VARIABLE
                         availability_data = data.available_companions
-                        // REMOVE DISABLED STATE
-                        $("#companionSelection").attr('disabled', false)
                         for (companion in data.available_companions){
+                            // REMOVE DISABLED STATE
+                            $("#companionSelection").attr('disabled', false)
                             available_companion = Object.keys(data.available_companions[companion])
                             // ADD COMPANIONS TO DROPDOWN
                             $("#companionSelection").append(`<option>${available_companion}</option>`)
@@ -163,7 +165,6 @@
                                     $(this).attr('disabled', true)
                                 } else if (time_slots[slot]['status'] == 'expired'){
                                     $(this).css('display', 'none')
-                                    console.log('hi')
                                 } else {
                                     $(this).attr('disabled', false)
                                 }

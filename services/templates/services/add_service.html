@@ -19,8 +19,8 @@
                 <form method="POST" action="{% url 'add_service' %}" class="form mb-2">
                     {% csrf_token %}
                     {{ form | crispy }}
-                    <a href="{% url 'compare_services' %}">Cancel</a>
-                    <button type="submit">Add Service</button>
+                    <a class="pe-4" href="{% url 'compare_services' %}">Cancel</a>
+                    <button class="btn btn-hero" type="submit">Add Service</button>
                 </form>
             </div>
         </div>
