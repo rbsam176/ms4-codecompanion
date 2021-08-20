@@ -1,0 +1,32 @@
+{% for order in mobile %}
+    <div class="row mobile-table-container mb-4">
+        <div class="col-12 mt-2 pb-2">
+            <span>Order no.</span><br>
+            <a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:16 }}</a>
+        </div>
+        <div class="col-12 pb-4">
+            <span>Ordered on</span><br>
+            {{ order.date|date:"d M Y, g:iA" }}
+        </div>
+        <div class="col-12">
+            <ul class="list-unstyled border-top">
+                {% if order.lineitems.all|length > 0 %}
+                    {% for item in order.lineitems.all %}
+                        <li class="border-bottom py-4 my-2">
+                            <div>
+                                - <strong>{{ item.service.name }}</strong><br>
+                                with <i>{{ item.companion_selected }}</i> on<br>
+                                <i>{{ item.start_datetime|date:"D d M, g:iA" }}</i>
+                            </div>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li><i>This service is no longer being offered. Please contact us for support.</i></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-12 mb-2">
+            Total: £{{ order.order_total }}
+        </div>
+    </div>
+{% endfor %}

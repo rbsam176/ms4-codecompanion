@@ -256,6 +256,22 @@ a {
     background: none;
 }
 
+#nextPage {
+    border: 1px dashed #777777;
+    padding: 10px;
+    width: 100%;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+#nextPage:hover {
+    background-color: white;
+}
+
+#nextPage:disabled:hover {
+    background: none;
+}
+
 .stay-together {
     display: inline-block;
 }

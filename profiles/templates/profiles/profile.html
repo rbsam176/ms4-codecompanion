@@ -234,10 +234,10 @@
             </div>
         {% endif %}
 
-        <h4 class="my-4 pt-5">Order history{% if orders|length > 0 %} <span class="text-muted">({{ orders|length }})</span>{% endif %}</h4>
+        <h4 class="my-4 pt-5">Order history{% if orders|length > 0 %} <span class="text-muted">({{ orders_length }} total)</span>{% endif %}</h4>
         {% if orders|length > 0 %}
             <!-- MOBILE ORDER HISTORY -->
-            <div class="container d-block d-md-none">
+            <div id="orderHistoryMobile" class="container d-block d-md-none">
                 {% for order in orders %}
                 <div class="row mobile-table-container mb-4">
                     <div class="col-12 mt-2 pb-2">
@@ -272,7 +272,7 @@
                 {% endfor %}
             </div>
             <!-- DESKTOP ORDER HISTORY -->
-            <div class="container d-none d-md-block">
+            <div id="orderHistoryDesktop" class="container d-none d-md-block">
                 <div class="row my-4 border-bottom">
                     <div class="col-3">
                         <h5>Order no.</h5>
@@ -287,8 +287,8 @@
                         <h5>Total</h5>
                     </div>
                 </div>
-                <div class="row" {% if item.status == 'active' %}class="table-success"{% endif %}>
-                    {% for order in orders %}
+                {% for order in orders %}
+                    <div class="row">
                         <div class="col-3"><a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:16 }}</a></div>
                         <div class="col-3">{{ order.date|date:"d M Y, g:iA" }}</div>
                         <div class="col-3">
@@ -307,8 +307,8 @@
                             </ul>
                         </div>
                         <div class="col-3">£{{ order.order_total }}</div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         {% else %}
             <div class="row">
@@ -317,6 +317,39 @@
                 </div>
             </div>
         {% endif %}
-    
+        {% if orders_length > 3 %}
+            <button id="nextPage" class="page1">Show more</button>
+        {% endif %}
     </div>
+{% endblock %}
+
+{% block postloadjs %}
+    <script type="application/javascript">
+        $("#nextPage").on('click', function(){
+            var page_num = $("#nextPage").attr('class').substring(4)
+            $.ajax(
+            {
+                type:"GET",
+                url: "/profile/ajax_pagination",
+                data:{
+                    page_num: page_num,
+                },
+                success: function( data ) 
+                {
+                    if (data.has_next == false){
+                        $("#nextPage").prop('disabled', true)
+                    }
+                    if (data.page_num){
+                        $("#nextPage").attr('class', `page${data.page_num}`)
+                        $("#orderHistoryDesktop").append(data.desktop)
+                        $("#orderHistoryMobile").append(data.mobile)
+                    }
+                },
+                error: function(e){
+                    alert("An error has occured retrieving your order history. Please contact us for support. ")
+                    console.log(e)
+                }
+            })
+        })
+    </script>
 {% endblock %}

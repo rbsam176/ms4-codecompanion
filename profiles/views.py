@@ -1,16 +1,49 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.http import JsonResponse, HttpResponse
+
+from django.core import serializers
 
 from django.contrib.auth.models import User
 from .forms import UserProfileForm, UserForm, CompanionCheck
 from .models import UserProfile, CompanionProfile
+
+from django.template.loader import render_to_string
 
 from checkout.models import Order, OrderLineItem
 from services.models import Service
 
 import datetime
 import pytz
+
+
+def ajax_pagination(request):
+	profile = get_object_or_404(UserProfile, user=request.user)
+	orders = profile.orders.all().order_by('-date')
+	p = Paginator(orders, 3)
+
+	if request.method == 'GET':
+		if p.page(int(request.GET['page_num'])).has_next():
+			page_num = int(request.GET['page_num']) + 1
+			has_next = p.page(page_num).has_next()
+			desktop = render_to_string('profiles/orders_desktop.html', { 'desktop': p.page(page_num).object_list })
+			mobile = render_to_string('profiles/orders_mobile.html', { 'mobile': p.page(page_num).object_list })
+
+			data = {
+				'desktop': desktop,
+				'mobile': mobile,
+				'page_num': page_num,
+				'has_next': has_next,
+			}
+		else:
+			page_num = None
+			data = {
+				'page_num': page_num,
+			}
+
+		return JsonResponse(data, safe=False)
 
 
 @login_required
@@ -118,14 +151,15 @@ def profile(request):
 	
 	template = 'profiles/profile.html'
 
+	p = Paginator(orders, 3)
+	page1 = p.page(1)
+
 	if profile.is_companion:
 		companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
 
 		# GET COMPANION UPCOMING SESSIONS
 		# now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
 		now = datetime.datetime.now(tz=pytz.timezone('UTC'))
-		print(now)
-		print(OrderLineItem.objects.filter(companion_selected=companion_profile).values('start_datetime'))
 		companion_sessions = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now)
 		companion_sessions_formatted = []
 		for session in companion_sessions:
@@ -147,14 +181,13 @@ def profile(request):
 				'status': status
 				})
 		
-		print(companion_sessions_formatted)
-
 		context = {
 			'account': account,
 			'user_form': user_form,
 			'companion_availability': companion_availability,
 			'companion_check': companion_check,
-			'orders': orders,
+			'orders': page1,
+			'orders_length': p.count,
 			'sessions': sessions,
 			'companion_services': companion_services,
 			'companion_sessions': companion_sessions_formatted,
@@ -164,7 +197,8 @@ def profile(request):
 			'account': account,
 			'user_form': user_form,
 			'companion_check': companion_check,
-			'orders': orders,
+			'orders': page1,
+			'orders_length': p.count,
 			'sessions': sessions,
 			'companion_services': companion_services,
 		}

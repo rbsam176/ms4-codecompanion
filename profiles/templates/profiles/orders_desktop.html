@@ -1,0 +1,22 @@
+{% for order in desktop %}
+    <div class="row">
+        <div class="col-3"><a href="{% url 'order_history' order.order_number %}" title="{{ order.order_number }}">{{ order.order_number|truncatechars:16 }}</a></div>
+        <div class="col-3">{{ order.date|date:"d M Y, g:iA" }}</div>
+        <div class="col-3">
+            <ul class="list-unstyled">
+                {% if order.lineitems.all|length > 0 %}
+                    {% for item in order.lineitems.all %}
+                        <li>
+                            <p>- <strong>{{ item.service.name }}</strong><br>
+                            with <i>{{ item.companion_selected }}</i> on<br>
+                            <i>{{ item.start_datetime|date:"D d M, g:iA" }}</i></p>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li><i>This service is no longer being offered. Please contact us for support.</i></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-3">£{{ order.order_total }}</div>
+    </div>
+{% endfor %}
