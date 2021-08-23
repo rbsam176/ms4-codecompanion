@@ -129,6 +129,14 @@ a {
     padding: 0px;
 }
 
+.bag-count, .fas.fa-shopping-basket {
+    color: #7308bb;
+}
+
+.bag-count:hover, .fas.fa-shopping-basket:hover {
+    color: rgba(171,29,224,1);
+}
+
 .nav-mobile-border {
     width: 100vw;
     margin-top: 3px;

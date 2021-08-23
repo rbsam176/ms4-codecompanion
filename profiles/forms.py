@@ -12,10 +12,11 @@ class UserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         """ Add asterisk to email field label and make it required """
         super().__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs['required'] = True
-        self.fields['email'].label = "Email Address*"
-        self.fields['first_name'].widget.attrs['required'] = True
-        self.fields['last_name'].widget.attrs['required'] = True
+
+        for field in self.fields:
+            self.fields[field].widget.attrs['required'] = True
+            self.fields[field].label = f'{self.fields[field].label} *'
+
 
 class UserProfileForm(forms.ModelForm):
     class Meta:

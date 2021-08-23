@@ -148,6 +148,12 @@ def profile(request):
 				'session': session,
 				'status': status
 				})
+
+	# print(sessions[0]['session'].start_datetime)
+	# print(sessions)
+	# print('***')
+	# print(sorted(sessions, key=lambda k: k['session'].start_datetime))
+	sessions = sorted(sessions, key=lambda k: k['session'].start_datetime)
 	
 	template = 'profiles/profile.html'
 
@@ -160,7 +166,7 @@ def profile(request):
 		# GET COMPANION UPCOMING SESSIONS
 		# now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
 		now = datetime.datetime.now(tz=pytz.timezone('UTC'))
-		companion_sessions = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now)
+		companion_sessions = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now).order_by('start_datetime')
 		companion_sessions_formatted = []
 		for session in companion_sessions:
 			print(session)

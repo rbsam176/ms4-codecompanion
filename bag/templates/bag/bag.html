@@ -16,39 +16,62 @@
         <div class="row">
             <div class="col text-center">
                 {% if bag_items %}
-                    <div class="table-responsive rounded">
-                        <table class="table table-sm table-borderless">
-                            <thead class="text-black">
-                                <tr>
-                                    <th scope="col">Service name</th>
-                                    <th scope="col">Price</th>
-                                </tr>
-                            </thead>
-
-                            {% for item in bag_items %}
-                                <tr>
-                                    <td class="p-3 w-25">
-                                        <p>{{ item.service_name }}</p>
-                                        <small>with <strong>{{ item.companion_selected }}</strong> on <strong>{{ item.start_datetime|date:"D d M, g:iA" }}<br></strong></small>
-                                    </td>
-                                    <td class="p-3 w-25">
-                                        <p class="my-0"><strong>{{ item.service_price }}</strong> {{ item.service_price_type.get_friendly_name }}</p>
-                                    </td>
-                                    <td class="p-3 w-25">
-                                        <!-- 2021-08-16 09:00:00 -->
-                                        <a class="remove-item text-danger" id="delete_{{ item.service_name }}_{{ item.start_datetime|date:'Y-m-d H:i:s' }}_{{ item.companion_selected }}"><small>Delete</small>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </table>
-                        <p>Total: {{ total }}</p>
-                        <a href="{% url 'checkout' %}">
-                            <span class="font-weight-bold">Complete Order</span>
-                            <span class="icon">
-                                <i class="fas fa-lock"></i>
-                            </span>
-                        </a>
+                    <!-- DESKTOP BAG VIEW -->
+                    <div class="container d-none d-md-block">
+                        <div class="row my-4 border-bottom">
+                            <div class="col-3">
+                                <h5>Service name</h5>
+                            </div>
+                            <div class="col-3">
+                                <h5>Start date</h5>
+                            </div>
+                            <div class="col-3">
+                                <h5>Price</h5>
+                            </div>
+                            <div class="col-3"></div>
+                        </div>
+                        {% for item in bag_items %}
+                            <div class="row my-4">
+                                <div class="col-3">{{ item.service_name }}<br>
+                                    <small>with <strong>{{ item.companion_selected }}</strong></small>
+                                </div>
+                                <div class="col-3">{{ item.start_datetime|date:"D d M, g:iA" }}</div>
+                                <div class="col-3">
+                                    <strong>£{{ item.service_price }}</strong><br>
+                                    {{ item.service_price_type.get_friendly_name }}
+                                </div>
+                                <div class="col-3">
+                                    <a class="remove-item text-danger" id="delete_{{ item.service_name }}_{{ item.start_datetime|date:'Y-m-d H:i:s' }}_{{ item.companion_selected }}">
+                                        <small>Delete</small>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
+                    <!-- MOBILE BAG VIEW -->
+                    <div class="container d-block d-md-none">
+                        {% for item in bag_items %}
+                            <div class="row mobile-table-container my-2">
+                                <div class="col-12"><strong>{{ item.service_name }}</strong></div>
+                                <div class="col-12">with <i>{{ item.companion_selected }}</i></div>
+                                <div class="col-12">{{ item.start_datetime|date:"D d M, g:iA" }}</div>
+                                <div class="col-12 my-3">
+                                    <strong>£{{ item.service_price }}</strong><br>
+                                    {{ item.service_price_type.get_friendly_name }}</i>
+                                </div>
+                                <div class="col-12">
+                                    <a class="remove-item text-danger" id="delete_{{ item.service_name }}_{{ item.start_datetime|date:'Y-m-d H:i:s' }}_{{ item.companion_selected }}">
+                                        <small>Delete</small>
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <p class="pt-4">Total cost: <strong>£{{ total }}</strong></p>
+                    <a class="btn btn-hero" href="{% url 'checkout' %}">
+                        Complete Order <i class=" ps-2 fas fa-lock"></i>
+                    </a>
                 {% else %}
                     <p class="lead mb-5">Your bag is empty.</p>
                     <span class="icon">

@@ -9,7 +9,10 @@
     <header class="container">
         <div class="row">
             <div class="col-12 text-center my-4">
-                <h2>Checkout</h2>
+                <span>
+                    <a href="{% url 'view_bag' %}"><i class="float-start fas fa-arrow-left"></i></a>
+                    <h2>Checkout</h2>
+                </span>
             </div>
         </div>
     </header>
@@ -20,30 +23,28 @@
         <div class="row">
             <div class="col-12 col-lg-6 order-lg-last mb-5">
                 <div class="row">
-                    <div class="col-7 offset-2">
+                    <div class="col-7">
                         <p class="mb-1 mt-0 small text-muted">Item</p>
                     </div>
-                    <div class="col-3 text-right">
+                    <div class="col-3 text-end">
                         <p class="mb-1 mt-0 small text-muted">Subtotal</p>
                     </div>
                 </div>
-                <div class="row">
-                    {% for item in bag_items %}
-                        <tr>
-                            <td class="p-3 w-25">
-                                <p class="my-0">{{ item.service_name }}</p>
-                                <small>with <strong>{{ item.companion_selected }}</strong> on <strong>{{ item.start_datetime|date:"D d M, g:iA" }}</strong></small>
-                            </td>
-                            <td class="p-3 w-25">
-                                <p class="my-0"><strong>{{ item.service_price }}</strong> {{ item.service_price_type.get_friendly_name }}</p>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </div>
+                {% for item in bag_items %}
+                    <div class="row">
+                        <div class="col-7">
+                            <p class="my-0">{{ item.service_name }}</p>
+                            <small>with <strong>{{ item.companion_selected }}</strong> on <strong>{{ item.start_datetime|date:"D d M, g:iA" }}</strong></small>
+                        </div>
+                        <div class="col-3 text-end">
+                            <strong>£{{ item.service_price }}</strong><br>
+                        </div>
+                    </div>
+                {% endfor %}
                 <hr>
                 <div class="row">
                     <div class="col-12">
-                        <p>Order Total: {{ total }}</p>
+                        <p>Order Total: <strong>£{{ total }}</strong></p>
                     </div>
                 </div>
             </div>
@@ -51,12 +52,12 @@
                 <p class="text-muted">Please fill out the form below to complete your order.</p>
                 <form action="{% url 'checkout' %}" method="POST" id="payment-form">
                     {% csrf_token %}
-                    <fieldset class="rounded px-3 mb-5">
+                    <fieldset class="rounded pe-3 mb-3">
                         <input id="user_email" type="hidden" value="{{ request.user.email }}">
                         {{ order_form.notes | as_crispy_field }}
                     </fieldset>
-                    <fieldset class="px-3">
-                        <legend class="fieldset-label small text-black px-2 w-auto">Payment</legend>
+                    <fieldset class="pe-3">
+                        <legend class="fieldset-label small ps-1 text-black w-auto">Payment</legend>
                         <!-- A Stripe card element will go here -->
                         <div class="mb-3" id="card-element"></div>
 
@@ -69,15 +70,15 @@
                             <span class="icon">
                                 <i class="fas fa-chevron-left"></i>
                             </span>
-                            <span class="font-weight-bold">Adjust Bag</span>
+                            <span class="font-weight-bold">Return to bag</span>
                         </a>
-                        <button id="submit-button" class="btn btn-black rounded-0">
+                        <button id="submit-button" class="btn btn-hero float-end">
                             <span class="font-weight-bold">Complete Order</span>
                             <span class="icon">
-                                <i class="fas fa-lock"></i>
+                                <i class="ps-2 fas fa-lock"></i>
                             </span>
                         </button>
-                        <p class="small text-danger my-0">
+                        <p class="small text-danger text-end my-4">
                             <span class="icon">
                                 <i class="fas fa-exclamation-circle"></i>
                             </span>

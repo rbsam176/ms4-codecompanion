@@ -9,9 +9,18 @@
     <header class="container">
         <div class="row">
             <div class="col-12 text-center my-4">
-                <h2>Thank You</h2>
-                <p>Your order information is below. A confirmation email has been sent.</strong></p>
-                <p>Your order number is {{ order.order_number }}</p>
+                <h2 class="pb-4">Thank you for your order!</h2>
+                <p>A confirmation email has been sent to {{ order.user_profile.user.email }}</strong></p>
+                <span class="fs-6 text-muted">Order number: {{ order }}</span><br>
+                <span class="fs-6 text-muted">Total spent: {{ order.order_total }}</span><br>
+                <span class="fs-6 text-muted">Ordered on: {{ order.date|date:"l d F Y, g:iA" }}</span>
+                <hr>
+                <h4 class="pt-4">Next steps</h4>
+                <p class="pb-4">On your profile page you will see this session listed under 'Upcoming Sessions'.<br>
+                    3 minutes before the session begins you will be able to access the virtual room where the session will take place.
+                </p>
+                <hr>
+                <h6 class="pt-4">Check out our <a href="{% url 'faq' %}">FAQ</a> if you have any questions before your session begins.</h6>
             </div>
         </div>
     </header>
