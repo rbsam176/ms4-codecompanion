@@ -6,7 +6,7 @@
 {% block page_header %}
     <header class="container">
         <div class="row">
-            <div class="col-12 text-center my-4">
+            <div class="col-12 text-center mt-4">
                 <h2>Book a <span class="hero-underline">{{ service }}</span>{% if 'Session' not in service.name %} session{% endif %}</h2>
                 {% if request.user.is_authenticated %}
                   {% if request.user.is_superuser %}
@@ -22,7 +22,7 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-6">
+            <div class="col-12 col-md-6 my-3">
                 <div class="card h-100 text-center p-4">
                     <div class="card-body">
                         <h3 class="mb-4"><i class="{{ service.icon }}"></i></h3>
@@ -47,7 +47,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-md-6 my-3">
                 <form class="form" action="{% url 'add_to_bag' service.name %}" method="POST">
                     {% csrf_token %}
                     <div class="col-12">

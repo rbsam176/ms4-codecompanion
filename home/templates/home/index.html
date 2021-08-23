@@ -10,14 +10,21 @@
             <div class="col-12 col-md-7">
                 <div id="hero" class="container d-flex">
                     <div class="row align-self-center">
-                        <h1 class="hero-text2"><span class="hero-underline">Boost</span> your learning with our experienced developer companions</h1>
-                        <form class="mt-4">
-                            <div class="input-group mb-3 signup-combo">
-                                <input id="hero-signup" type="text" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" autofocus required>
-                                <button id="hero-btn" class="btn btn-hero" type="button" id="button-addon2">Sign up now</button>
-                            </div>
-                        </form>
-                        <a href="#" class="text-muted sub-link">Interested in becoming a companion?</a>
+                        {% if not request.user.is_authenticated %}
+                            <h1 class="hero-text2"><span class="hero-underline">Boost</span> your learning with our experienced developer companions</h1>
+                            <form class="mt-4">
+                                <div class="input-group mb-3 signup-combo">
+                                    <input id="hero-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" autofocus required>
+                                    <a id="hero-btn" class="btn btn-hero signup-btn" type="button" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#hero-signup', this)">Sign up now</a>
+                                </div>
+                            </form>
+                            <a href="#" class="text-muted sub-link">Interested in becoming a companion?</a>
+                        {% else %}
+                        <div class="col">
+                            <h1 class="hero-text2 pb-2">Welcome back, <span class="hero-underline">{{ request.user }}</span></h1>
+                            <a class="btn btn-hero" href="{% url 'profile' %}" type="button">View profile</a>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -160,17 +167,41 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row pt-4">
-            <div class="col-12 text-center">
-                <h2>Advance yourself. Sign up for an account.</h2>
-                <form class="mt-4">
-                    <div class="input-group mb-3 signup-combo mx-auto">
-                        <input type="text" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" required>
-                        <button class="btn btn-hero" type="button" id="button-addon2">Sign up now</button>
-                    </div>
-                </form>
+    {% if not request.user.is_authenticated %}
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col-12 text-center">
+                    <h2>Advance yourself. Sign up for an account.</h2>
+                    <form class="mt-4">
+                        <div class="input-group mb-3 signup-combo mx-auto">
+                            <input id="footer-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" required>
+                            <a class="btn btn-hero" type="button" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#footer-signup', this)">Sign up now</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+{% endblock %}
+
+{% block postloadjs %}
+    <script type="application/javascript">
+
+        // GETS VALUE OF EMAIL INPUT AND ADDS TO URL OF SIGNUP
+        function passEmailSignup(event, input, button){
+            console.log($(input).val())
+            event.preventDefault()
+            if ($(input).val().length > 0) {
+                var url = $(button).attr('href')
+                if (url.substring(url.length - 1) == '/'){
+                    url = url.slice(0, -1)
+                }
+                var email = $(input).val()
+                location.href = url + "?email=" + email
+            } else {
+                location.href = $(button).attr('href')
+            }
+        }
+
+    </script>
 {% endblock %}

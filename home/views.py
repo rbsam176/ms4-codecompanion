@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.db.models import Q
 from services.models import Service
@@ -8,6 +8,7 @@ from profiles.models import CompanionProfile
 def index(request):
 	""" A view to return the index page and top 4 faq """
 	faq_ordered = FaqEntry.objects.all().order_by('-clickCount').values('clickCount', 'title', 'content')[:4]
+
 	context = {
 		'faq_ordered': faq_ordered,
 	}

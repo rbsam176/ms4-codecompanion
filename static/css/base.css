@@ -9,6 +9,10 @@ main {
     flex: 1;
 }
 
+.container.header-container {
+    margin-top: 100px;
+}
+
 header {
     margin-top: 100px;
 }
