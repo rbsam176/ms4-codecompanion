@@ -195,7 +195,6 @@ a {
 }
 
 .btn-hero {
-    background: rgb(171,29,224);
     background: linear-gradient(90deg, rgba(171,29,224,1) 0%, rgba(0,180,251,1) 100%);
     color: white;
     font-weight: 500;

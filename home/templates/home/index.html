@@ -15,10 +15,10 @@
                             <form class="mt-4">
                                 <div class="input-group mb-3 signup-combo">
                                     <input id="hero-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" autofocus required>
-                                    <a id="hero-btn" class="btn btn-hero signup-btn" type="button" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#hero-signup', this)">Sign up now</a>
+                                    <a id="hero-btn" class="btn btn-hero signup-btn" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#hero-signup', this)">Sign up now</a>
                                 </div>
                             </form>
-                            <a href="#" class="text-muted sub-link">Interested in becoming a companion?</a>
+                            <a data-bs-toggle="modal" href="#companionSignUpModal" role="button" class="text-muted">Interested in becoming a companion?</a>
                         {% else %}
                         <div class="col">
                             <h1 class="hero-text2 pb-2">Welcome back, <span class="hero-underline">{{ request.user }}</span></h1>
@@ -175,13 +175,44 @@
                     <form class="mt-4">
                         <div class="input-group mb-3 signup-combo mx-auto">
                             <input id="footer-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" required>
-                            <a class="btn btn-hero" type="button" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#footer-signup', this)">Sign up now</a>
+                            <a class="btn btn-hero" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#footer-signup', this)">Sign up now</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     {% endif %}
+
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#companionSignUpModal">
+    Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="companionSignUpModal" tabindex="-1" aria-labelledby="companionSignUpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="companionSignUpModalLabel">Join as a companion!</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <ul>
+                <li>Support the next generation of developers by sharing your expertise.</li>
+                <li>You get full control of your schedule, providing you with ultimate flexibility over when you can take sessions.</li>
+                <li>Earn 90% of the session cost, payable monthly via PayPal.</li>
+            </ul>
+            To become a Companion, sign up for an account using your PayPal email address, and on your Profile page tick the box to convert your account.
+        </div>
+        <div class="modal-footer">
+            <a type="button" href="{% url 'account_signup' %}" class="btn btn-hero">Sign Up</a>
+        </div>
+        </div>
+    </div>
+
+
+
 {% endblock %}
 
 {% block postloadjs %}
