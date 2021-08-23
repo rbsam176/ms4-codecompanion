@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_title %} - FAQ{% endblock %}
+
 {% block page_header %}
     <header class="container">
         <div class="row">
@@ -16,6 +18,7 @@
         <div class="row">
             <div class="col-12">
                 {% for header in faq_categories_names %}
+                    <a id="{{ header }}" class="anchor"></a>
                     <div class="row my-4">
                         <h4>{{ header|title }}
                         {% if request.user.is_superuser %}

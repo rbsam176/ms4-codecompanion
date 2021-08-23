@@ -149,15 +149,16 @@
             {% for service in services %}
               <a href="{% url 'service_detail' service.endpoint %}" class="text-muted mb-1 sub-link">{{ service }}</a><br>
             {% endfor %}
-            <a href="{% url 'compare_services' %}" class="text-muted mb-1 sub-link">Compare Services</a>
+            <a href="{% url 'compare_services' %}" class="text-muted mb-1 sub-link"><i>Compare Services</i></a>
           </div>
           <div class="col mt-4 text-center text-md-start">
             <h4 class="text-light">FAQ</h4>
-            <a href="{% url 'faq' %}#payment" class="text-muted mb-1 sub-link">Payment</a><br>
+            <a href="{% url 'faq' %}#payments" class="text-muted mb-1 sub-link">Payments</a><br>
             <a href="{% url 'faq' %}#refunds" class="text-muted mb-1 sub-link">Refunds</a><br>
             <a href="{% url 'faq' %}#privacy" class="text-muted mb-1 sub-link">Privacy</a><br>
             <a href="{% url 'faq' %}#accounts" class="text-muted mb-1 sub-link">Accounts</a><br>
-            <a href="{% url 'faq' %}#service" class="text-muted mb-1 sub-link">Service</a><br>
+            <a href="{% url 'faq' %}#services" class="text-muted mb-1 sub-link">Services</a><br>
+            <a href="{% url 'faq' %}" class="text-muted mb-1 sub-link"><i>View all</i></a><br>
           </div>
           <div class="col-12 col-md mt-4 text-center text-md-start">
             <h4 class="text-light">Contact</h4>
