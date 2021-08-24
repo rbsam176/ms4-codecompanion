@@ -75,7 +75,6 @@
               </ul>
             </li>
             <a class="nav-link" href="{% url 'companions' %}">Our Companions</a>
-            <a class="nav-link" href="#">Book Session</a>
             <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
             <div class="col-12 col-md-8 d-block d-lg-none">
               <form method="GET" action="{% url 'search' %}" class="input-group my-3">
@@ -153,7 +152,7 @@
     <footer class="container-fluid">
       <div class="row bg-dark mt-4 px-4">
           <div class="col-12 col-md mt-4 text-center text-md-start">
-            <h5><span class="title-code text-white">code</span><span class="title-companion"> companion</span></h5>
+            <h5><a href="{% url 'home' %}" class="title-code text-white">code</span><span class="title-companion"> companion</a></h5>
           </div>
           <div class="col mt-4 text-center text-md-start">
             <h4 class="text-light">Services</h4>

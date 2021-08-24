@@ -11,6 +11,7 @@ from django.http import JsonResponse
 
 from profiles.models import UserProfile, CompanionProfile
 from checkout.models import Order, OrderLineItem
+from django.db.models import Count
 
 from .models import Service, PriceType
 from .forms import ServiceForm
@@ -21,8 +22,35 @@ def redirect_services(request):
 
 def compare_services(request):
 	""" A view to return the Compare Services page """
+	
+	# CREATE DICT WITH SERVICE AND COUNT
+	services_count = []
+	for x in Service.objects.all():
+		services_count.append({'service': x, 'count': OrderLineItem.objects.filter(service=x).count()})
+	
+	# SORT BY COUNT
+	services_sorted = sorted(services_count, key=lambda k: k['count'], reverse=True) 
 
-	return render(request, 'services/compare_services.html')
+	# ONLY CONTAINS SERVICE OBJECTS
+	services_ordered = []
+	for y in services_sorted:
+		services_ordered.append(Service.objects.get(name=y['service']))
+
+	# SET DEFAULT VIEW AS MOST POPULAR
+	all_services = services_ordered
+
+	if request.GET:
+		if 'sort' in request.GET:
+			if request.GET['sort'] == 'ASC':
+				all_services = Service.objects.all().order_by('price')
+			elif request.GET['sort'] == 'DESC':
+				all_services = Service.objects.all().order_by('-price')
+			elif request.GET['sort'] == 'popular':
+				all_services = 	services_ordered
+			else:
+				all_services = services_ordered
+
+	return render(request, 'services/compare_services.html', {'all_services':all_services})
 
 
 def generateTimeSlots(service, date=datetime.date.today()):
