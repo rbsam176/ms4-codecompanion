@@ -21,8 +21,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = CompanionProfile
-        # exclude = ['user']
-        exclude = ['user', 'peer_programming_offered', 'code_review_offered', 'troubleshooting_offered', 'whiteboarding_session_offered', 'interview_prep_offered', 'deployment_assist_offered']
+        exclude = ['user']
     
 
     def __init__(self, *args, **kwargs):
@@ -33,28 +32,10 @@ class UserProfileForm(forms.ModelForm):
         self.fields['bio'].widget.attrs['placeholder'] = "Write a little about yourself and your professional experience so students can determine if you would be the best fit for them."
         
         # AVAILABILTY & SERVICES CUSTOM LABELS
-        # for field in self.fields:
-        #     if '_offered' in field:
-        #         self.fields[field].label = field.replace('_offered', '').replace('_', ' ').capitalize()
+        for field in self.fields:
+            if '_available' in field:
+                self.fields[field].label = field.replace('_available', '').replace('_', ' ').capitalize()
 
-        today = datetime.datetime.now(tz=pytz.timezone('UTC'))
-
-        # SOURCE: https://stackoverflow.com/questions/8801084/how-to-calculate-next-friday/8801540
-
-        next_monday = today + datetime.timedelta(days=-today.weekday(), weeks=1)
-        self.fields['monday_available'].label = next_monday.strftime("%a %d %b")
-
-        next_tuesday = next_monday + datetime.timedelta(days=+1)
-        self.fields['tuesday_available'].label = next_tuesday.strftime("%a %d %b")
-
-        next_wednesday = next_tuesday + datetime.timedelta(days=+1)
-        self.fields['wednesday_available'].label = next_wednesday.strftime("%a %d %b")
-
-        next_thursday = next_wednesday + datetime.timedelta(days=+1)
-        self.fields['thursday_available'].label = next_thursday.strftime("%a %d %b")
-
-        next_friday = next_thursday + datetime.timedelta(days=+1)
-        self.fields['friday_available'].label = next_friday.strftime("%a %d %b")
 
 class CompanionCheck(forms.ModelForm):
     class Meta:

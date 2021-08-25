@@ -183,8 +183,8 @@
       </div>
     </footer>
     
-    {% block postloadjs %}
-      <script type="text/javascript">
+
+      <script type="application/javascript">
         var option = {
           animation: true,
           delay: 2000
@@ -197,6 +197,9 @@
           return new bootstrap.Toast(toastEl, option).show()
         })
       </script>
-    {% endblock %}
+
+      {% block postloadjs %}
+      {% endblock %}
+
   </body>
 </html>

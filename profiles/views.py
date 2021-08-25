@@ -53,15 +53,18 @@ def profile(request):
 	# user accounts
 	account = get_object_or_404(User, username=request.user)
 	profile = get_object_or_404(UserProfile, user=request.user)
-	companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+	# companion_profile = get_object_or_404(CompanionProfile, user=request.user)
 	
 	# forms
 	user_form = UserForm(request.POST or None, instance=account) # allauth standard
 	companion_check = CompanionCheck(request.POST or None, instance=profile) # custom user with companion boolean
 
 	companion_services = []
-	for service in Service.objects.filter(companion=companion_profile):
-		companion_services.append(service)
+	if profile.is_companion:
+		print('is companion')
+		companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+		for service in Service.objects.filter(companion=companion_profile):
+			companion_services.append(service)
 
 	# post logic
 	if request.method == 'POST':
@@ -72,7 +75,7 @@ def profile(request):
 			if request.POST.get('is_companion'):
 				print('is companion enabled')
 				try:
-					# companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+					companion_profile = get_object_or_404(CompanionProfile, user=request.user)
 
 					# LIST OF ALL SERVICES
 					all_services = Service.objects.all()
@@ -97,19 +100,23 @@ def profile(request):
 							companion_services.remove(service)
 							# CHECK IF COMPANION HAS UPCOMING SESSIONS BOOKED FOR THIS SERVICE
 							now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
-							pre_existing = len(OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now).filter(service=service))
+							pre_existing = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now).filter(service=service)
 							# IF THEY DO, DEFINE WARNING MESSAGE
-							if pre_existing > 0:
-								plural = 's' if pre_existing > 1 else ''
-								pre_existing_message = f'You have {pre_existing} {service} session{plural} coming up that you will still be liable for. Please contact us to discuss cancelling these sessions.'
+							if len(pre_existing) > 0:
+								print('pre existing len more than 1')
+								plural = 's' if len(pre_existing) > 1 else ''
+								pre_existing_message = f'You had {len(pre_existing)} {service} session{plural} coming up that have been cancelled.'
+								print(pre_existing_message)
+								# pre_existing.delete()
 
 					companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
 					if companion_availability.is_valid():
 						companion_availability.save()
 						messages.success(request, 'Account updated successfully')
 						# IF COMPANION IS UNCHECKING SERVICE AND HAS UPCOMING SESSIONS
-						if pre_existing_message:
+						if pre_existing_message and len(pre_existing) > 0:
 							messages.warning(request, pre_existing_message)
+							pre_existing.delete()
 				except:
 					# CONVERT USER TO COMPANION
 					new_companion = CompanionProfile(user=account)
@@ -117,12 +124,21 @@ def profile(request):
 					messages.success(request, 'Converted profile to be companion')
 			else:
 				print('is companion NOT enabled')
+				print('about to try')
 				# if companion checkbox unchecked
 				try:
+					print('try')
 					companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+
+					# CHECK IF COMPANION HAS UPCOMING SESSIONS BOOKED FOR THIS SERVICE
+					now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
+					existing_sessions = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now)
+					if len(existing_sessions) > 0:
+						existing_sessions.delete()
+
 					# if user is companion, delete
 					companion_profile.delete()
-					messages.warning(request, 'You are no longer a companion')
+					messages.warning(request, 'You are no longer a companion, any existing upcoming sessions have been cancelled.')
 				except:
 					# if user is not companion, do nothing
 					messages.success(request, 'Updated profile successfully')
@@ -161,6 +177,7 @@ def profile(request):
 	page1 = p.page(1)
 
 	if profile.is_companion:
+		companion_profile = get_object_or_404(CompanionProfile, user=request.user)
 		companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
 
 		# GET COMPANION UPCOMING SESSIONS
@@ -189,6 +206,7 @@ def profile(request):
 		
 		context = {
 			'account': account,
+			'profile': profile,
 			'user_form': user_form,
 			'companion_availability': companion_availability,
 			'companion_check': companion_check,
@@ -201,6 +219,7 @@ def profile(request):
 	else:
 		context = {
 			'account': account,
+			'profile': profile,
 			'user_form': user_form,
 			'companion_check': companion_check,
 			'orders': page1,
