@@ -308,7 +308,8 @@ a {
 }
 
 .datepicker-enabled {
-    border: 3px solid rgb(92, 92, 92);
+    border: 2px solid black;
+    border-bottom: 4px solid black;
 }
 
 label.datepicker-disabled {

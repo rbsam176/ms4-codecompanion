@@ -98,6 +98,12 @@
         var availability_data;
 
         $(".date-radio").on('click', function(){
+            // ADD ENABLED CLASS TO DATEPICKER
+            $('.datepicker').removeClass('datepicker-enabled')
+            if ($(this).is(':checked')){
+                $(this).parent().addClass('datepicker-enabled')
+            }
+
             // RESET STATE BACK TO DEFAULT
             $("#companionSelection").attr('disabled', true)
             $("#time-selection").attr('disabled', true)
@@ -142,6 +148,7 @@
             // RESET TIME SELECTION STATE
             $("#time-selection").attr('disabled', false)
             $("#time-selection").prop('selectedIndex', 0)
+            $('.hidden').children('option').unwrap()
 
             // POPULATE VALUES ACCORDINGLY
             for (companion in availability_data){
@@ -160,11 +167,10 @@
                         $("#time-selection > option").each(function() {
                             if (this.value == new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')){
                                 $(this).attr('disabled', false)
-                                $(this).css('display', 'block')
                                 if (time_slots[slot]['status'] == 'clash'){
                                     $(this).attr('disabled', true)
                                 } else if (time_slots[slot]['status'] == 'expired'){
-                                    $(this).css('display', 'none')
+                                    $(this).wrap('<span class="hidden"></span>')
                                 } else {
                                     $(this).attr('disabled', false)
                                 }

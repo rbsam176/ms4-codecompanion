@@ -15,14 +15,14 @@
                             <form class="mt-4">
                                 <div class="input-group mb-3 signup-combo">
                                     <input id="hero-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" autofocus required>
-                                    <a id="hero-btn" class="btn btn-hero signup-btn" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#hero-signup', this)">Sign up now</a>
+                                    <button type="submit" id="hero-btn" class="btn btn-hero signup-btn" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#hero-signup', this)">Sign up now</a>
                                 </div>
                             </form>
                             <a data-bs-toggle="modal" href="#companionSignUpModal" role="button" class="text-muted">Interested in becoming a companion?</a>
                         {% else %}
                         <div class="col">
                             <h1 class="hero-text2 pb-2">Welcome back, <span class="hero-underline">{{ request.user }}</span></h1>
-                            <a class="btn btn-hero" href="{% url 'profile' %}" type="button">View profile</a>
+                            <a class="btn btn-hero" href="{% url 'profile' %}">View profile</a>
                         </div>
                         {% endif %}
                     </div>
@@ -175,7 +175,7 @@
                     <form class="mt-4">
                         <div class="input-group mb-3 signup-combo mx-auto">
                             <input id="footer-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" required>
-                            <a class="btn btn-hero" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#footer-signup', this)">Sign up now</a>
+                            <button type="submit" class="btn btn-hero" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#footer-signup', this)">Sign up now</a>
                         </div>
                     </form>
                 </div>

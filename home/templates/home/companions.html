@@ -17,79 +17,95 @@
     <div class="container">
             
         <div class="row">
-            {% for companion in companions %}
-                <div class="col-12 col-xl-6">
-                    <a class="anchor" id="{{ companion }}"></a>
-                    <div id="{{ companion }}_container" class="testimonial-block mt-2 mb-4 px-4">
-                        <div class="align-self-center">
-                            <div class="mb-2">
-                                <span class="h5">{{ companion.full_name|title }}</span> <span class="text-muted">({{ companion }})</span>
-                            </div>
-                            <p>{{ companion.bio }}</p>
-                            <div class="row gy-2 w-100">
-                                <h6>Services</h6>
-                                {% for service in services %}
-                                <div class="col-6">
-                                    {% if companion in service.companion.all %}
-                                        <i class="fas text-success fa-check-circle"></i> <span>{{ service }}</span>
-                                    {% else %}
-                                        <span class="text-muted"><i class="far fa-times-circle"></i> {{ service }}</span>
-                                    {% endif %}
+            {% if companions %}
+                {% for companion in companions %}
+                    <div class="col-12 col-xl-6">
+                        <a class="anchor" id="{{ companion }}"></a>
+                        <div id="{{ companion }}_container" class="testimonial-block mt-2 mb-4 px-4">
+                            <div class="align-self-center">
+                                <div class="mb-2">
+                                    <span class="h5">{{ companion.full_name|title }}</span> <span class="text-muted">({{ companion }})</span>
                                 </div>
-                                {% endfor %}
-                                <hr class="my-3">
-                                <h6>Availability</h6>
+                                <p>{{ companion.bio }}</p>
+                                <div class="row gy-2 w-100">
+                                    <h6>Services</h6>
+                                    {% for service in services %}
+                                    <div class="col-6">
+                                        {% if companion in service.companion.all %}
+                                            <i class="fas text-success fa-check-circle"></i> <span>{{ service }}</span>
+                                        {% else %}
+                                            <span class="text-muted"><i class="far fa-times-circle"></i> {{ service }}</span>
+                                        {% endif %}
+                                    </div>
+                                    {% endfor %}
+                                    <hr class="my-3">
+                                    <h6>Availability</h6>
 
-                                <div class="col-6">
-                                    {% if companion.monday_available %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.monday_available %} class="text-muted"{% endif %}>Monday</span>
+                                    <div class="col-6">
+                                        {% if companion.monday_available %}
+                                            <i class="fas text-success fa-check-circle"></i>
+                                        {% else %}
+                                            <i class="far fa-times-circle"></i>
+                                        {% endif %}
+                                        <span {% if not companion.monday_available %} class="text-muted"{% endif %}>Monday</span>
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% if companion.tuesday_available %}
+                                            <i class="fas text-success fa-check-circle"></i>
+                                        {% else %}
+                                            <i class="far fa-times-circle"></i>
+                                        {% endif %}
+                                        <span {% if not companion.tuesday_available %} class="text-muted"{% endif %}>Tuesday</span>
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% if companion.wednesday_available %}
+                                            <i class="fas text-success fa-check-circle"></i>
+                                        {% else %}
+                                            <i class="far fa-times-circle"></i>
+                                        {% endif %}
+                                        <span {% if not companion.wednesday_available %} class="text-muted"{% endif %}>Wednesday</span>
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% if companion.thursday_available %}
+                                            <i class="fas text-success fa-check-circle"></i>
+                                        {% else %}
+                                            <i class="far fa-times-circle"></i>
+                                        {% endif %}
+                                        <span {% if not companion.thursday_available %} class="text-muted"{% endif %}>Thursday</span>
+                                    </div>
+
+                                    <div class="col-6">
+                                        {% if companion.friday_available %}
+                                            <i class="fas text-success fa-check-circle"></i>
+                                        {% else %}
+                                            <i class="far fa-times-circle"></i>
+                                        {% endif %}
+                                        <span {% if not companion.friday_available %} class="text-muted"{% endif %}>Friday</span>
+                                    </div>
+
                                 </div>
-
-                                <div class="col-6">
-                                    {% if companion.tuesday_available %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.tuesday_available %} class="text-muted"{% endif %}>Tuesday</span>
-                                </div>
-
-                                <div class="col-6">
-                                    {% if companion.wednesday_available %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.wednesday_available %} class="text-muted"{% endif %}>Wednesday</span>
-                                </div>
-
-                                <div class="col-6">
-                                    {% if companion.thursday_available %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.thursday_available %} class="text-muted"{% endif %}>Thursday</span>
-                                </div>
-
-                                <div class="col-6">
-                                    {% if companion.friday_available %}
-                                        <i class="fas text-success fa-check-circle"></i>
-                                    {% else %}
-                                        <i class="far fa-times-circle"></i>
-                                    {% endif %}
-                                    <span {% if not companion.friday_available %} class="text-muted"{% endif %}>Friday</span>
-                                </div>
-
                             </div>
                         </div>
                     </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12 text-center">
+                    <div class="h5 pb-4 text-muted">
+                        No companions have signed up yet. You could be the first!
+                    </div>
+                    <p>
+                        {% if request.user.is_authenticated %}
+                            <a href="{% url 'profile' %}">Click here to go to your profile.</a><br>
+                            <p class="text-dark">You can convert your account to be a Companion profile and begin straight away supporting students.</p>
+                        {% else %}
+                            <a href="{% url 'account_signup' %}">Click here to sign up.</a>
+                        {% endif %}
+                    </p>
                 </div>
-            {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
