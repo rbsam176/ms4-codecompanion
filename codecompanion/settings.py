@@ -68,6 +68,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = 1
+SITE_NAME = 'Code Companion'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
@@ -146,17 +147,7 @@ else:
     }
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
     DEFAULT_FROM_EMAIL = 'codecompanion.help@gmail.com'
-
-# DATABASES = {
-#     'default': dj_database_url.parse('postgres://tfotwhxuzuiesn:4ba0275239c3f3053b33a38bbdf9153fdd407bb867fb661bc6629dfaf8686665@ec2-54-228-99-58.eu-west-1.compute.amazonaws.com:5432/deocihkj6b0ud7')
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
+    
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
