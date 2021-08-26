@@ -25,7 +25,7 @@ class Service(models.Model):
     bullet_point_2 = models.CharField(max_length=254, null=True, blank=True)
     bullet_point_3 = models.CharField(max_length=254, null=True, blank=True)
     bullet_point_4 = models.CharField(max_length=254, null=True, blank=True)
-    companion = models.ManyToManyField(CompanionProfile)
+    companion = models.ManyToManyField(CompanionProfile, blank=True)
 
     def get_icon(self):
         return self.icon
