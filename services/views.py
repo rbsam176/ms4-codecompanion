@@ -97,8 +97,6 @@ def companion_availability_check(request):
 			companion_orders = OrderLineItem.objects.filter(companion_selected=companion).filter(start_datetime__gte=date)
 			available_slots = generateTimeSlots(service, date)
 
-			print(companion_orders)
-
 			for slot in available_slots:
 				if len(companion_orders) > 0:
 					for order in companion_orders:
@@ -151,8 +149,6 @@ def companion_availability_check(request):
 			# username = CompanionProfile.objects.get(id=companion_match[0]).full_name()
 			if len(check_availability(companion, dt)) > 0:
 				available_companions.append({str(username): check_availability(companion, dt)})
-
-
 		data = {
 			'available_companions': available_companions
 		}
@@ -183,7 +179,6 @@ def service_detail(request, endpoint):
 		for x in companion_match:
 			if key in next_5_days:
 				next_5_days[key]['companions_available'] = True
-
 
 	context = {
 		'service': service,

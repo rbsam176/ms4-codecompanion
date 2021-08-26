@@ -13,17 +13,26 @@ def view_bag(request):
 def add_to_bag(request, service_name):
     """ Add the clicked service to the shopping bag """
     service = Service.objects.get(pk=service_name)
-
+    redirect_url = request.POST.get('redirect_url')
     companion_selected = request.POST.get('companionSelection')
 
-    date = request.POST.get('date-selection')
-    start_time = request.POST.get('time-selection')
-    datetime_combined = f'{date} {start_time}:00.000000'
-    start_datetime = datetime.strptime(datetime_combined, '%Y-%m-%d %H:%M:%S.%f')
-    end_datetime = start_datetime + timedelta(hours=float(service.duration))
+    if request.POST.get('date-selection') and request.POST.get('time-selection'):
+        date = request.POST.get('date-selection')
+        start_time = request.POST.get('time-selection')
+        datetime_combined = f'{date} {start_time}:00.000000'
+        start_datetime = datetime.strptime(datetime_combined, '%Y-%m-%d %H:%M:%S.%f')
+        end_datetime = start_datetime + timedelta(hours=float(service.duration))
+    else:
+        messages.error(request, "You haven't completed your selection")
+        return redirect(redirect_url)
+
+    # date = request.POST.get('date-selection')
+    # start_time = request.POST.get('time-selection')
+    # datetime_combined = f'{date} {start_time}:00.000000'
+    # start_datetime = datetime.strptime(datetime_combined, '%Y-%m-%d %H:%M:%S.%f')
+    # end_datetime = start_datetime + timedelta(hours=float(service.duration))
 
 
-    redirect_url = request.POST.get('redirect_url')
     bag = request.session.get('bag', {})
 
     # PREVENTS USER BOOKING SESSION WITH THEMSELF

@@ -202,6 +202,10 @@ a {
     border: none;
 }
 
+#addToBag.btn.disabled {
+    opacity: 0.4;
+}
+
 .btn-hero:hover {
     color: #F9C620;
 }

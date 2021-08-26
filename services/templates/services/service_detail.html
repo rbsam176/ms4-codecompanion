@@ -76,9 +76,14 @@
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <button id="addToBag" class="btn btn-hero rounded mt-2" type="submit">Add to bag</button>
+                                {% if request.user.is_authenticated %}
+                                    <button id="addToBag" class="btn btn-hero rounded mt-2 disabled" type="submit">Add to bag</button>
+                                {% else %}
+                                    <small class="text-muted pt-2"><a href="{% url 'account_login' %}">Login</a> to add service to bag</small>
+                                {% endif %}
                                 <input type="hidden" name="redirect_url" value="{{ request.path }}">
                             </div>
+                            <div id="outofhours" class="text-muted mt-3 d-none">All sessions have ended for today. Please check another day.</div>
                         </div>
                     </div>
                 </form>
@@ -105,8 +110,12 @@
             }
 
             // RESET STATE BACK TO DEFAULT
+            $("#addToBag").addClass('disabled')
+            $("#outofhours").removeClass('d-block')
+            $("#outofhours").addClass('d-none')
             $("#companionSelection").attr('disabled', true)
             $("#time-selection").attr('disabled', true)
+            $("#time-selection").prop('selectedIndex', 0)
             $("#companionSelection").children('option').remove()
             $("#companionSelection").append(`<option value="" disabled selected>Select companion</option>`)
 
@@ -154,8 +163,8 @@
             for (companion in availability_data){
                 if (availability_data[companion][$(this).val()]){
                     time_slots = Object.values(availability_data[companion][$(this).val()])
+                    var inactive_count = 0
                     for (slot in time_slots){
-
                         // LOCAL DISPLAYED TIME
                         // SOURCE: https://stackoverflow.com/questions/21298035/how-to-get-localetime-without-seconds-in-javascript
                         var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
@@ -163,20 +172,20 @@
                         // var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString('en-GB', { timeZone: 'Europe/London' }).replace(/(.*)\D\d+/, '$1')
                         // var end_ts_local = new Date(time_slots[slot]['end_time']).toLocaleTimeString('en-GB', { timeZone: 'Europe/London' }).replace(/(.*)\D\d+/, '$1')
 
-
                         $("#time-selection > option").each(function() {
                             if (this.value == new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')){
                                 $(this).attr('disabled', false)
                                 if (time_slots[slot]['status'] == 'clash'){
                                     $(this).attr('disabled', true)
+                                    inactive_count += 1
                                 } else if (time_slots[slot]['status'] == 'expired'){
                                     $(this).wrap('<span class="hidden"></span>')
+                                    inactive_count += 1
                                 } else {
                                     $(this).attr('disabled', false)
                                 }
                             }
                         })
-
 
                         // UTC TIME UNFORMATTED
                         var utc_unformatted = new Date(time_slots[slot]['start_time'])
@@ -206,8 +215,19 @@
                         // $("#time-selection").append(`<option ${status} value="${start_ts_local}">${start_ts_local} - ${end_ts_local}</option>`)
 
                     }
+
+
+                    if (time_slots.length == inactive_count){
+                        $("#time-selection").prop('disabled', true)
+                        $("#outofhours").removeClass('d-none')
+                        $("#outofhours").addClass('d-block')
+                    }
                 }
             }
+        })
+
+        $("#time-selection").on('input', function(){
+            $("#addToBag").removeClass('disabled')
         })
         
     </script>
