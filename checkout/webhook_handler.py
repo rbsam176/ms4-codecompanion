@@ -12,8 +12,10 @@ import time
 class StripeWH_Handler:
     """Handles Stripe web-hooks"""
 
+
     def __init__(self, request):
         self.request = request
+
 
     def handle_event(self, event):
         """Handles an unknown webhook event"""
@@ -21,9 +23,10 @@ class StripeWH_Handler:
             content=f'Unknown webhook received: {event["type"]}',
             status=200)
 
+
     def _send_confirmation_email(self, order):
         """ Send the user a confirmation email """
-        cust_email = order.email_address
+        cust_email = order.user_profile.user.email
         subject = render_to_string(
             'checkout/confirmation_emails/confirmation_email_subject.txt',
             {'order': order})
@@ -44,13 +47,14 @@ class StripeWH_Handler:
         intent = event.data.object
         pid = intent.id
         bag = intent.metadata.bag
+
+        print('handle payment intent succeeded')
         
         order_exists = False
         attempt = 1
         while attempt < 5:
             try:
                 order = Order.objects.get(
-                    email_address__iexact=intent.receipt_email,
                     original_bag=bag,
                     stripe_pid=pid,
                 )
@@ -70,15 +74,13 @@ class StripeWH_Handler:
             order = None
             try:
                 order = Order.objects.create(
-                    email_address=intent.receipt_email,
                     original_bag=bag,
                     stripe_pid=pid,
                 )
-                for service_name, quantity in json.loads(bag).items():
+                for service_name in json.loads(bag).items():
                     service = Service.objects.get(pk=service_name)
                     order_line_item = OrderLineItem(
                         service=service,
-                        quantity=quantity,
                         order=order,
                     )
                     order_line_item.save()
@@ -91,6 +93,7 @@ class StripeWH_Handler:
         return HttpResponse(
             content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
             status=200)
+
 
     def handle_payment_intent_payment_failed(self, event):
         """Handles payment intent failure from Stripe webhook """
