@@ -142,11 +142,15 @@ Every session is purchased individually without the need to bulk-buy or subscrib
 
 - #### Base template
 
-  - 
+  - Dropdown menu showing all Services and a link to Compare Services so they can all be seen on one page.
+  - Collapsible search menu on desktop
+  - Basket button with live counter of number of sessions in bag
+  - Responsive footer which changes structure depending on breakpoint. Easy access to links to various Services and FAQ questions.
 
 - #### Homepage
 
   - The hero container changes its content depending on whether user is logged in or not. Default view is a hero banner inviting users to sign up for an account. Entering the email will take the user to the Sign Up page with their typed-in email already populated. The logged-in view provides a button that links the user to their profile page where they can quickly view upcoming orders.
+  - 
   - Lineup of companies that Companions have experience working for, to give users an impression of the backgrounds and experience that can be shared if they sign up for a session.
   - Testimonials from previous students, to offer perspectives to further entice prospective students.
   - Lineup of web technologies that our Companions have experience using. This offers some background on what sort of support can be offered before the user visits the Services page.
@@ -155,19 +159,15 @@ Every session is purchased individually without the need to bulk-buy or subscrib
   - If the user is not logged in, an additional section is at the bottom of the homepage that allows them to enter their email and it be transferred to the Sign Up page with the email already populated.
 
 
-- #### Browse
+- #### Services
 
-  - **Search input**<br>available for users to enter a brand or coffee product name, in addition to another additional filter such as roast type, origin, organic, flavour notes. Autocomplete has been added to this search field, so if the user begins to write an already existing brand name or coffee name they are presented with it as a suggested input.<br>[Click here to read about how the autocomplete code works](#auto-suggest).
+  - **Service detail**<br>
+	The user selects the date within the next 5 working days (Mon-Fri), the Companion they wish to work with and the time. These values are populated dynamically. On page load it will check if there is a Companion available on each day, and it will disable any day that has no Companiosn. Once the date has been selected it will check which Companions are scheduled that day and populate the dropdown accordingly. Selecting a Companion will then populate the times between 9am-6pm. If the user has selected the same day they're viewing then it will remove any elapsed time slots. Any time slots where the Companion is already in a session will be disabled. If all time slots have elapsed, or if all time slots are disabled then a message is displayed informing the user to select a different date. If the user is not logged in then the Add To Bag button is not displayed and a link to login is. If the user is logged in but hasn't selected a time yet, the Add To Bag button will be disabled.	
 
-  - **Filter options:**
-
-    - *Roast*: Dark / Medium / Light
-    - *Origin default values*: Brazil / Ethiopia / Blend / Colombia, other values are taken from any custom origin inputs users have added to the database. 4 are shown and then a button is presented that will present all origins to be shown.
-    - *Organic*: A toggle switch which when set to 'Required' will only show results that are marked as being organic. The default value is 'Not required'.
-    - *Popular tasting notes*: This is presented in the form of a '[word cloud](https://en.wikipedia.org/wiki/Tag_cloud)'. The font size of a 'note' is representative of its frequency of occurance in the database. The top 10 are shown by default and then a 'Show more' button is presented for the user to see all notes. <br>[Click here to read about how the word cloud code was written](#word-cloud-tasting-notes).
-    - *All/any toggle*: This toggle allows the user to specify if their results should contain ALL of the tasting notes that they have checked, or if their results can contain any of the notes that they have checked.
-    - The filter allows for multiple selections, for example the user can select to see results that are either Dark or Medium roast, from Brazil or Colombia but that must have a flavour note of 'Dark chocolate'.
-    - The filter submission will generate a GET request which means the URL of the search results reflect the users criteria. This allows the user to bookmark the page for future reference or send to a friend. A potentially common use-case of this could be a family member wanting to buy coffee as a gift, the user can send their preferences as the URL so the family member can choose a coffee that the user will likely enjoy.<br>[Click here to read about how the dynamic filter queries are generated](#dynamic-queries).
+  - **Compare Services**<br>
+	- All services are displayed in a grid view that is responsive depending on breakpoint.
+	- User is able to sort by Most Popular (based on number of orders), or Price Low>High / High>Low
+	- Sign up email input is shown to users who aren't logged in
 
   - **Sorting:**
 
