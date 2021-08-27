@@ -64,9 +64,11 @@ class StripeWH_Handler:
                 attempt += 1
                 time.sleep(1)
         if order_exists:
-            print("order is")
+            print("order exists")
             print(order)
+            print('sending email')
             self._send_confirmation_email(order)
+            print('sent')
             return HttpResponse(
                 content=f'Webhook received: {event["type"]} | SUCCESS: Verified order in database',
                 status=200)
@@ -89,7 +91,9 @@ class StripeWH_Handler:
                     order.delete()
                 return HttpResponse(content=f'Webhook received: {event["type"]} | ERROR: {e}', status=500)
 
+        print('sending email below if')
         self._send_confirmation_email(order)
+        print('sent')
         return HttpResponse(
             content=f'Webhook received: {event["type"]} | SUCCESS: Created order in webhook',
             status=200)
