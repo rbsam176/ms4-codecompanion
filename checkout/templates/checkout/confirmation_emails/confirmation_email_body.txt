@@ -6,6 +6,14 @@ Order Number: {{ order.order_number }}
 Order Date: {{ order.date }}
 Order Total: {{ order.order_total }}
 
+{% for item in order.lineitems.all %}
+    ******
+    Service: {{ item.service.name|title }}
+    Companion: {{ item.companion_selected }}
+    Start date: {{ item.start_datetime|date:"D d M, g:iA" }}
+    ******
+{% endfor %}
+
 If you have any questions, feel free to contact us at {{ contact_email }}
 
 Thank you for your order! You will be able to keep track of any upcoming sessions within your profile area on our website.
