@@ -83,7 +83,7 @@
                                 {% endif %}
                                 <input type="hidden" name="redirect_url" value="{{ request.path }}">
                             </div>
-                            <div id="outofhours" class="text-muted mt-3 d-none">All sessions have ended for today. Please check another day.</div>
+                            <div id="outofhours" class="text-muted mt-3 d-none">There are no more sessions left for this day. Please check another day.</div>
                         </div>
                     </div>
                 </form>
@@ -96,7 +96,6 @@
     {{ block.super }}
     
     <script type="application/javascript">
-
         var user = '{{ request.user }}'
 
         // SET GLOBAL VARIABLE WITH AJAX RESPONSE
@@ -169,8 +168,6 @@
                         // SOURCE: https://stackoverflow.com/questions/21298035/how-to-get-localetime-without-seconds-in-javascript
                         var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
                         var end_ts_local = new Date(time_slots[slot]['end_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
-                        // var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString('en-GB', { timeZone: 'Europe/London' }).replace(/(.*)\D\d+/, '$1')
-                        // var end_ts_local = new Date(time_slots[slot]['end_time']).toLocaleTimeString('en-GB', { timeZone: 'Europe/London' }).replace(/(.*)\D\d+/, '$1')
 
                         $("#time-selection > option").each(function() {
                             if (this.value == new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')){
@@ -209,14 +206,7 @@
                         } else {
                             var status = ''
                         }
-                        // UTC AS THE VALUE
-                        // $("#time-selection").append(`<option ${status} value="${start_ts}">${start_ts_local} - ${end_ts_local}</option>`)
-                        // LOCAL AS THE VALUE
-                        // $("#time-selection").append(`<option ${status} value="${start_ts_local}">${start_ts_local} - ${end_ts_local}</option>`)
-
                     }
-
-
                     if (time_slots.length == inactive_count){
                         $("#time-selection").prop('disabled', true)
                         $("#outofhours").removeClass('d-none')
@@ -229,6 +219,5 @@
         $("#time-selection").on('input', function(){
             $("#addToBag").removeClass('disabled')
         })
-        
     </script>
 {% endblock %}
