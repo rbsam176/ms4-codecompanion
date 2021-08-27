@@ -150,7 +150,7 @@ Every session is purchased individually without the need to bulk-buy or subscrib
 - #### Homepage
 
   - The hero container changes its content depending on whether user is logged in or not. Default view is a hero banner inviting users to sign up for an account. Entering the email will take the user to the Sign Up page with their typed-in email already populated. The logged-in view provides a button that links the user to their profile page where they can quickly view upcoming orders.
-  - 
+  - 'Interested in becoming a Companion?' link to modal on hero banner, informing users that they can sign up for an account and then convert it to be a Companion profile. Bullet points with benefits of becoming a Companion.
   - Lineup of companies that Companions have experience working for, to give users an impression of the backgrounds and experience that can be shared if they sign up for a session.
   - Testimonials from previous students, to offer perspectives to further entice prospective students.
   - Lineup of web technologies that our Companions have experience using. This offers some background on what sort of support can be offered before the user visits the Services page.

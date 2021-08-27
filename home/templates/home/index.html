@@ -11,14 +11,14 @@
                 <div id="hero" class="container d-flex">
                     <div class="row align-self-center">
                         {% if not request.user.is_authenticated %}
-                            <h1 class="hero-text2"><span class="hero-underline">Boost</span> your learning with our experienced developer companions</h1>
+                            <h1 class="hero-text2"><span class="hero-underline">Boost</span> your learning with our experienced developer Companions</h1>
                             <form class="mt-4">
                                 <div class="input-group mb-3 signup-combo">
                                     <input id="hero-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" autofocus required>
                                     <button type="submit" id="hero-btn" class="btn btn-hero signup-btn" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#hero-signup', this)">Sign up now</a>
                                 </div>
                             </form>
-                            <a data-bs-toggle="modal" href="#companionSignUpModal" role="button" class="text-muted">Interested in becoming a companion?</a>
+                            <a data-bs-toggle="modal" href="#companionSignUpModal" role="button" class="text-muted">Interested in becoming a Companion?</a>
                         {% else %}
                         <div class="col">
                             <h1 class="hero-text2 pb-2">Welcome back, <span class="hero-underline">{{ request.user }}</span></h1>
@@ -71,7 +71,7 @@
             <hr class="my-4 d-block d-lg-none">
             <div class="col-12 col-lg-6 my-4">
                 <div class="row text-center">
-                    <h5>What our learners and companion are saying</h5>
+                    <h5>What our learners and Companions are saying</h5>
                 </div>
                 <div class="row d-flex testimonial-block mt-2 mb-4">
                     <div class="col-2 align-self-center">
@@ -97,7 +97,7 @@
     <div class="container my-4">
         <div class="row">
             <div class="col-12 text-center">
-                <h5>Our code companions work with</h5>
+                <h5>Our Code Companions work with</h5>
                 <h6 class="text-muted">More coming soon</h6>
             </div>
         </div>
@@ -188,7 +188,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="companionSignUpModalLabel">Join as a companion!</h5>
+            <h5 class="modal-title" id="companionSignUpModalLabel">Join as a Companion!</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
