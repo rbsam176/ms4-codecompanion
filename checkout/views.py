@@ -11,6 +11,8 @@ from profiles.models import UserProfile, CompanionProfile
 
 import stripe
 import json
+from datetime import datetime
+import pytz
 
 @require_POST
 def cache_checkout_data(request):
@@ -95,12 +97,32 @@ def checkout(request):
                         return redirect(reverse('view_bag'))
 
             for x in flattened:
+                # PARSE TIME STRING
+                start_dt_naive = datetime.strptime(x['start_datetime'], '%Y-%m-%d %H:%M:%S')
+                end_dt_naive = datetime.strptime(x['end_datetime'], '%Y-%m-%d %H:%M:%S')
+                # SET IT TO UK
+                timezone = pytz.timezone("Europe/London")
+                start_dt_uk = timezone.localize(start_dt_naive, is_dst=None)
+                end_dt_uk = timezone.localize(end_dt_naive, is_dst=None)
+                # CONVERT TO UTC
+                start_dt_aware = start_dt_uk.astimezone(pytz.utc)
+                end_dt_aware = end_dt_uk.astimezone(pytz.utc)
 
+                # OLD WAY:
+                # order_line_item = OrderLineItem(
+                #     service=x['service'],
+                #     companion_selected=x['companion_selected'],
+                #     start_datetime=x['start_datetime'],
+                #     end_datetime=x['end_datetime'],
+                #     order=order,
+                #     lineitem_total=x['service'].price,
+                # )
+                
                 order_line_item = OrderLineItem(
                     service=x['service'],
                     companion_selected=x['companion_selected'],
-                    start_datetime=x['start_datetime'],
-                    end_datetime=x['end_datetime'],
+                    start_datetime=start_dt_aware,
+                    end_datetime=end_dt_aware,
                     order=order,
                     lineitem_total=x['service'].price,
                 )
