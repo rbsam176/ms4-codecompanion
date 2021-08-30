@@ -1,6 +1,7 @@
 # MS4: Code Companion
 
-Full Stack Frameworks with Django Project Submission
+Full Stack Frameworks with Django Project Submission<br>
+[Table of contents](#table-of-contents) below **Guided Tour**
 
 ## Access
 
@@ -8,7 +9,7 @@ View the deployed project: [here](https://codecompanionapp.herokuapp.com)
 
 View the Github repo: [here](https://github.com/rbsam176/ms4-codecompanion)
 
-## Guided tour
+## Guided Tour
 There are many different components to Code Institute, and each journey is different depending on what type of user your are. To make things easier, below is a bullet pointed list of things to try in order to explore every aspect of Code Companion. I have also included login details for user accounts with different permissions, and some example data that you can input to test the CRUD functionality.
 
 ### Regular User/Student account journey
@@ -40,10 +41,16 @@ There are many different components to Code Institute, and each journey is diffe
 * Observe that the Upcoming Sessions section of the Profile page now has a link to Join Session
 * This Join Session link will also be displayed on the View Order page
 * Clicking Join Session takes you to a page that has a Jitsi web conferencing room embedded, with your username pre-populated
+* Click on search inside navigation
+* Search for companion username, eg. 'rbsam'
+* Click on the search result showing a Companion with the username 'rbsam'
+* Notice on the 'Our Companions' page that the searched companion is highlighted
+* Click anywhere outside the searched Companion container and notice the highlight is removed and the url reverts back to the normal '/companions' endpoint without the search query
 * Go to the FAQ page
 * Click the question to collapse the answer. Doing this multiple times on the same question will result in that question being one of the top 4 listed on the homepage, as it is determined based on number of clicks
 * Click 'Still have questions'
-* Follow the superuser/admin journey to approve this question to be featured in the FAQ
+* Submit a new question to the FAQ
+* Login as superuser/admin to approve this question from 'Admin Controls' withn profile page
 
 ### Companion
 **Username:** bakerml<br>
@@ -97,36 +104,22 @@ If you want to test adding a new Service to Code Companion, feel free to use the
 	* [User Stories & Project Objectives](#user-stories--project-objectives)
 * [Scope](#scope)
 	* [Current Features](#current-features)
+		* [CRUD](#crud)
+		* [Features](#features)
 	* [Long-term Vision](#long-term-vision)
 * [Code Walkthrough & Challenges](#code-walkthrough--challenges)
-	
-	* [Auto-suggest](#auto-suggest)
-	* [Storing Images in MongoDB](#storing-images-in-mongodb)
-	  * [Version 1 (Image URL)](#version-1-image-url)
-	  * [Version 2 (FileStack API)](#version-2-filestack-api)
-	  * [Version 3 (Base64 in MongoDB)](#version-3-base64-in-mongodb)
-	  * [Version 4 (ImageKit.io API)](#version-4-imagekitio-api)
-	* [Dynamic Queries](#dynamic-queries)
-	* [Word cloud (tasting notes)](#word-cloud-tasting-notes)
-	* [Pagination](#pagination)
-	* [Checkbox toggles](#checkbox-toggles)
-	* [Filter criteria validation](#filter-criteria-validation)
-	* [View Structure](#view-structure)
-	* [Database Schema](#database-schema)
-	
+	* [FAQ on Homepage](#faq-on-homepage-displaying-4-most-popular)
+	* [Time slots](#time-slots)
+	* [Availability Clash Check](#availability-clash-check)
+	* [Time zones](#time-zones)
+	* [Jitsi API Integration](#jitsi-api-integration)
+	* [Order History Pagination](#order-history-pagination)
+* [Database Schema](#database-schema)
 * [UX](#ux)
-  * [Wireframes ](#wireframes)
-  * [Visual Structure/Language](#visual-structurelanguage)
-  * [Colour](#colour)
-  * [Typography/Icons](#typographyicons)
-
+	* [Wireframes](#wireframes)
+		* [Homepage](#homepage-1)
+		* [Service Detail](#service-detail)
 * [Testing](#testing)
-
-  * [Accessibility](#accessibility)
-  * [Performance, Best Practices, SEO](#performance-best-practices-seo)
-
-  * [Manual testing](#manual-testing)
-  * [Code Validation](#code-validation)
 * [Deployment](#deployment)
 * [Credits & Attributes](#credits--attributes)
 
@@ -153,9 +146,9 @@ Every session is purchased individually without the need to bulk-buy or subscrib
 
 ## Scope
 
-## Current Features
+### Current Features
 
-### CRUD
+#### CRUD
 
 - #### Create
 
@@ -198,7 +191,7 @@ Every session is purchased individually without the need to bulk-buy or subscrib
   - Superusers/Admin users can delete user submitted FAQ entries pending approval
   - Superusers/Admin users can delete services
 
-### Features
+#### Features
 
 - #### Base template
 
@@ -292,7 +285,7 @@ Every session is purchased individually without the need to bulk-buy or subscrib
 
 
 
-## Long-term vision
+### Long-term vision
 
 - Currently the days of the week availability is in static table, I would prefer to make this similar to Services which is a relational table where new services can be added to it through the website without editing the code. Right now, if Code Companion were to start offering sessions on weekends, a lot of code would need to be rewritten.
 
@@ -361,22 +354,13 @@ I've used Django's built-in Pagination engine, but modified it to not spread ove
 ### Service detail
 <img src="servicedetail-wireframe.png" alt="Service detail Wireframe"/>
 
-## Testing
+# Testing
 
 Before starting to write code for Code Companion, I loosely practiced Test Driven Development by writing test cases in advance of writing the code. This allowed me to develop the project with a structure already in place, with pre-written test cases that I could verify were passing before proceeding to the next stage.
 
 [Click here to view the test cases.](bugtests.md)
 
-
-### Code Validation
-
-I have run the Python code through a [pep8 compliancy checker](http://pep8online.com), and it has passed without any issues.
-
-
-
 # Deployment
-
-CoffeeDB is running off of Heroku, with synchronisation enabled to GitHub. The env.py file, which is not sent externally, contains the necessary MongoDB information (IP, PORT, SECRET_KEY, MONGO_URI, MONGO_DBNAME), as well as the public, private and endpoint for the ImageKit API. Before the final deployment I performed a pip freeze in order to update my requirements.txt file with any modules needed to run the app. Since the beginning of developing CoffeeDB I used Git for version control and worked in a virtual environment in order to keep track of which modules were imported, it also has the added benefit of freezing the version of the modules so that if I ever installed a newer version on my computer in the future it wouldn't risk breaking old code reliant on an older version of the module. The final action before releasing CoffeeDB to the public was to set Debug to False within the Python Flask code.
 
 Code Companion uses Git version control, with the code stored on GitHub that automatically deploys to Heroku. AWS has been integrated for connection to a postgres database and storage of media asses such as images, and is automatically deployed to the S3 bucket on every Git push. 
 
