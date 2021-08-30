@@ -1,19 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
-from profiles.forms import UserProfile
 from checkout.models import Order, OrderLineItem
-
 import datetime
 import pytz
+
 
 def redirect_services(request):
 	return redirect('/profile')
 
+
 @login_required
 def active_sessions(request, order_number):
-    print(order_number)
     account = get_object_or_404(User, username=request.user)
     order = get_object_or_404(Order, order_number=order_number)
 
@@ -21,8 +19,6 @@ def active_sessions(request, order_number):
     lineitems = OrderLineItem.objects.filter(order=order)
     session = None
 
-    # timezone = pytz.timezone("UTC")
-    # current_ts = timezone.localize(datetime.datetime.now())
     current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
     
     for item in lineitems:

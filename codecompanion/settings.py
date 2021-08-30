@@ -123,8 +123,8 @@ WSGI_APPLICATION = 'codecompanion.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+# HEROKU
 if 'DATABASE_URL' in os.environ:
-    print('using heroku db')
     DATABASES = {
         'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))
     }
@@ -137,7 +137,7 @@ if 'DATABASE_URL' in os.environ:
     DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER')
 
 else:
-    print('using local db')
+    # LOCAL
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

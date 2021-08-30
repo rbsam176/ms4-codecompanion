@@ -53,7 +53,6 @@ def profile(request):
 	# user accounts
 	account = get_object_or_404(User, username=request.user)
 	profile = get_object_or_404(UserProfile, user=request.user)
-	# companion_profile = get_object_or_404(CompanionProfile, user=request.user)
 	
 	# forms
 	user_form = UserForm(request.POST or None, instance=account) # allauth standard
@@ -165,10 +164,6 @@ def profile(request):
 				'status': status
 				})
 
-	# print(sessions[0]['session'].start_datetime)
-	# print(sessions)
-	# print('***')
-	# print(sorted(sessions, key=lambda k: k['session'].start_datetime))
 	sessions = sorted(sessions, key=lambda k: k['session'].start_datetime)
 	
 	template = 'profiles/profile.html'
@@ -231,6 +226,7 @@ def profile(request):
 	return render(request, template, context)
 
 
+@login_required
 def order_history(request, order_number):
 	order = get_object_or_404(Order, order_number=order_number)
 	account = get_object_or_404(User, username=request.user)
@@ -241,7 +237,6 @@ def order_history(request, order_number):
 
 	sessions = []
 
-	# current_ts = datetime.datetime.now(tz=pytz.timezone('Europe/London'))
 	current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
 
 	for item in lineitems:

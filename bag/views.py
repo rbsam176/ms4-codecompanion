@@ -1,15 +1,19 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse, HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from datetime import date, datetime, timedelta
 
 from services.models import Service
 
-# Create your views here.
+
+@login_required
 def view_bag(request):
 	""" A view to return the shopping bag """
 
 	return render(request, 'bag/bag.html')
 
+
+@login_required
 def add_to_bag(request, service_name):
     """ Add the clicked service to the shopping bag """
     service = Service.objects.get(pk=service_name)
@@ -25,13 +29,6 @@ def add_to_bag(request, service_name):
     else:
         messages.error(request, "You haven't completed your selection")
         return redirect(redirect_url)
-
-    # date = request.POST.get('date-selection')
-    # start_time = request.POST.get('time-selection')
-    # datetime_combined = f'{date} {start_time}:00.000000'
-    # start_datetime = datetime.strptime(datetime_combined, '%Y-%m-%d %H:%M:%S.%f')
-    # end_datetime = start_datetime + timedelta(hours=float(service.duration))
-
 
     bag = request.session.get('bag', {})
 
@@ -74,6 +71,7 @@ def add_to_bag(request, service_name):
     return redirect(redirect_url)
 
 
+@login_required
 def remove_from_bag(request, service_name):
     """ Remove item from the shopping bag """
     name = service_name.split("_")[0]

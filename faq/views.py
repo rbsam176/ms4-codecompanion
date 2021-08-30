@@ -2,11 +2,11 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from faq.models import FaqEntry, FaqCategory
 from .forms import FaqForm, NewFaq
+from django.contrib.admin.views.decorators import staff_member_required
 
 from django.http import JsonResponse
 
 def faq(request):
-
 	faq_content = FaqEntry.objects.all()
 	faq_categories = FaqEntry.objects.values_list('category', flat=True).distinct()
 	faq_categories_names = []
@@ -57,6 +57,7 @@ def redirect_services(request):
 	return redirect('/faq')
 
 
+@staff_member_required
 def edit_faq(request, faq_id):
 	faq_entry = get_object_or_404(FaqEntry, id=faq_id)
 	faq_edit_form = FaqForm(request.POST or None, instance=faq_entry)

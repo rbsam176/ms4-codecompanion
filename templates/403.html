@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_title %} - 403 Error{% endblock %}
+
+{% block page_header %}
+    <header class="container">
+        <div class="row">
+            <div class="col-12 text-center my-4">
+                <h2>Error: 403</h2>
+            </div>
+        </div>
+    </header>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>You do not have access to this page. Please go back and try again or follow the links below.</p>
+                <a class="btn btn-hero mt-2" href="{% url 'account_signup' %}">Sign Up</a><br>
+                <a class="mt-4" href="{% url 'account_login' %}">Login</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

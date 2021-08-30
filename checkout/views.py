@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render, reverse, HttpResponse
 from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -13,6 +14,7 @@ import stripe
 import json
 from datetime import datetime
 import pytz
+
 
 @require_POST
 def cache_checkout_data(request):
@@ -31,6 +33,7 @@ def cache_checkout_data(request):
         return HttpResponse(content=e, status=400)
 
 
+@login_required
 def checkout(request):
     stripe_public_key = settings.STRIPE_PUBLIC_KEY
     stripe_secret_key = settings.STRIPE_SECRET_KEY
@@ -42,7 +45,6 @@ def checkout(request):
             'notes': request.POST['notes'],
         }
         order_form = OrderForm(form_data)
-        # order_form = OrderForm()
         if order_form.is_valid():
             order = order_form.save(commit=False)
             pid = request.POST.get('client_secret').split('_secret')[0]
@@ -107,16 +109,6 @@ def checkout(request):
                 # CONVERT TO UTC
                 start_dt_aware = start_dt_uk.astimezone(pytz.utc)
                 end_dt_aware = end_dt_uk.astimezone(pytz.utc)
-
-                # OLD WAY:
-                # order_line_item = OrderLineItem(
-                #     service=x['service'],
-                #     companion_selected=x['companion_selected'],
-                #     start_datetime=x['start_datetime'],
-                #     end_datetime=x['end_datetime'],
-                #     order=order,
-                #     lineitem_total=x['service'].price,
-                # )
                 
                 order_line_item = OrderLineItem(
                     service=x['service'],
@@ -160,11 +152,12 @@ def checkout(request):
 
         return render(request, template, context)
 
+
+@login_required
 def checkout_success(request, order_number):
     """
     Handle successful checkouts
     """
-    # save_info = request.session.get('save_info')
     order = get_object_or_404(Order, order_number=order_number)
 
     if request.user.is_authenticated:

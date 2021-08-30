@@ -104,7 +104,6 @@ def companion_availability_check(request):
 						existing_end_time = order.end_datetime
 
 						if existing_start_time is not None and existing_end_time is not None:
-
 							if slot['start_time'] > existing_end_time or slot['end_time'] < existing_start_time:
 								# no clash, do nothing
 								pass

@@ -2,7 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from faq.models import FaqEntry, FaqQuestion
 from .forms import AddUserFaq
+from django.contrib.admin.views.decorators import staff_member_required
 
+
+@staff_member_required
 def admin_controls(request):
 	faq_questions = FaqQuestion.objects.all()
 
@@ -27,6 +30,7 @@ def redirect_services(request):
 	return redirect('/admin_controls')
 	
 
+@staff_member_required
 def edit_question(request, question_id):
 	faq_question = FaqQuestion.objects.get(id=question_id)
 	faq_category = faq_question.category

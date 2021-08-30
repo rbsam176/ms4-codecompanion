@@ -6,6 +6,10 @@ class FaqCategory(models.Model):
     def __str__(self):
         return self.category
 
+    class Meta:
+        db_table = 'FaqCategory'
+        verbose_name_plural = 'FAQ Categories' 
+
 
 class FaqEntry(models.Model):
     category = models.ForeignKey('FaqCategory', null=True, blank=False, on_delete=models.SET_NULL)
@@ -22,6 +26,10 @@ class FaqEntry(models.Model):
     def get_faq_content(self):
         return self.content
 
+    class Meta:
+        db_table = 'FaqEntry'
+        verbose_name_plural = 'FAQ Entries' 
+
 
 class FaqQuestion(models.Model):
     category = models.ForeignKey('FaqCategory', null=True, blank=False, on_delete=models.SET_NULL)
@@ -33,3 +41,7 @@ class FaqQuestion(models.Model):
     
     def get_faq_category(self):
         return self.category
+
+    class Meta:
+        db_table = 'FaqQuestion'
+        verbose_name_plural = 'FAQ Questions' 
