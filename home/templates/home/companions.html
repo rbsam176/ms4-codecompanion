@@ -15,13 +15,13 @@
 
 {% block content %}
     <div class="container">
-            
         <div class="row">
             {% if companions %}
                 {% for companion in companions %}
-                    <div class="col-12 col-xl-6">
+                    <div class="col-12 col-xl-6 my-2">
                         <a class="anchor" id="{{ companion }}"></a>
-                        <div id="{{ companion }}_container" class="testimonial-block mt-2 mb-4 px-4">
+                        <div id="{{ companion }}_container" class="card h-100 testimonial-block mt-2 mb-4 px-4">
+                            <a class="anchor" id="{{ companion }}"></a>
                             <div class="align-self-center">
                                 <div class="mb-2">
                                     <span class="h5">{{ companion.full_name|title }}</span> <span class="text-muted">({{ companion }})</span>
@@ -40,7 +40,6 @@
                                     {% endfor %}
                                     <hr class="my-3">
                                     <h6>Availability</h6>
-
                                     <div class="col-6">
                                         {% if companion.monday_available %}
                                             <i class="fas text-success fa-check-circle"></i>
@@ -49,7 +48,6 @@
                                         {% endif %}
                                         <span {% if not companion.monday_available %} class="text-muted"{% endif %}>Monday</span>
                                     </div>
-
                                     <div class="col-6">
                                         {% if companion.tuesday_available %}
                                             <i class="fas text-success fa-check-circle"></i>
@@ -58,7 +56,6 @@
                                         {% endif %}
                                         <span {% if not companion.tuesday_available %} class="text-muted"{% endif %}>Tuesday</span>
                                     </div>
-
                                     <div class="col-6">
                                         {% if companion.wednesday_available %}
                                             <i class="fas text-success fa-check-circle"></i>
@@ -67,7 +64,6 @@
                                         {% endif %}
                                         <span {% if not companion.wednesday_available %} class="text-muted"{% endif %}>Wednesday</span>
                                     </div>
-
                                     <div class="col-6">
                                         {% if companion.thursday_available %}
                                             <i class="fas text-success fa-check-circle"></i>
@@ -76,7 +72,6 @@
                                         {% endif %}
                                         <span {% if not companion.thursday_available %} class="text-muted"{% endif %}>Thursday</span>
                                     </div>
-
                                     <div class="col-6">
                                         {% if companion.friday_available %}
                                             <i class="fas text-success fa-check-circle"></i>
@@ -85,7 +80,6 @@
                                         {% endif %}
                                         <span {% if not companion.friday_available %} class="text-muted"{% endif %}>Friday</span>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

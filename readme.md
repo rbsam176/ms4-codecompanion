@@ -12,8 +12,8 @@ View the Github repo: [here](https://github.com/rbsam176/ms4-codecompanion)
 There are many different components to Code Institute, and each journey is different depending on what type of user your are. To make things easier, below is a bullet pointed list of things to try in order to explore every aspect of Code Companion. I have also included login details for user accounts with different permissions, and some example data that you can input to test the CRUD functionality.
 
 ### Regular User/Student account journey
-**Username:** bakerml<br>
-**Email:** bakerml@mac.com<br>
+**Username:** rrthais<br>
+**Email:** rr.thais@gmail.com<br>
 **Password:** xXwQKxj8A3XBt3xk <br>
 **Type:** Regular User/Student account
 
@@ -46,8 +46,8 @@ There are many different components to Code Institute, and each journey is diffe
 * Follow the superuser/admin journey to approve this question to be featured in the FAQ
 
 ### Companion
-**Username:** rrthais<br>
-**Email:** rr.thais@gmail.com<br>
+**Username:** bakerml<br>
+**Email:** bakerml@mac.com<br>
 **Password:** xXwQKxj8A3XBt3xk<br>
 **Type:** Companion account
 
