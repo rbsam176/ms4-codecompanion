@@ -1,12 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from faq.models import FaqEntry, FaqQuestion
+from faq.models import FaqQuestion
 from .forms import AddUserFaq
 from django.contrib.admin.views.decorators import staff_member_required
 
 
 @staff_member_required
 def admin_controls(request):
+	""" A view to approve/deny faq entries """
 	faq_questions = FaqQuestion.objects.all()
 
 	context = {
@@ -32,9 +33,12 @@ def redirect_services(request):
 
 @staff_member_required
 def edit_question(request, question_id):
+	""" A view to edit faq questions """
 	faq_question = FaqQuestion.objects.get(id=question_id)
 	faq_category = faq_question.category
-	faq_form = AddUserFaq(request.POST or None, faq_question=faq_question, faq_category=faq_category)
+	faq_form = AddUserFaq(
+		request.POST or None, faq_question=faq_question, faq_category=faq_category
+	)
 
 	if request.method == 'POST':
 		if faq_form.is_valid():

@@ -23,10 +23,11 @@ def faq(request):
 def faq_counter(request):
 	if request.method == 'GET':
 		clickId = request.GET['clickId']
-		currentCount = FaqEntry.objects.filter(pk=clickId).values('clickCount')[0]['clickCount']
+		currentCount = FaqEntry.objects.filter(pk=clickId).values(
+			'clickCount'
+		)[0]['clickCount']
 		newCount = currentCount + 1
-		faq_entry_counter = FaqEntry.objects.filter(pk=clickId).update(clickCount=newCount)
-		print(faq_entry_counter)
+		FaqEntry.objects.filter(pk=clickId).update(clickCount=newCount)
 		data = None
 		
 	return JsonResponse(data, safe=False)

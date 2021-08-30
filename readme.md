@@ -304,6 +304,8 @@ Every session is purchased individually without the need to bulk-buy or subscrib
 
 - The Order model Line Items references the Companion with a text field currently. During the development of Code Companion I learned a lot more about database relationships and in a future build I would change this to be a Foreign Key rather than a text field.
 
+- Refine pep8 compliancy and code validation (HTML, CSS). The code is currently scoring highly in accessibility and there are no long lines of Python code that hurt readability, but due to time constraints small inefficiencies like trailing whitespaces have not been removed.
+
 # Code Walkthrough & Challenges
 
 ## FAQ on homepage displaying 4 most popular
@@ -382,7 +384,7 @@ For local testing, a .env file was created and added to the .gitignore file whic
 
 For deployment, config variables were added to Heroku such as AWS, Django's postgres database url, Google Mail integration for sign up and confirmation emails, Stripe and a boolean to indicate whether AWS is in use.
 
-A Python module called 'Python-DeCouple' was used to access local environment variables. 
+A Python module called 'Python-DeCouple' was used to access local environment variables. I have used if statements within settings.py to determine if Django has access to the DATABASE_URL environment variable from Heorku and if it doesn't then it uses the local sqlite database configuration. Wrapped up in this conditional also determines the email configuration, based on whether the database is connected. I decided to implement it this way rather than having the email configuration be in its own conditional as the database type should always indicate whether the app is in its deployed state or local state, so it is sufficient for determining the email configuration as well. This could be split out in a future build if there was a scenario where I wanted different email configuration when deployed to the Postgres database.
 
 
 # Credits & Attributes

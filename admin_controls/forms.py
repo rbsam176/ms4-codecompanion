@@ -8,7 +8,6 @@ class AddUserFaq(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         """ Ensure fields are required """
-        # SOURCE https://stackoverflow.com/a/53956528
         self._faq_question = kwargs.pop('faq_question', None)
         self._faq_category = kwargs.pop('faq_category', None)
         super().__init__(*args, **kwargs)

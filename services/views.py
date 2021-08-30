@@ -1,19 +1,13 @@
 import datetime
 import pytz
-import math, calendar
+import calendar
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
-
 from django.http import JsonResponse
-
-
-from profiles.models import UserProfile, CompanionProfile
-from checkout.models import Order, OrderLineItem
-from django.db.models import Count
-
-from .models import Service, PriceType
+from profiles.models import CompanionProfile
+from checkout.models import OrderLineItem
+from .models import Service
 from .forms import ServiceForm
 
 def redirect_services(request):
@@ -26,7 +20,9 @@ def compare_services(request):
 	# CREATE DICT WITH SERVICE AND COUNT
 	services_count = []
 	for x in Service.objects.all():
-		services_count.append({'service': x, 'count': OrderLineItem.objects.filter(service=x).count()})
+		services_count.append(
+			{'service': x, 'count': OrderLineItem.objects.filter(service=x).count()}
+		)
 	
 	# SORT BY COUNT
 	services_sorted = sorted(services_count, key=lambda k: k['count'], reverse=True) 
@@ -68,9 +64,15 @@ def generateTimeSlots(service, date=datetime.date.today()):
 			last_index = len(slots)-1
 			increment = slots[last_index]['start_time'] + datetime.timedelta(minutes=30)
 			if not increment + datetime.timedelta(hours=float(service.duration)) > timezone.localize(close_hour):
-				slots.append({'start_time': increment, 'end_time': increment + datetime.timedelta(hours=float(service.duration))})
+				slots.append(
+					{'start_time': increment,
+					'end_time': increment + datetime.timedelta(hours=float(service.duration))}
+				)
 		else:
-			slots.append({'start_time': timezone.localize(open_hour), 'end_time': timezone.localize(open_hour) + datetime.timedelta(hours=float(service.duration)),})
+			slots.append(
+				{'start_time': timezone.localize(open_hour),
+				'end_time': timezone.localize(open_hour) + datetime.timedelta(hours=float(service.duration))}
+			)
 	
 	return slots
 
@@ -80,21 +82,22 @@ def companion_availability_check(request):
 		timezone = pytz.timezone("UTC")
 		date_selection = datetime.datetime.strptime(request.GET['date_selection'], "%Y-%m-%d").date()
 		weekday_selection = calendar.day_name[date_selection.weekday()].lower() + "_available"
-		# service_selection = request.GET['service_selection'].replace(" ", "_").lower() + "_offered"
 
-		# SOURCE: https://stackoverflow.com/a/9122180
-		# return list of companions working on selected day and offers selected service
-		# companion_match = CompanionProfile.objects.filter(**{weekday_selection:True}, **{service_selection:True}).values_list('user', flat=True)
-
-		companion_match = Service.objects.filter(name=request.GET['service_selection']).filter(**{ f'companion__{weekday_selection}':True}).values_list('companion', flat=True)
+		# RETURNS LIST OF COMPANIONS WORKING ON SELECTED DAY AND OFFERS SELECTED SERVICE
+		companion_match = (
+			Service.objects.filter(name=request.GET["service_selection"])
+			.filter(**{f"companion__{weekday_selection}": True})
+			.values_list("companion", flat=True)
+		)
 
 		# GETS ALL POSSIBLE TIME SLOTS
 		service = Service.objects.get(name=request.GET['service_selection'])
 
 
 		def check_availability(companion, date):
-			# SOURCE https://stackoverflow.com/questions/4668619/how-do-i-filter-query-objects-by-date-range-in-django
-			companion_orders = OrderLineItem.objects.filter(companion_selected=companion).filter(start_datetime__gte=date)
+			companion_orders = OrderLineItem.objects.filter(companion_selected=companion).filter(
+				start_datetime__gte=date
+			)
 			available_slots = generateTimeSlots(service, date)
 
 			for slot in available_slots:
@@ -105,23 +108,22 @@ def companion_availability_check(request):
 
 						if existing_start_time is not None and existing_end_time is not None:
 							if slot['start_time'] > existing_end_time or slot['end_time'] < existing_start_time:
-								# no clash, do nothing
+								# NO CLASH
 								pass
 							elif slot['end_time'] == existing_start_time  and slot['start_time'] <= existing_start_time:
 								if slot['end_time'] <= existing_start_time or slot['start_time'] >= existing_end_time:
-									# no clash, do nothing
+									# NO CLASH
 									pass
 								else:
 									slot['status'] = 'clash'
 							elif slot['start_time'] == existing_end_time:
 								if slot['start_time'] >= existing_end_time:
-									# no clash. do nothing
+									# NO CLASH
 									pass
 								else:
 									slot['status'] = 'clash'
 							else:
 								slot['status'] = 'clash'
-						
 
 				# DISABLE START TIMES EARLIER THAN CURRENT UTC TIME
 				if slot['start_time'] <= datetime.datetime.utcnow().replace(tzinfo=pytz.utc):
@@ -131,7 +133,6 @@ def companion_availability_check(request):
 					else:
 						slot['status'] = 'expired'
 			return available_slots
-
 
 		dt = timezone.localize(datetime.datetime.combine(date_selection, datetime.time(0, 00)))
 
@@ -145,7 +146,6 @@ def companion_availability_check(request):
 		if len(companion_match) == 1:
 			companion = CompanionProfile.objects.get(id=companion_match[0])
 			username = companion.user.username
-			# username = CompanionProfile.objects.get(id=companion_match[0]).full_name()
 			if len(check_availability(companion, dt)) > 0:
 				available_companions.append({str(username): check_availability(companion, dt)})
 		data = {
@@ -166,14 +166,14 @@ def service_detail(request, endpoint):
 			if len(next_5_days) <= 5:
 				date_adding = today + datetime.timedelta(days=date)
 				next_5_days[date_adding] = {'day_index': date_adding.weekday(), 'day': date_adding.strftime("%a").upper(), 'date': date_adding.day, 'month_index': date_adding.month, 'month': date_adding.strftime('%b').upper()}
-	
-	# service_offered = str(service).replace(" ", "_").lower() + "_offered"
-
 
 	for key, value in next_5_days.items():
 		day = key.strftime("%A").lower() + "_available"
-		companion_match = Service.objects.filter(name=service).filter(**{ f'companion__{day}':True}).values_list('companion', flat=True)
-		# companion_match = CompanionProfile.objects.filter(**{str(day):True}, **{service_offered:True}).values_list('user', flat=True)
+		companion_match = (
+			Service.objects.filter(name=service)
+			.filter(**{f"companion__{day}": True})
+			.values_list("companion", flat=True)
+		)
 
 		for x in companion_match:
 			if key in next_5_days:

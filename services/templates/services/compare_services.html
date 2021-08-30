@@ -74,7 +74,7 @@
                     <form class="mt-4">
                         <div class="input-group mb-3 signup-combo mx-auto">
                             <input id="signupInput" type="text" class="form-control" placeholder="youremail@company.com" aria-label="Your email" required>
-                            <button class="btn btn-hero" type="submit" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#signupInput', this)">Sign up now</button>
+                            <button class="btn btn-hero" type="submit" onclick="passEmailSignup(event, '#signupInput', this)">Sign up now</button>
                         </div>
                     </form>
                 </div>
@@ -88,17 +88,16 @@
 
         // GETS VALUE OF EMAIL INPUT AND ADDS TO URL OF SIGNUP
         function passEmailSignup(event, input, button){
-            console.log($(input).val())
             event.preventDefault()
             if ($(input).val().length > 0) {
-                var url = $(button).attr('href')
+                var url = $("#signupBtn").attr('href')
                 if (url.substring(url.length - 1) == '/'){
                     url = url.slice(0, -1)
                 }
                 var email = $(input).val()
                 location.href = url + "?email=" + email
             } else {
-                location.href = $(button).attr('href')
+                location.href = $("#signupBtn").attr('href')
             }
         }
 

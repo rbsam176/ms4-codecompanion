@@ -29,8 +29,6 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['f016-86-14-48-81.ngrok.io', '127.0.0.1', 'codecompanionapp.herokuapp.com']
 
-# Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

@@ -104,7 +104,7 @@
             <a class="mx-1 account-nav" href="{% url 'account_logout' %}">Logout</a>
             <a class="mx-1 bag-count" href="{% url 'view_bag' %}"><i class="fas fa-shopping-basket fa-lg"></i> {{ product_count }}</a>
           {% else %}
-            <a class="mx-1 btn-hero btn-signup" href="{% url 'account_signup' %}">Sign Up</a>
+            <a id="signupBtn" class="mx-1 btn-hero btn-signup" href="{% url 'account_signup' %}">Sign Up</a>
             <a class="mx-1 account-nav" href="{% url 'account_login' %}">Login</a>
           {% endif %}
         </div>

@@ -2,11 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.http import JsonResponse, HttpResponse
-
-from django.core import serializers
-
+from django.http import JsonResponse
 from django.contrib.auth.models import User
+
 from .forms import UserProfileForm, UserForm, CompanionCheck
 from .models import UserProfile, CompanionProfile
 
@@ -28,9 +26,12 @@ def ajax_pagination(request):
 		if p.page(int(request.GET['page_num'])).has_next():
 			page_num = int(request.GET['page_num']) + 1
 			has_next = p.page(page_num).has_next()
-			desktop = render_to_string('profiles/orders_desktop.html', { 'desktop': p.page(page_num).object_list })
-			mobile = render_to_string('profiles/orders_mobile.html', { 'mobile': p.page(page_num).object_list })
-
+			desktop = render_to_string(
+				"profiles/orders_desktop.html", {"desktop": p.page(page_num).object_list}
+			)
+			mobile = render_to_string(
+				"profiles/orders_mobile.html", {"mobile": p.page(page_num).object_list}
+			)
 			data = {
 				'desktop': desktop,
 				'mobile': mobile,
@@ -49,30 +50,23 @@ def ajax_pagination(request):
 @login_required
 def profile(request):
 	""" Display user profile """
-
-	# user accounts
 	account = get_object_or_404(User, username=request.user)
 	profile = get_object_or_404(UserProfile, user=request.user)
-	
-	# forms
-	user_form = UserForm(request.POST or None, instance=account) # allauth standard
-	companion_check = CompanionCheck(request.POST or None, instance=profile) # custom user with companion boolean
+
+	user_form = UserForm(request.POST or None, instance=account)
+	companion_check = CompanionCheck(request.POST or None, instance=profile)
 
 	companion_services = []
 	if profile.is_companion:
-		print('is companion')
 		companion_profile = get_object_or_404(CompanionProfile, user=request.user)
 		for service in Service.objects.filter(companion=companion_profile):
 			companion_services.append(service)
 
-	# post logic
 	if request.method == 'POST':
 		if user_form.is_valid() and companion_check.is_valid():
 			user_form.save()
 			companion_check.save()
-
 			if request.POST.get('is_companion'):
-				print('is companion enabled')
 				try:
 					companion_profile = get_object_or_404(CompanionProfile, user=request.user)
 
@@ -99,16 +93,20 @@ def profile(request):
 							companion_services.remove(service)
 							# CHECK IF COMPANION HAS UPCOMING SESSIONS BOOKED FOR THIS SERVICE
 							now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
-							pre_existing = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now).filter(service=service)
+							pre_existing = (
+								OrderLineItem.objects.filter(companion_selected=companion_profile)
+								.filter(start_datetime__gte=now)
+								.filter(service=service)
+							)
 							# IF THEY DO, DEFINE WARNING MESSAGE
 							if len(pre_existing) > 0:
-								print('pre existing len more than 1')
 								plural = 's' if len(pre_existing) > 1 else ''
-								pre_existing_message = f'You had {len(pre_existing)} {service} session{plural} coming up that have been cancelled.'
-								print(pre_existing_message)
-								# pre_existing.delete()
+								pre_existing_message = f"You had {len(pre_existing)} {service} \
+									session{plural} coming up that have been cancelled."
 
-					companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
+					companion_availability = UserProfileForm(
+						request.POST or None, instance=companion_profile
+					)
 					if companion_availability.is_valid():
 						companion_availability.save()
 						messages.success(request, 'Account updated successfully')
@@ -122,24 +120,28 @@ def profile(request):
 					new_companion.save()
 					messages.success(request, 'Converted profile to be companion')
 			else:
-				print('is companion NOT enabled')
-				print('about to try')
-				# if companion checkbox unchecked
 				try:
-					print('try')
-					companion_profile = get_object_or_404(CompanionProfile, user=request.user)
+					companion_profile = get_object_or_404(
+						CompanionProfile, user=request.user
+					)
 
 					# CHECK IF COMPANION HAS UPCOMING SESSIONS BOOKED FOR THIS SERVICE
 					now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
-					existing_sessions = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now)
+					existing_sessions = OrderLineItem.objects.filter(
+						companion_selected=companion_profile
+					).filter(start_datetime__gte=now)
 					if len(existing_sessions) > 0:
 						existing_sessions.delete()
 
-					# if user is companion, delete
+					# IF USER IS COMPANION, DELETE
 					companion_profile.delete()
-					messages.warning(request, 'You are no longer a companion, any existing upcoming sessions have been cancelled.')
+					messages.warning(
+						request,
+						"You are no longer a companion, any existing upcoming sessions \
+							have been cancelled.",
+					)
 				except:
-					# if user is not companion, do nothing
+					# IF USER IS NOT COMPANION, DO NOTHING
 					messages.success(request, 'Updated profile successfully')
 					pass
 
@@ -157,7 +159,9 @@ def profile(request):
 				'session': session,
 				'status': status
 				})
-			if current_ts == session.start_datetime or seconds_until < 300 and seconds_until > 0 or current_ts > session.start_datetime and current_ts < session.end_datetime:
+			if (current_ts == session.start_datetime or seconds_until < 300 and
+				seconds_until > 0 or current_ts > session.start_datetime and
+					current_ts < session.end_datetime):
 				status = 'active'
 				sessions.append({
 				'session': session,
@@ -173,15 +177,19 @@ def profile(request):
 
 	if profile.is_companion:
 		companion_profile = get_object_or_404(CompanionProfile, user=request.user)
-		companion_availability = UserProfileForm(request.POST or None, instance=companion_profile)
+		companion_availability = UserProfileForm(
+			request.POST or None, instance=companion_profile
+		)
 
 		# GET COMPANION UPCOMING SESSIONS
-		# now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)
 		now = datetime.datetime.now(tz=pytz.timezone('UTC'))
-		companion_sessions = OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now).order_by('start_datetime')
+		companion_sessions = (
+			OrderLineItem.objects.filter(companion_selected=companion_profile)
+			.filter(start_datetime__gte=now)
+			.order_by("start_datetime")
+		)
 		companion_sessions_formatted = []
 		for session in companion_sessions:
-			print(session)
 			# SECONDS BETWEEN CURRENT TIME AND START TIME
 			seconds_until = (session.start_datetime - now).total_seconds()
 
@@ -192,7 +200,9 @@ def profile(request):
 				'status': status
 				})
 
-			if now == session.start_datetime or seconds_until < 300 and seconds_until > 0 or now > session.start_datetime and now < session.end_datetime:
+			if (now == session.start_datetime or seconds_until < 300 and
+				seconds_until > 0 or now > session.start_datetime and
+					now < session.end_datetime):
 				status = 'active'
 				companion_sessions_formatted.append({
 				'session': session,
@@ -228,6 +238,7 @@ def profile(request):
 
 @login_required
 def order_history(request, order_number):
+	""" Display specific order info """
 	order = get_object_or_404(Order, order_number=order_number)
 	account = get_object_or_404(User, username=request.user)
 
@@ -245,12 +256,13 @@ def order_history(request, order_number):
 
 		if current_ts < item.start_datetime and seconds_until > 300:
 			status = 'upcoming'
-		elif current_ts == item.start_datetime or seconds_until < 300 and seconds_until > 0 or current_ts > item.start_datetime and current_ts < item.end_datetime:
+		elif (current_ts == item.start_datetime or seconds_until < 300 and
+			   seconds_until > 0 or current_ts > item.start_datetime and
+			   	current_ts < item.end_datetime):
 			status = 'active'
 		else:
 			status = 'expired'
 
-		print(status)
 		sessions.append({
 			'lineitem': item,
 			'status': status

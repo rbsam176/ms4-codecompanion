@@ -123,7 +123,6 @@
             var service = "{{ service }}"
 
             // SEND TO SERVER
-            // SOURCE: https://simpleisbetterthancomplex.com/tutorial/2016/08/29/how-to-work-with-ajax-request-with-django.html
             $.ajax(
             {
                 type:"GET",
@@ -165,7 +164,6 @@
                     var inactive_count = 0
                     for (slot in time_slots){
                         // LOCAL DISPLAYED TIME
-                        // SOURCE: https://stackoverflow.com/questions/21298035/how-to-get-localetime-without-seconds-in-javascript
                         var start_ts_local = new Date(time_slots[slot]['start_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
                         var end_ts_local = new Date(time_slots[slot]['end_time']).toLocaleTimeString().replace(/(.*)\D\d+/, '$1')
 

@@ -15,7 +15,7 @@
                             <form class="mt-4">
                                 <div class="input-group mb-3 signup-combo">
                                     <input id="hero-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" aria-describedby="button-addon2" autofocus required>
-                                    <button type="submit" id="hero-btn" class="btn btn-hero signup-btn" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#hero-signup', this)">Sign up now</a>
+                                    <button type="submit" id="hero-btn" class="btn btn-hero signup-btn" onclick="passEmailSignup(event, '#hero-signup', this)">Sign up now</a>
                                 </div>
                             </form>
                             <a data-bs-toggle="modal" href="#companionSignUpModal" role="button" class="text-muted">Interested in becoming a Companion?</a>
@@ -175,7 +175,7 @@
                     <form class="mt-4">
                         <div class="input-group mb-3 signup-combo mx-auto">
                             <input id="footer-signup" type="email" class="form-control" placeholder="youremail@company.com" aria-label="Your email" required>
-                            <button type="submit" class="btn btn-hero" href="{% url 'account_signup' %}" onclick="passEmailSignup(event, '#footer-signup', this)">Sign up now</a>
+                            <button type="submit" class="btn btn-hero" onclick="passEmailSignup(event, '#footer-signup', this)">Sign up now</a>
                         </div>
                     </form>
                 </div>
@@ -212,17 +212,16 @@
 
         // GETS VALUE OF EMAIL INPUT AND ADDS TO URL OF SIGNUP
         function passEmailSignup(event, input, button){
-            console.log($(input).val())
             event.preventDefault()
             if ($(input).val().length > 0) {
-                var url = $(button).attr('href')
+                var url = $("#signupBtn").attr('href')
                 if (url.substring(url.length - 1) == '/'){
                     url = url.slice(0, -1)
                 }
                 var email = $(input).val()
                 location.href = url + "?email=" + email
             } else {
-                location.href = $(button).attr('href')
+                location.href = $("#signupBtn").attr('href')
             }
         }
 
