@@ -250,6 +250,8 @@ def order_history(request, order_number):
 
 	current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
 
+	print(lineitems)
+
 	for item in lineitems:
 		# SECONDS BETWEEN CURRENT TIME AND START TIME
 		seconds_until = (item.start_datetime - current_ts).total_seconds()
@@ -267,6 +269,8 @@ def order_history(request, order_number):
 			'lineitem': item,
 			'status': status
 			})
+	
+	print(sessions)
 
 	template = 'profiles/view_order.html'
 	context = {
