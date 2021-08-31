@@ -191,7 +191,8 @@ def profile(request):
 		)
 
 		for x in OrderLineItem.objects.filter(companion_selected=companion_profile):
-			print(x)
+			print(x.start_datetime)
+			print(x.start_datetime.tzinfo)
 
 		companion_sessions_formatted = []
 		for session in companion_sessions:
