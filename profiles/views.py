@@ -188,6 +188,10 @@ def profile(request):
 			.filter(start_datetime__gte=now)
 			.order_by("start_datetime")
 		)
+
+		print('companion_sessions')
+		print(companion_sessions)
+
 		companion_sessions_formatted = []
 		for session in companion_sessions:
 			# SECONDS BETWEEN CURRENT TIME AND START TIME
@@ -208,6 +212,9 @@ def profile(request):
 				'session': session,
 				'status': status
 				})
+
+		print('formatted')
+		print(companion_sessions_formatted)
 		
 		context = {
 			'account': account,
@@ -250,8 +257,6 @@ def order_history(request, order_number):
 
 	current_ts = datetime.datetime.now(tz=pytz.timezone('UTC'))
 
-	print(lineitems)
-
 	for item in lineitems:
 		# SECONDS BETWEEN CURRENT TIME AND START TIME
 		seconds_until = (item.start_datetime - current_ts).total_seconds()
@@ -269,8 +274,6 @@ def order_history(request, order_number):
 			'lineitem': item,
 			'status': status
 			})
-	
-	print(sessions)
 
 	template = 'profiles/view_order.html'
 	context = {
