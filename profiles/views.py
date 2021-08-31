@@ -182,17 +182,19 @@ def profile(request):
 		)
 
 		# GET COMPANION UPCOMING SESSIONS
-		now = datetime.datetime.now(tz=pytz.timezone('UTC'))
-		print(now)
+		# now = datetime.datetime.now(tz=pytz.timezone('UTC'))
+		now = datetime.datetime.now(tz=pytz.timezone('Europe/London'))
+		# print(now)
 		companion_sessions = (
 			OrderLineItem.objects.filter(companion_selected=companion_profile)
 			.filter(start_datetime__gte=now)
 			.order_by("start_datetime")
 		)
 
-		for x in OrderLineItem.objects.filter(companion_selected=companion_profile):
-			print(x.start_datetime)
-			print(x.start_datetime.tzinfo)
+		print(companion_sessions)
+		# for x in OrderLineItem.objects.filter(companion_selected=companion_profile):
+		# 	print(x.start_datetime)
+		# 	print(x.start_datetime.tzinfo)
 
 		companion_sessions_formatted = []
 		for session in companion_sessions:
