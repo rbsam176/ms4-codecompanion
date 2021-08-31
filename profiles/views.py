@@ -183,11 +183,7 @@ def profile(request):
 
 		# GET COMPANION UPCOMING SESSIONS
 		now = datetime.datetime.now(tz=pytz.timezone('UTC'))
-		companion_sessions = (
-			OrderLineItem.objects.filter(companion_selected=companion_profile)
-			.filter(start_datetime__gte=now)
-			.order_by("start_datetime")
-		)
+		companion_sessions = (OrderLineItem.objects.filter(companion_selected=companion_profile).filter(start_datetime__gte=now).order_by("start_datetime"))
 
 		print('companion_sessions')
 		print(companion_sessions)
